@@ -1,0 +1,13 @@
+label{
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+input{
+    margin-right: 5px;
+    border:2px solid white;
+}
+
+input:focus{
+    outline:none;
+}
