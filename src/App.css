@@ -1,12 +1,9 @@
-*{
- margin: 0px;
- padding: 0px;
 
-}
 .App {
   text-align: center;
   background-color: gray;
   box-sizing: border-box;
+  
 }
 .toDoWraper{
  height:100vh;
