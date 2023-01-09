@@ -23,7 +23,7 @@ const InputField = () => {
         <button onClick={handleClick} >Add</button>
         {addString.map((elem, index)=>{
           return [<h2 key={index}>{elem}</h2>,
-                  <h2>{elem}</h2>]
+                  <h2 key={index+1}>{elem}</h2>]
         } 
 
         )}
