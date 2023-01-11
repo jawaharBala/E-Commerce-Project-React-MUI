@@ -6,6 +6,11 @@
   
 }
 .toDoWraper{
- height:100vh;
+ height:auto;
  background-color: gray;
+ position: relative;
+ /* display: flex;
+ justify-content: center;
+ flex-direction: column; */
+
  }
