@@ -123,7 +123,6 @@ function CardPrimary(props) {
           </>
         );
       })}
-      ;
     </>
   );
 }
