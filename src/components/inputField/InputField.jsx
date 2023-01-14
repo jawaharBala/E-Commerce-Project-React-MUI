@@ -23,9 +23,7 @@ const InputField = (props) => {
     };
    
   };
-  // const childToParent = (updatedArray) => {
-  //   setAddString(updatedArray);
-  // };
+ 
   useEffect(() => {
     setInputString("");
 
@@ -45,6 +43,7 @@ const InputField = (props) => {
           onChange={handleChange}
           type="text"
           value={inputString}
+          onPressEnter={handleClick}
         />
       </div>
       <Button className="button" onClick={handleClick} type="primary">

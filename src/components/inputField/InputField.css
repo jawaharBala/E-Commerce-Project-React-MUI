@@ -6,13 +6,21 @@ label{
 .input{
     width: 38vh;
     justify-content: center;
-    display: block;
+    /* display: block; */
     margin-left: auto;
     margin-right: auto;
 
 }
 
-
+/* .input:focus{
+    width: 50vh;
+    height: 8vh;
+} */
+.input::placeholder{
+    color: black;
+    opacity: 1;
+    background-color:blanchedalmond;
+}
 
 .button{
    margin: 2vh;
