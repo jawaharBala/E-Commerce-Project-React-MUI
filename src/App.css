@@ -3,9 +3,15 @@
   text-align: center;
   background-color: gray;
   box-sizing: border-box;
+  height: 100vh;
   
 }
 .toDoWraper{
- height:100vh;
+ height:auto;
  background-color: gray;
+ position: relative;
+ /* display: flex;
+ justify-content: center;
+ flex-direction: column; */
+
  }
