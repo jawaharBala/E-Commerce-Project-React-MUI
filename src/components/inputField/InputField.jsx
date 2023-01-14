@@ -1,6 +1,6 @@
 import React from "react";
 import "./InputField.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input, Button } from "antd";
 import CardPrimary from "../cards/CardPrimary";
 
@@ -9,27 +9,30 @@ const InputField = (props) => {
   const [addString, setAddString] = useState([]);
   const [todosPresent, setTodosPresent] = useState(false);
   const handleChange = (e) => {
-    const input = e.target.value;
-    setInputString(input);
+    setInputString(e.target.value);
   };
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     setTodosPresent(true);
+    console.log('inputstring 1',inputString,todosPresent);//ask Rahul
     if (addString.length > 0) {
       setAddString([...addString, inputString]);
+      // setAddString([addString.push(inputString)]);
     } else {
       setAddString([inputString]);
     };
-
-    console.log(addString);
+   
   };
+ 
+  useEffect(() => {
+    setInputString("");
 
-  // useEffect(() => {
-  //   if (addString.length > 1) {
-  //   } else setTodosPresent(false);
-  //   console.log(addString);
-  //   console.log(todosPresent);
-  // }, [addString]);
+  }, [addString]);
+  useEffect(() => {
+    if (addString.length >= 1) {
+      setTodosPresent(true);
+    } else setTodosPresent(false);
+  }, [addString, todosPresent]);
 
   return (
     <>
@@ -37,15 +40,18 @@ const InputField = (props) => {
         <Input
           placeholder="Enter your Todo here"
           className="input"
-          name="inputString"
           onChange={handleChange}
           type="text"
+          value={inputString}
+          onPressEnter={handleClick}
         />
       </div>
       <Button className="button" onClick={handleClick} type="primary">
         Add
       </Button>
-      {todosPresent ? <CardPrimary content={addString} /> : null}
+      {todosPresent ? (
+        <CardPrimary setAddString={setAddString} content={addString} />
+      ) : null}
     </>
   );
 };
