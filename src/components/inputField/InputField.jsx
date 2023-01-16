@@ -50,7 +50,7 @@ const InputField = (props) => {
         Add
       </Button>
       {todosPresent ? (
-        <CardPrimary setAddString={setAddString} content={addString} />
+       <> <CardPrimary setAddString={setAddString} content={addString} /><br></br></>
       ) : null}
     </>
   );
