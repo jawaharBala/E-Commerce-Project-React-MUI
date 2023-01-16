@@ -14,10 +14,8 @@ const InputField = (props) => {
 
   const handleClick = () => {
     setTodosPresent(true);
-    console.log('inputstring 1',inputString,todosPresent);//ask Rahul
     if (addString.length > 0) {
       setAddString([...addString, inputString]);
-      // setAddString([addString.push(inputString)]);
     } else {
       setAddString([inputString]);
     };

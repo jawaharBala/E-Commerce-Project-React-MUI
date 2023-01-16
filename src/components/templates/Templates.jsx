@@ -45,6 +45,9 @@ export const CardTemplate = ({elem, index,handleEdit,handleDelete}) => {
             onChange={handleEditfield}
             type="text"
             defaultValue={elem}
+            onPressEnter={() => {
+                handleEditMode(elem, index);
+              }}
           />
         </div>
         <Button
