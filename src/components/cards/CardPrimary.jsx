@@ -1,8 +1,7 @@
 import "./CardPrimary.css";
 import React from "react";
-import { Card, Button, Input } from "antd";
 import { useState, useEffect } from "react";
-import { EditFilled, DeleteFilled } from "@ant-design/icons";
+import { EditTemplate, CardTemplate } from "../templates/Templates";
 
 function CardPrimary(props) {
   const [content, setContent] = useState([...props.content]);
@@ -48,62 +47,6 @@ function CardPrimary(props) {
     }
   };
 
-  const cardTemplate = (elem, index) => {
-    return (
-      <Card
-        key={index}
-        className="card"
-        style={{ color: "darkblue", font: "calibri" }}
-      >
-        {elem}
-        <Button
-          icon={<EditFilled style={{ color: "green" }} />}
-          value={elem}
-          className="buttons"
-          onClick={() => {
-            handleEdit(elem, index);
-          }}
-          name="edit"
-          id="edit"
-        ></Button>
-        <Button
-          icon={<DeleteFilled style={{ color: "red" }} />}
-          value={elem}
-          className="buttons"
-          onClick={() => {
-            handleDelete(index);
-          }}
-          name="delete"
-          id="delete"
-        ></Button>
-      </Card>
-    );
-  };
-  const editTemplate = (elem, index) => {
-    return (
-      <>
-        <div key={index} className="input">
-          <Input
-            className="input"
-            name="inputString"
-            onChange={handleEditfield}
-            type="text"
-            defaultValue={elem}
-          />
-        </div>
-        <Button
-          className="button"
-          onClick={() => {
-            handleEditMode(elem, index);
-          }}
-          type="primary"
-          style={{'backgroundColor':'red'}}
-        >
-          Save changes
-        </Button>
-      </>
-    );
-  };
   return (
     <>
       {content.map((elem, index) => {
@@ -112,13 +55,38 @@ function CardPrimary(props) {
             {editMode ? (
               <>
                 {index === editIndex ? (
-                  <>{editTemplate(elem, index)}</>
+                  <EditTemplate
+                    elem={elem}
+                    index={index}
+                    handleEditfield={handleEditfield}
+                    handleEditMode={() => {
+                      handleEditMode(elem, index);
+                    }}
+                  />
                 ) : (
-                  <>{cardTemplate(elem, index)}</>
+                  <CardTemplate
+                    elem={elem}
+                    index={index}
+                    handleEdit={() => {
+                      handleEdit(elem, index);
+                    }}
+                    handleDelete={() => {
+                      handleDelete(index);
+                    }}
+                  />
                 )}
               </>
             ) : (
-              <>{cardTemplate(elem, index)}</>
+              <CardTemplate
+                elem={elem}
+                index={index}
+                handleEdit={() => {
+                  handleEdit(elem, index);
+                }}
+                handleDelete={() => {
+                  handleDelete(index);
+                }}
+              />
             )}
           </>
         );

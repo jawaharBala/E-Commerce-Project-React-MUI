@@ -3,10 +3,11 @@
     justify-content: center;
     flex-direction: row ;
     align-items: center;
+
 }
 .card{
     margin: 4vh;
-    height: 10vh;
+    height: auto;
     width: 48vh;
     justify-content: center;
     margin-left: auto;
