@@ -5,33 +5,49 @@ import { Input, Button } from "antd";
 import CardPrimary from "../cards/CardPrimary";
 
 const InputField = (props) => {
-  const [inputString, setInputString] = useState("");
+  const [inputString, setInputString] = useState({todo:'',done:false});
   const [addString, setAddString] = useState([]);
   const [todosPresent, setTodosPresent] = useState(false);
+  const [enableAddButton,setEnableButton] = useState(false);
   const handleChange = (e) => {
     setInputString(e.target.value);
+    if(inputString.length>0 ){
+      setEnableButton(true);
+    } else{
+      setEnableButton(false);
+    };
+
   };
 
   const handleClick = () => {
     setTodosPresent(true);
-    console.log('inputstring 1',inputString,todosPresent);//ask Rahul
     if (addString.length > 0) {
-      setAddString([...addString, inputString]);
-      // setAddString([addString.push(inputString)]);
+      setAddString([...addString, {todo:inputString, done:false}]);
     } else {
-      setAddString([inputString]);
+      setAddString([{todo:inputString, done:false}]);
     };
    
   };
+
+  const clearTodos=()=>{
+    setAddString([]);
+
+  };
+  useEffect(()=>{
+    setAddString(JSON.parse(window.localStorage.getItem('todos')) || []);
+  },[]);
  
   useEffect(() => {
     setInputString("");
-
+    window.localStorage.setItem("todos", JSON.stringify(addString));
   }, [addString]);
+
   useEffect(() => {
     if (addString.length >= 1) {
       setTodosPresent(true);
-    } else setTodosPresent(false);
+    } else {
+      setEnableButton(false);
+      setTodosPresent(false)};
   }, [addString, todosPresent]);
 
   return (
@@ -46,11 +62,12 @@ const InputField = (props) => {
           onPressEnter={handleClick}
         />
       </div>
-      <Button className="button" onClick={handleClick} type="primary">
+      {enableAddButton ? (<Button className="button" onClick={handleClick} type="primary">
         Add
-      </Button>
+      </Button>): null}
+      {todosPresent ? (<Button  onClick={clearTodos}>Clear all</Button>): null}
       {todosPresent ? (
-        <CardPrimary setAddString={setAddString} content={addString} />
+       <> <CardPrimary setAddString={setAddString} content={addString} /><br></br></>
       ) : null}
     </>
   );
