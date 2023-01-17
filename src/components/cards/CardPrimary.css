@@ -3,17 +3,47 @@
     justify-content: center;
     flex-direction: row ;
     align-items: center;
-
 }
-.card{
-    margin: 4vh;
+
+.customCard{
+    text-decoration: line-through;
+    text-decoration-color: red;
+    margin-top: 4vh;
     height: auto;
     width: 48vh;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
+    font-size: large;
+}
+.customCard-1{
+    margin-top: 4vh;
+    height: auto;
+    width: 48vh;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: large;
+}
+.groupButton{
+  justify-content: center;
+  display: flex;
+
+}
+.ant-check{
+  width: 25px;
+  height: 30px;
+  justify-content: start;
+  background-color: green;
+}
+.check-button{
+    width: 25px;
+    height: 25px;
+
 }
 .buttons{
-    margin: 2vh;
-    
+    margin-right: 4vh;
 }
+
+
+

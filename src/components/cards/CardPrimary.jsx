@@ -8,14 +8,18 @@ function CardPrimary(props) {
   const [editMode, setEditMode] = useState(false);
   const [editedTodo, setEditedTodo] = useState("");
   const [editIndex, setEditIndex] = useState();
+  const [overcomeShallow,setOvercomeShallow] = useState(true);
+  
   useEffect(() => {
     setContent(props.content);
   }, [props.content]);
+  useEffect(()=>{
+    props.setAddString(content);
+  },[overcomeShallow]);
 
   useEffect(() => {
-    window.localStorage.setItem("todos", content);
-    console.log(window.localStorage.getItem("todos"));
-  }, [content]);
+    window.localStorage.setItem("todos", JSON.stringify(content));
+  }, [content,overcomeShallow]);
 
   const handleDelete = (id) => {
     let filteredArray = content.filter((elem, index) => {
@@ -26,7 +30,6 @@ function CardPrimary(props) {
   };
 
   const handleEdit = (elem, index) => {
-    console.log("edit button", index);
     setEditMode(true);
     setEditIndex(index);
   };
@@ -36,15 +39,22 @@ function CardPrimary(props) {
   };
   const handleEditMode = (elem, index) => {
     if (editedTodo === "") {
-      setEditedTodo(elem);
+      setEditedTodo(elem.todo);
       setEditMode(false);
     } else {
       let editedArray = content;
-      editedArray[index] = editedTodo;
+      editedArray[index] = {todo:editedTodo,done:elem.done};
       setContent(editedArray);
       props.setAddString(editedArray);
       setEditMode(false);
     }
+  };
+  const markDone = (elem,index) =>{
+    let changedArray = content;
+    changedArray[index].done = !changedArray[index].done;
+    setContent(changedArray);
+    props.setAddString(changedArray);
+    setOvercomeShallow(!overcomeShallow);
   };
 
   return (
@@ -73,6 +83,8 @@ function CardPrimary(props) {
                     handleDelete={() => {
                       handleDelete(index);
                     }}
+                    markDone={()=>{markDone(elem,index)}}
+                    
                   />
                 )}
               </>
@@ -86,6 +98,8 @@ function CardPrimary(props) {
                 handleDelete={() => {
                   handleDelete(index);
                 }}
+                markDone={()=>{markDone(elem,index)}}
+                   
               />
             )}
           </>
