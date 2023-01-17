@@ -19,7 +19,7 @@ function CardPrimary(props) {
 
   useEffect(() => {
     window.localStorage.setItem("todos", JSON.stringify(content));
-  }, [content,overcomeShallow]);
+  }, [content,overcomeShallow,editMode]);
 
   const handleDelete = (id) => {
     let filteredArray = content.filter((elem, index) => {
