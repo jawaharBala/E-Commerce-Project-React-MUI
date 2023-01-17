@@ -7,10 +7,11 @@
 
 .customCard{
     text-decoration: line-through;
-    text-decoration-color: red;
+    text-decoration-color: black;
     margin-top: 4vh;
     height: auto;
-    width: 48vh;
+    min-width: 48vh;
+    max-width: 100vh;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
@@ -19,11 +20,12 @@
 .customCard-1{
     margin-top: 4vh;
     height: auto;
-    width: 48vh;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
     font-size: large;
+    min-width: 48vh;
+    max-width: 100vh;
 }
 .groupButton{
   justify-content: center;

@@ -26,7 +26,7 @@ export const CardTemplate = ({
             id="edit"
           ></Button>
           <Button
-            icon={<DeleteFilled style={{ color: "black" }} />}
+            icon={<DeleteFilled style={{ color: "orange" }} />}
             value={elem}
             className="buttons"
             onClick={() => {
