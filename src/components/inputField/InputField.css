@@ -4,11 +4,12 @@ label{
 }
 
 .input{
-    width: 38vh;
+    width: 55vh;
     justify-content: center;
     /* display: block; */
     margin-left: auto;
     margin-right: auto;
+    height: 7vh;
 
 }
 
@@ -19,7 +20,7 @@ label{
 .input::placeholder{
     color: black;
     opacity: 1;
-    background-color:blanchedalmond;
+    height: 6vh;
 }
 
 .button{
