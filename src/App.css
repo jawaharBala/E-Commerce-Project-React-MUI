@@ -1,17 +1,8 @@
-
 .App {
   text-align: center;
-  background-color: gray;
-  box-sizing: border-box;
-  height: 100vh;
+  background-color: rgb(12, 12, 12);
+  justify-content: center;
+  display: flex;
   
 }
-.toDoWraper{
- height:auto;
- background-color: gray;
- position: relative;
- /* display: flex;
- justify-content: center;
- flex-direction: column; */
 
- }

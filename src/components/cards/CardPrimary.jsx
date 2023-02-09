@@ -1,37 +1,32 @@
 import "./CardPrimary.css";
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import { EditTemplate, CardTemplate } from "../templates/Templates";
+import { uid } from "react-uid";
+import { TodoStore } from "./../contexts/ContextStore";
 
-function CardPrimary(props) {
-  const [content, setContent] = useState([...props.content]);
+function CardPrimary() {
   const [editMode, setEditMode] = useState(false);
   const [editedTodo, setEditedTodo] = useState("");
   const [editIndex, setEditIndex] = useState();
-  const [overcomeShallow,setOvercomeShallow] = useState(true);
-  
-  useEffect(() => {
-    setContent(props.content);
-  }, [props.content]);
-  useEffect(()=>{
-    props.setAddString(content);
-  },[overcomeShallow]);
+  const [overcomeShallow, setOvercomeShallow] = useState(true);
+  const todosContext = useContext(TodoStore);
 
   useEffect(() => {
-    window.localStorage.setItem("todos", JSON.stringify(content));
-  }, [content,overcomeShallow,editMode]);
+    localStorage.setItem("todos", JSON.stringify(todosContext.todos));
+  }, [overcomeShallow, editMode]);
 
   const handleDelete = (id) => {
-    let filteredArray = content.filter((elem, index) => {
+    let filteredArray = todosContext.todos.filter((elem, index) => {
       return index !== id;
     });
-    setContent(filteredArray);
-    props.setAddString(filteredArray);
+    todosContext.setTodos(filteredArray);
   };
 
   const handleEdit = (elem, index) => {
     setEditMode(true);
     setEditIndex(index);
+    setEditedTodo("");
   };
   const handleEditfield = (e) => {
     const fieldValue = e.target.value;
@@ -42,30 +37,29 @@ function CardPrimary(props) {
       setEditedTodo(elem.todo);
       setEditMode(false);
     } else {
-      let editedArray = content;
-      editedArray[index] = {todo:editedTodo,done:elem.done};
-      setContent(editedArray);
-      props.setAddString(editedArray);
+      let editedArray = todosContext.todos;
+      editedArray[index] = { todo: editedTodo, done: elem.done };
+      todosContext.setTodos(editedArray);
       setEditMode(false);
     }
   };
-  const markDone = (elem,index) =>{
-    let changedArray = content;
+  const markDone = (elem, index) => {
+    let changedArray = todosContext.todos;
     changedArray[index].done = !changedArray[index].done;
-    setContent(changedArray);
-    props.setAddString(changedArray);
+    todosContext.setTodos(changedArray);
     setOvercomeShallow(!overcomeShallow);
   };
 
   return (
     <>
-      {content.map((elem, index) => {
+      {todosContext.todos.map((elem, index) => {
         return (
           <>
             {editMode ? (
               <>
                 {index === editIndex ? (
                   <EditTemplate
+                    key={uid(elem, index)}
                     elem={elem}
                     index={index}
                     handleEditfield={handleEditfield}
@@ -75,21 +69,27 @@ function CardPrimary(props) {
                   />
                 ) : (
                   <CardTemplate
+                    key={uid(elem, index)}
                     elem={elem}
                     index={index}
+                    handleEditMode={() => {
+                      handleEditMode(elem, index);
+                    }}
                     handleEdit={() => {
                       handleEdit(elem, index);
                     }}
                     handleDelete={() => {
                       handleDelete(index);
                     }}
-                    markDone={()=>{markDone(elem,index)}}
-                    
+                    markDone={() => {
+                      markDone(elem, index);
+                    }}
                   />
                 )}
               </>
             ) : (
               <CardTemplate
+                key={uid(elem, index)}
                 elem={elem}
                 index={index}
                 handleEdit={() => {
@@ -98,8 +98,9 @@ function CardPrimary(props) {
                 handleDelete={() => {
                   handleDelete(index);
                 }}
-                markDone={()=>{markDone(elem,index)}}
-                   
+                markDone={() => {
+                  markDone(elem, index);
+                }}
               />
             )}
           </>

@@ -1,51 +1,35 @@
-.card-primary{
-    display: flex;
-    justify-content: center;
-    flex-direction: row ;
-    align-items: center;
+.card-primary {
+  display: flex;
+}
+.customCard:hover,
+.customCard-1:hover {
+  background-color: beige;
+}
+.customCard {
+  text-decoration: line-through;
+  text-decoration-color: black;
 }
 
-.customCard{
-    text-decoration: line-through;
-    text-decoration-color: black;
-    margin-top: 4vh;
-    height: auto;
-    min-width: 48vh;
-    max-width: 100vh;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: large;
-}
-.customCard-1{
-    margin-top: 4vh;
-    height: auto;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: large;
-    min-width: 48vh;
-    max-width: 100vh;
-}
-.groupButton{
+.group-elements {
   justify-content: center;
   display: flex;
-
+  text-align: center;
 }
-.ant-check{
+.ant-check {
   width: 25px;
   height: 30px;
   justify-content: start;
   background-color: green;
 }
-.check-button{
-    width: 25px;
-    height: 25px;
-
+.check-button {
+  width: 25px;
+  height: 30px;
+  justify-content: end;
 }
-.buttons{
-    margin-right: 4vh;
+.buttons {
+  margin-left: 1vh;
 }
-
-
-
+/* .button-group {
+  margin: 0px;
+  margin-left: 5vh;
+} */

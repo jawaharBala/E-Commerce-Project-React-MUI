@@ -1,14 +1,27 @@
 import React from "react";
 import "./InputField.css";
 import { useState, useEffect } from "react";
-import { Input, Button } from "antd";
 import CardPrimary from "../cards/CardPrimary";
+import { ButtonGroup, TextField , Button} from "@mui/material";
+import { TodoStore } from "../../components/contexts/ContextStore";
 
-const InputField = (props) => {
+
+const InputField = () => {
   const [inputString, setInputString] = useState({ todo: "", done: false });
-  const [addString, setAddString] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [todosPresent, setTodosPresent] = useState(false);
   const [enableAddButton, setEnableButton] = useState(false);
+
+  useEffect(() => {
+    setTodos(JSON.parse(window.localStorage.getItem("todos")) || []);
+    
+  }, []);
+
+  useEffect(() => {
+    setInputString("");
+    window.localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+  
   const handleChange = (e) => {
     setInputString(e.target.value);
     if (inputString.length > 0) {
@@ -20,62 +33,63 @@ const InputField = (props) => {
 
   const handleClick = () => {
     setTodosPresent(true);
-    if (addString.length > 0) {
-      setAddString([...addString, { todo: inputString, done: false }]);
+    if (todos.length > 0) {
+      setTodos([...todos, { todo: inputString, done: false }]);
     } else {
-      setAddString([{ todo: inputString, done: false }]);
+      setTodos([{ todo: inputString, done: false }]);
     }
   };
 
   const clearTodos = () => {
-    setAddString([]);
+    setTodos([]);
   };
-  useEffect(() => {
-    setAddString(JSON.parse(window.localStorage.getItem("todos")) || []);
-  }, []);
+
 
   useEffect(() => {
-    setInputString("");
-    window.localStorage.setItem("todos", JSON.stringify(addString));
-  }, [addString]);
-
-  useEffect(() => {
-    if (addString.length >= 1) {
+    if (todos.length >= 1) {
       setTodosPresent(true);
     } else {
       setEnableButton(false);
       setTodosPresent(false);
     }
-  }, [addString, todosPresent]);
+  }, [todos, todosPresent]);
+
 
   return (
     <>
-      <div className="input">
-        <Input
-          placeholder="Enter your Todo here"
-          className="input"
-          onChange={handleChange}
-          type="text"
-          value={inputString}
-          onPressEnter={handleClick}
-        />
-      </div>
-      {enableAddButton ? (
-        <Button className="button" onClick={handleClick} type="primary">
-          Add
-        </Button>
-      ) : null}
-      {todosPresent ? (
-        <Button className="button" onClick={clearTodos}>
-          Clear all
-        </Button>
-      ) : null}
-      {todosPresent ? (
-        <>
-          <CardPrimary setAddString={setAddString} content={addString} />
+      <TodoStore.Provider value={{ todos: todos, setTodos: setTodos }}>
+        <div className="input-container">
+          <TextField
+            placeholder=""
+            label="Enter your Todo here"
+            id="fullWidth"
+            onChange={handleChange}
+            type="text"
+            value={inputString}
+            onPressEnter={handleClick}
+            className="input"
+          />
           <br></br>
-        </>
-      ) : null}
+          <ButtonGroup>
+            {enableAddButton ? (
+              <Button sx={{backgroundColor:'black', margin:'2vh', color:'white'}} onClick={handleClick} type="primary">
+                Add
+              </Button>
+            ) : null}
+            {todosPresent ? (
+              <Button sx={{backgroundColor:'red', margin:'2vh', color:'white'}} onClick={clearTodos}>Clear all</Button>
+            ) : null}
+          </ButtonGroup>
+          {todosPresent ? (
+            <>
+              <div className="cards">
+                <CardPrimary setTodos={setTodos} content={todos} />
+                <br></br>
+              </div>
+            </>
+          ) : null}
+        </div>
+      </TodoStore.Provider>
     </>
   );
 };

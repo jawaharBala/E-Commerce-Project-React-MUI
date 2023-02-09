@@ -4,19 +4,18 @@ label{
 }
 
 .input{
-    width: 55vh;
+    width: 40vh;
     justify-content: center;
-    /* display: block; */
     margin-left: auto;
     margin-right: auto;
-    height: 7vh;
+    height: auto;
+    text-align: center;
+    background-color: white;
+    color: black;
+
 
 }
 
-/* .input:focus{
-    width: 50vh;
-    height: 8vh;
-} */
 .input::placeholder{
     color: black;
     opacity: 1;
@@ -24,6 +23,25 @@ label{
 }
 
 .button{
-   margin: 2vh;
+   margin: 2vh; 
+   justify-content: center;
+   margin-left: auto;
+   margin-right: auto;
    
+}
+.clear{
+    color: red;
+    background-color: aliceblue;
+}
+.input-container{
+    background-color: gray;
+    text-align: center;
+    height: auto;
+    min-height: 100%;
+    padding: 2vh;
+    justify-content: center;
+}
+.cards{
+    display: flex;
+    flex-wrap: wrap;
 }
