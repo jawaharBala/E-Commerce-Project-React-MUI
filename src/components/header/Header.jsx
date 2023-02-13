@@ -6,17 +6,10 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  FormControlLabel,
-  Link as LinkMUI,
-  Switch,
-} from "@mui/material";
+import { FormControlLabel, Link as LinkMUI, Switch } from "@mui/material";
 import { Link } from "react-router-dom";
 
-
 export default function SearchAppBar() {
-
- 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar color="transparent" position="static">
@@ -36,7 +29,11 @@ export default function SearchAppBar() {
             component="div"
             sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
           >
-            <LinkMUI style={{ color: "white" }} component={Link} to="/home">
+            <LinkMUI
+              style={{ color: "white", textDecoration: "none" }}
+              component={Link}
+              to="/home"
+            >
               HOME
             </LinkMUI>
           </Typography>
@@ -46,19 +43,41 @@ export default function SearchAppBar() {
             component="div"
             sx={{ flexGrow: 0.05, display: { xs: "none", sm: "block" } }}
           >
-            <LinkMUI style={{ color: "white" }} component={Link} to="/todos">
+            <LinkMUI
+              style={{ color: "white", textDecoration: "none" }}
+              component={Link}
+              to="/todos"
+            >
               TODOS
             </LinkMUI>
           </Typography>
-          
+
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
           >
-            <LinkMUI style={{ color: "white" }} component={Link} to="/products">
+            <LinkMUI
+              style={{ color: "white", textDecoration: "none" }}
+              component={Link}
+              to="/products"
+            >
               PRODUCTS
+            </LinkMUI>
+          </Typography>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 0.075, display: { xs: "none", sm: "block" } }}
+          >
+            <LinkMUI
+              style={{ color: "white", textDecoration: "none" }}
+              component={Link}
+              to="/cart"
+            >
+              CART
             </LinkMUI>
           </Typography>
           <Typography
@@ -66,7 +85,7 @@ export default function SearchAppBar() {
           >
             <FormControlLabel control={<Switch />} label="Dark Mode" />
           </Typography>
-        </Toolbar>   
+        </Toolbar>
       </AppBar>
     </Box>
   );

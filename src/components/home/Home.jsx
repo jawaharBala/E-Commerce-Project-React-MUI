@@ -20,7 +20,6 @@ const Home = () => {
           region +
           "&category=general&pageSize=10&apiKey=c5db7d1432d44031adc0f1a180b7cfb7"
       );
-      console.log(response)
       setNews({ data: response.data.articles, country: region });
       setErrorHandling(false);
     } catch (error) {

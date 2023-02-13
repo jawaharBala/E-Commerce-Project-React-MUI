@@ -12,6 +12,9 @@ import {
   Snackbar,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import ShareIcon from "@mui/icons-material/Share";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
@@ -20,38 +23,39 @@ import CloseIcon from "@mui/material/IconButton";
 import { ProductsStore } from "./ProductsContext";
 
 const ViewProduct = () => {
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState();
   const { id } = useParams();
-  const productsContext = useContext(ProductsStore);
+  const context = useContext(ProductsStore);
+  const { cart } = useContext(ProductsStore);
+  const { setCart } = useContext(ProductsStore);
+
   useEffect(() => {
-    console.log(productsContext);
     getProduct();
-  }, [productsContext]);
+  }, [context.products]);
 
   const getProduct = async () => {
-    console.log(productsContext);
     setLoading(true);
-    if (productsContext) {
-      let prod =  productsContext.product.filter((elem) => {
-        console.log('context',elem);
-        return elem.id === id;
+    if (context.products.length > 0 && id) {
+      let prod = context.products.filter((elem) => {
+        return elem.id === +id;
       });
       setLoading(false);
-      setProduct(prod);
+      setProduct(...prod);
     } else {
       try {
-
+        setLoading(true);
         const response = await axios.get(
           "https://fakestoreapi.com/products/" + id
         );
-        console.log('fetch',response.data);
         setLoading(false);
-        setProduct(response.data);
+        setProduct({ ...response.data, cart: 1 });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setLoading(false);
+        setError(error);
       }
     }
   };
@@ -66,6 +70,8 @@ const ViewProduct = () => {
 
     setOpen(false);
   };
+
+
   const action = (
     <>
       <Button color="secondary" size="small" onClick={handleClose}>
@@ -83,51 +89,83 @@ const ViewProduct = () => {
   );
   return (
     <>
-      <LinkMui to="/products" component={Link}>
-        <Button>Go back</Button>
-      </LinkMui>
-      {loading ? (
-        <div className="spinner">
-          <Box sx={{ justifyContent: "center", alignItems: "center" }}>
-            <CircularProgress />
-          </Box>
-        </div>
+      {error ? (
+        <h2>{error.message}. Please try again</h2>
       ) : (
         <>
-          <Card
-            style={{
-              maxWidth: 800,
-              paddingTop: "3vh",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            <CardHeader
-              title={product.title}
-              subheader={`Price:$ ${product.price}`}
-            ></CardHeader>
-            <CardMedia
-              component="img"
-              sx={{ width: "250px" }}
-              height="auto"
-              image={product.image}
-            />
-            <CardContent>
-              <IconButton aria-label="add to cart" onClick={addToCart}>
-                <Snackbar
-                  open={open}
-                  autoHideDuration={6000}
-                  onClose={handleClose}
-                  message="Product added to cart!"
-                  action={action}
-                />
-                <AddShoppingCartIcon />
-              </IconButton>
-              <IconButton aria-label="share">
-                <ShareIcon />
-              </IconButton>
-            </CardContent>
-          </Card>
+          <LinkMui to="/products" component={Link}>
+            <Button>Go back</Button>
+          </LinkMui>
+          {loading ? (
+            <div className="spinner">
+              <Box sx={{ justifyContent: "center", alignItems: "center" }}>
+                <CircularProgress />
+              </Box>
+            </div>
+          ) : (
+            <>
+              <Card
+                style={{
+                  maxWidth: 800,
+                  paddingTop: "3vh",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              >
+                <CardHeader
+                  title={product.title}
+                  subheader={`Price:$ ${product.price}`}
+                ></CardHeader>
+                <div style={{ display: "flex", flexwrap: "wrap" }}>
+                  <CardMedia
+                    component="img"
+                    sx={{ width: "250px" }}
+                    height="auto"
+                    image={product.image}
+                  />
+                  <CardContent>
+                    <Typography
+                      width="350px"
+                      variant="body1"
+                      color="text.secondary"
+                    >
+                      {product.description}
+                    </Typography>
+                  </CardContent>
+                </div>
+                <CardContent>
+                  <Button
+                    onClick={() => {
+                      context.updateCount('minus', product,context.products,context.setProducts);
+                    }}
+                  >
+                    <RemoveIcon />
+                  </Button>
+                  {product.cart}
+                  <Button
+                    onClick={() => {
+                      context.updateCount('add', product,context.products,context.setProducts) ;
+                    }}
+                  >
+                    <AddIcon />
+                  </Button>
+                  <IconButton aria-label="add to cart" onClick={()=>{context.updateCart('add',product)}}>
+                    <AddShoppingCartIcon sx={{ margin: "2px" }} />
+                  </IconButton>
+                  <IconButton aria-label="share">
+                    <Snackbar
+                      open={open}
+                      autoHideDuration={3000}
+                      onClose={handleClose}
+                      message="Product added to cart!"
+                      action={action}
+                    />
+                    <ShareIcon />
+                  </IconButton>
+                </CardContent>
+              </Card>
+            </>
+          )}
         </>
       )}
     </>
