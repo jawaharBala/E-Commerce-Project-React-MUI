@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardHeader,
@@ -22,7 +22,7 @@ import CloseIcon from "@mui/material/IconButton";
 import { ProductsStore } from "./ProductsContext";
 import { useContext } from "react";
 const ShoppingCart = () => {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const context = useContext(ProductsStore);
 
   const addToCart = () => {
@@ -52,54 +52,78 @@ const ShoppingCart = () => {
   );
   return (
     <>
-    {context.cart && context.cart.length>0 ? (context.cart.map((product)=>{
-        return(
+      {context.cart && context.cart.length > 0 ? (
+        context.cart.map((product) => {
+          return (
             <>
-             <Card key={product.id}
-        style={{
-          maxWidth: 800,
-          paddingTop: "3vh",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        <CardHeader
-          title={product.title}
-          subheader={`Price:$ ${product.price}`}
-        ></CardHeader>
-        <div style={{ display: "flex", flexwrap: "wrap" }}>
-          <CardMedia
-            component="img"
-            sx={{ width: "250px" }}
-            height="auto"
-            image={product.image}
-          />
-          <CardContent>
-            <Typography width="350px" variant="body1" color="text.secondary">
-              {product.description}
-            </Typography>
-          </CardContent>
-        </div>
-        <CardContent>
-          <Button
-            onClick={() => {
-                context.updateCount('minus', product,context.cart,context.setCart);
-            }}
-          >
-            <RemoveIcon />
-          </Button>
-          {product.cart}
-          <Button
-            onClick={() => {
-                context.updateCount('add', product,context.cart,context.setCart);
-            }}
-          >
-            <AddIcon />
-          </Button>
-          <IconButton aria-label="add to cart" onClick={addToCart}>
-            <AddShoppingCartIcon sx={{ margin: "2px" }} />
-          </IconButton>
-          <IconButton aria-label="share">
+              <Card
+                key={product.id}
+                style={{
+                  maxWidth: 800,
+                  paddingTop: "3vh",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              >
+                <CardHeader
+                  title={product.title}
+                  subheader={`Price:$ ${product.price}`}
+                ></CardHeader>
+                <div style={{ display: "flex", flexwrap: "wrap" }}>
+                  <CardMedia
+                    component="img"
+                    sx={{ width: "250px" }}
+                    height="auto"
+                    image={product.image}
+                  />
+                  <CardContent>
+                    <Typography
+                      width="350px"
+                      variant="body1"
+                      color="text.secondary"
+                    >
+                      {product.description}
+                    </Typography>
+                  </CardContent>
+                </div>
+                <CardContent>
+                  <Button
+                    onClick={() => {
+                      context.updateCount(
+                        "minus",
+                        product,
+                        context.cart,
+                        context.setCart
+                      );
+                    }}
+                  >
+                    <RemoveIcon />
+                  </Button>
+                  {product.cart}
+                  <Button
+                    onClick={() => {
+                      context.updateCount(
+                        "add",
+                        product,
+                        context.cart,
+                        context.setCart
+                      );
+                    }}
+                  >
+                    <AddIcon />
+                  </Button>
+                  <Button
+                    color="error"
+                    aria-label="Remove from cart"
+                    onClick={() => {
+                      context.updateCart("remove", product);
+                    }}
+                    variant="outlined"
+                    startIcon={<RemoveShoppingCartIcon color="error" />}
+                  >
+                    Remove from cart
+                  </Button>
+                  <IconButton aria-label="share">
                     <Snackbar
                       open={open}
                       autoHideDuration={3000}
@@ -109,14 +133,14 @@ const ShoppingCart = () => {
                     />
                     <ShareIcon />
                   </IconButton>
-        </CardContent>
-      </Card>
+                </CardContent>
+              </Card>
             </>
-        )
-    })) :
-    (<h2>Cart is empty!!</h2>)
-    }
-     
+          );
+        })
+      ) : (
+        <h2>Cart is empty!!</h2>
+      )}
     </>
   );
 };

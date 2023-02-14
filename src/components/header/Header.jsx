@@ -7,9 +7,34 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import { FormControlLabel, Link as LinkMUI, Switch } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import Badge from "@mui/material/Badge";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-export default function SearchAppBar() {
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+  },
+}));
+let activeStyle = {
+  textDecoration:'none',
+  backgroundColor:'white',
+  color:'blue',
+  padding:'9px',
+  borderRadius:'3px'
+
+}
+let inactiveStyle = {
+  textDecoration:'none',
+  backgroundColor:'black',
+  color:'white',
+  padding:'9px',
+  borderRadius:'3px'
+}
+export default function SearchAppBar({count}) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar color="transparent" position="static">
@@ -29,13 +54,15 @@ export default function SearchAppBar() {
             component="div"
             sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
           >
-            <LinkMUI
-              style={{ color: "white", textDecoration: "none" }}
-              component={Link}
-              to="/home"
-            >
+             <NavLink
+            className='nav-link'
+            to="/home"
+             style={({ isActive }) =>
+             isActive ? activeStyle : inactiveStyle
+           }
+          >
               HOME
-            </LinkMUI>
+            </NavLink>
           </Typography>
           <Typography
             variant="h6"
@@ -43,13 +70,15 @@ export default function SearchAppBar() {
             component="div"
             sx={{ flexGrow: 0.05, display: { xs: "none", sm: "block" } }}
           >
-            <LinkMUI
-              style={{ color: "white", textDecoration: "none" }}
-              component={Link}
-              to="/todos"
-            >
+            <NavLink
+            className='nav-link'
+            to="/todos"
+             style={({ isActive }) =>
+             isActive ? activeStyle : inactiveStyle
+           }
+          >
               TODOS
-            </LinkMUI>
+            </NavLink>
           </Typography>
 
           <Typography
@@ -58,33 +87,43 @@ export default function SearchAppBar() {
             component="div"
             sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
           >
-            <LinkMUI
-              style={{ color: "white", textDecoration: "none" }}
-              component={Link}
-              to="/products"
-            >
+             <NavLink
+            className='nav-link'
+            to="/products"
+             style={({ isActive }) =>
+             isActive ? activeStyle : inactiveStyle
+           }
+          >
               PRODUCTS
-            </LinkMUI>
+            </NavLink>
           </Typography>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 0.075, display: { xs: "none", sm: "block" } }}
+            sx={{ flexGrow: 0.075, display: { xs: "none", sm: "block" }, marginTop:'3px' }}
           >
-            <LinkMUI
-              style={{ color: "white", textDecoration: "none" }}
-              component={Link}
-              to="/cart"
-            >
+            <NavLink
+            className='nav-link'
+            to="/cart"
+             style={({ isActive }) =>
+             isActive ? activeStyle : inactiveStyle
+           }
+          >
               CART
-            </LinkMUI>
+              <IconButton aria-label="cart" sx={{marginTop:'3px'}}>
+                <Badge badgeContent={count} color="primary">
+                  <ShoppingCartIcon color="primary" />
+                </Badge>
+              </IconButton>
+            </NavLink>
           </Typography>
-          <Typography
+          
+          {/* <Typography
             sx={{ flexGrow: 0.05, display: { xs: "none", sm: "block" } }}
           >
             <FormControlLabel control={<Switch />} label="Dark Mode" />
-          </Typography>
+          </Typography> */}
         </Toolbar>
       </AppBar>
     </Box>

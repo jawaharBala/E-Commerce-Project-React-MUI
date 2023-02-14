@@ -14,7 +14,13 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import ShareIcon from "@mui/icons-material/Share";
 import IconButton from "@mui/material/IconButton";
 
-const ProductCard = ({ prod,updateCount,products,updateCart ,setProducts}) => {
+const ProductCard = ({
+  prod,
+  updateCount,
+  products,
+  updateCart,
+  setProducts,
+}) => {
   return (
     <>
       <Card
@@ -23,15 +29,15 @@ const ProductCard = ({ prod,updateCount,products,updateCart ,setProducts}) => {
           paddingTop: "2vh",
           borderWidth: "2px",
           borderStyle: "solid",
-          margin:'2vh',
-          borderRadius:'3vh'
+          margin: "2vh",
+          borderRadius: "3vh",
         }}
       >
         <CardHeader
           title={prod.title}
           subheader={`Price:$ ${prod.price}`}
         ></CardHeader>
-        <div style={{display:'flex', flexwrap:'wrap'}}>
+        <div style={{ display: "flex", flexwrap: "wrap" }}>
           <CardMedia
             sx={{ width: 300 }}
             component="img"
@@ -40,35 +46,49 @@ const ProductCard = ({ prod,updateCount,products,updateCart ,setProducts}) => {
             image={prod.image}
           />
           <CardContent>
-            <Typography width='300px' variant="body1" color="text.secondary">
+            <Typography width="300px" variant="body1" color="text.secondary">
               {prod.description}
             </Typography>
             <CardActions>
-          <Button size="small">Share</Button>
-          <LinkMui sx={{textDecoration:'none'}} component={Link} to={`${prod.id}`} size="large">
-            <Button>View product</Button>
-          </LinkMui>
-        </CardActions>
-          </CardContent>       
+              <Button size="small">Share</Button>
+              <LinkMui
+                sx={{ textDecoration: "none" }}
+                component={Link}
+                to={`${prod.id}`}
+                size="large"
+              >
+                <Button>View product</Button>
+              </LinkMui>
+            </CardActions>
+          </CardContent>
         </div>
         <CardContent>
-        <Button
-                    onClick={() => {
-                      updateCount("minus", prod,products);
-                    }}
-                  >
-                    <RemoveIcon />
-                  </Button>{prod.cart}
-                  <Button
-                    onClick={() => {
-                      updateCount("add", prod,products,setProducts);
-                    }}
-                  >
-                    <AddIcon />
-                  </Button>
-                  <IconButton aria-label="add to cart"  onClick={()=>{updateCart('add',prod)}}>
-                    <AddShoppingCartIcon sx={{ margin: "2px" }}  />
-                  </IconButton>
+          <Button
+            onClick={() => {
+              updateCount("minus", prod, products, setProducts);
+            }}
+          >
+            <RemoveIcon />
+          </Button>
+          {prod.cart}
+          <Button
+            onClick={() => {
+              updateCount("add", prod, products, setProducts);
+            }}
+          >
+            <AddIcon />
+          </Button>
+          <Button
+            sx={{ margin: "4px" }}
+            aria-label="add to cart"
+            onClick={() => {
+              updateCart("change", prod);
+            }}
+            variant="contained"
+            startIcon={<AddShoppingCartIcon />}
+          >
+            Add to cart
+          </Button>
         </CardContent>
       </Card>
     </>

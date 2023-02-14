@@ -15,39 +15,16 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [cart, setCart] = useState([]);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     getProducts();
     console.log("api");
   }, []);
 
-  const updateCart = (action, product) => {
-    let productInCart = cart.filter((prod) => {
-      return prod.id === product.id;
-    });
-    if (productInCart.length > 0) {
-      let newCart = cart.map((prod) => {
-        if (prod.id === product.id) {
-          return (prod = { ...prod, cart: prod.cart + product.cart });
-        } else return prod;     
-      });
-      setCart([...newCart])
-    } else {
-      if (cart.length > 0) {
-        if (action === "add") {
-          setCart([...cart, product]);
-        } else if (action==='remove') {
-          let newCart = cart.filter((prod) => {
-            return prod.id !== product.id;
-          });
-          setCart([...newCart]);
-        }
-      } else{
-        setCart([product])
-      }
-    }
-    console.log(cart)
-  };
+  useEffect(() => {
+    cartCount();
+  }, [cart]);
 
   const getProducts = async () => {
     setLoading(true);
@@ -65,7 +42,46 @@ function App() {
       setError(error);
     }
   };
-  const updateCount = (action, product, productContext,settermethod) => {
+
+  const updateCart = (action, product) => {
+    let productInCart = cart.filter((prod) => {
+      return prod.id === product.id;
+    });
+    if (productInCart.length > 0) {
+      if (action === "change") {
+        let newCart = cart.map((prod) => {
+          if (prod.id === product.id) {
+            return (prod = { ...prod, cart: prod.cart + product.cart });
+          } else return prod;
+        });
+        setCart([...newCart]);
+      } else if (action === "remove") {
+        let newCart = cart.filter((prod) => {
+          return prod.id !== product.id;
+        });
+        setCart([...newCart]);
+      }
+    } else if (cart.length > 0 && action === 'change') {
+      setCart([...cart, product]);
+    } else if(action === 'change') {
+      setCart([product]);
+    }
+  };
+
+  const cartCount = () => {
+    let cartCounter = [];
+    if (cart && cart.length > 0) {
+      cartCounter = cart
+        .map((item) => {
+          return item.cart;
+        })
+        .reduce((accumlator, currentValue) => {
+          return accumlator + currentValue;
+        });
+      setCount(cartCounter);
+    } else return setCount(0);
+  };
+  const updateCount = (action, product, productContext, settermethod) => {
     if (action === "add" && productContext.length > 0) {
       let newProdArray = productContext?.map((prod) => {
         if (prod.id === product.id) {
@@ -77,7 +93,7 @@ function App() {
       settermethod([...newProdArray]);
     } else if (action === "minus") {
       let newProdArray = productContext.map((prod) => {
-        if (prod.id === product.id && prod.cart > 0) {
+        if (prod.id === product.id && prod.cart > 1) {
           prod = { ...prod, cart: prod.cart - 1 };
           console.log("minus", prod.cart);
           return prod;
@@ -90,7 +106,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <SearchAppBar />
+        <SearchAppBar count={count} />
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -106,7 +122,7 @@ function App() {
                 updateCount,
                 loading: loading,
                 error,
-                updateCart
+                updateCart,
               }}
             >
               <Products />
@@ -117,13 +133,27 @@ function App() {
           path="/products/:id"
           element={
             <ProductsStore.Provider
-              value={{ products, setProducts, updateCount, cart, setCart ,updateCart}}
+              value={{
+                products,
+                setProducts,
+                updateCount,
+                cart,
+                setCart,
+                updateCart,
+              }}
             >
               <ViewProduct />
             </ProductsStore.Provider>
           }
         />
-        <Route path="/cart" element={<ProductsStore.Provider value={{cart,updateCount, setCart}}><ShoppingCart /></ProductsStore.Provider>} />
+        <Route
+          path="/cart"
+          element={
+            <ProductsStore.Provider value={{ cart, updateCount, setCart,updateCart }}>
+              <ShoppingCart />
+            </ProductsStore.Provider>
+          }
+        />
         <Route path="*" element={<h2>404 Not Found</h2>}></Route>
       </Routes>
     </>

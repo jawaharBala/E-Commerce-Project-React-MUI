@@ -12,7 +12,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShareIcon from "@mui/icons-material/Share";
@@ -29,11 +29,10 @@ const ViewProduct = () => {
   const [error, setError] = useState();
   const { id } = useParams();
   const context = useContext(ProductsStore);
-  const { cart } = useContext(ProductsStore);
-  const { setCart } = useContext(ProductsStore);
-
+ 
   useEffect(() => {
     getProduct();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.products]);
 
   const getProduct = async () => {
@@ -149,9 +148,28 @@ const ViewProduct = () => {
                   >
                     <AddIcon />
                   </Button>
-                  <IconButton aria-label="add to cart" onClick={()=>{context.updateCart('add',product)}}>
-                    <AddShoppingCartIcon sx={{ margin: "2px" }} />
-                  </IconButton>
+                  <Button
+            sx={{ margin: "4px" }}
+            aria-label="add to cart"
+            onClick={() => {
+              context.updateCart("change", product);
+            }}
+            variant="contained"
+            startIcon={<AddShoppingCartIcon />}
+          >
+            Add to cart
+          </Button>
+          <Button
+            color="error"
+            aria-label="Remove from cart"
+            onClick={() => {
+              context.updateCart("remove", product);
+            }}
+            variant="outlined"
+            startIcon={<RemoveShoppingCartIcon color="error" />}
+          >
+            Remove from  cart
+          </Button>
                   <IconButton aria-label="share">
                     <Snackbar
                       open={open}
