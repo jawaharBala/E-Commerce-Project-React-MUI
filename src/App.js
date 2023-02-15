@@ -25,20 +25,23 @@ function App() {
   }, []);
 
   useEffect(() => {
-    ProductUtils.cartCount(cart,setCount);
     postCart(cart);
+  }, [cart && count]);
+
+  useEffect(() => {
+    ProductUtils.cartCount(cart, setCount);
   }, [cart]);
 
   const getProducts = async () => {
     setLoading(true);
     try {
       const response = await axios.get("https://fakestoreapi.com/products");
-      setLoading(false);
       setProducts(
         response.data.map((elem) => {
           return { ...elem, cart: 1 };
         })
       );
+      setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -53,18 +56,18 @@ function App() {
           "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json",
           JSON.stringify(cart)
         )
-        .then((response) => console.log("put", response.data,'cart',cart));
+        .then((response) => {
+          console.log("put", response.data, "cart", cart);
+        });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getCart= async () => {
+  const getCart = async () => {
     try {
       await axios
-        .get(
-          "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json"
-        )
+        .get("https://reacttodo-team-default-rtdb.firebaseio.com/cart.json")
         .then((response) => {
           console.log("getcart", response.data);
           setCart(response.data);
@@ -91,10 +94,10 @@ function App() {
                 products,
                 setProducts,
                 ProductUtils,
-                loading: loading,
+                loading,
                 error,
                 cart,
-                setCart
+                setCart,
               }}
             >
               <Products />
@@ -110,7 +113,7 @@ function App() {
                 setProducts,
                 cart,
                 setCart,
-                ProductUtils
+                ProductUtils,
               }}
             >
               <ViewProduct />

@@ -102,25 +102,29 @@ const ViewProduct = () => {
             </div>
           ) : (
             <>
-              <Card
-                style={{
-                  maxWidth: 800,
-                  paddingTop: "3vh",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
-              >
-                <CardHeader
-                  title={product.title}
-                  subheader={`Price:$ ${product.price}`}
-                ></CardHeader>
-                <div style={{ display: "flex", flexwrap: "wrap" }}>
-                  <CardMedia
-                    component="img"
-                    sx={{ width: "250px" }}
-                    height="auto"
-                    image={product.image}
-                  />
+              <div style={{display:'flex', flexwrap:'wrap'}}>
+                <Card
+                  style={{
+                    maxWidth: 800,
+                    paddingTop: "3vh",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                >
+                  <CardHeader
+                    title={product.title}
+                    subheader={`Price:$ ${product.price}`}
+                  ></CardHeader>
+                  <div style={{ display: "flex", flexwrap: "wrap" }}>
+                    <CardMedia
+                      component="img"
+                      sx={{ width: "600" }}
+                      height="auto"
+                      image={product.image}
+                    />
+                  </div>
+                </Card>
+                <div style={{ display: "flex", flexDirection: "column" }}>
                   <CardContent>
                     <Typography
                       width="350px"
@@ -130,68 +134,82 @@ const ViewProduct = () => {
                       {product.description}
                     </Typography>
                   </CardContent>
+                  <div style={{ textAlign:'center'}}>
+                    <CardContent>
+                      <Button
+                        onClick={() => {
+                          context.ProductUtils.updateCount(
+                            "minus",
+                            product,
+                            context.products,
+                            context.setProducts
+                          );
+                        }}
+                      >
+                        <RemoveIcon />
+                      </Button>
+                      {product.cart}
+                      <Button
+                        onClick={() => {
+                          context.ProductUtils.updateCount(
+                            "add",
+                            product,
+                            context.products,
+                            context.setProducts
+                          );
+                        }}
+                      >
+                        <AddIcon />
+                      </Button>
+                      <Button
+                        sx={{ margin: "4px" }}
+                        aria-label="add to cart"
+                        onClick={() => {
+                          context.ProductUtils.updateCart(
+                            "change",
+                            product,
+                            context.cart,
+                            context.setCart
+                          );
+                        }}
+                        variant="contained"
+                        startIcon={<AddShoppingCartIcon />}
+                      >
+                        Add to cart
+                      </Button>
+                      <br />
+                      {context.ProductUtils.productInCart(product, context.cart)?.length > 0 ? (
+                        <Button
+                          sx={{ margin: "2px" }}
+                          color="error"
+                          aria-label="Remove from cart"
+                          onClick={() => {
+                            context.ProductUtils.updateCart(
+                              "remove",
+                              product,
+                              context.cart,
+                              context.setCart
+                            );
+                          }}
+                          variant="outlined"
+                          startIcon={<RemoveShoppingCartIcon color="error" />}
+                        >
+                          Remove from cart
+                        </Button>
+                      ) : null}
+                      <IconButton aria-label="share">
+                        <Snackbar
+                          open={open}
+                          autoHideDuration={2000}
+                          onClose={handleClose}
+                          message="Product added to cart!"
+                          action={action}
+                        />
+                      </IconButton>
+                    </CardContent>
+                  </div>
                 </div>
-                <CardContent>
-                  <Button
-                    onClick={() => {
-                      context.ProductUtils.updateCount(
-                        "minus",
-                        product,
-                        context.products,
-                        context.setProducts
-                      );
-                    }}
-                  >
-                    <RemoveIcon />
-                  </Button>
-                  {product.cart}
-                  <Button
-                    onClick={() => {
-                      context.ProductUtils.updateCount(
-                        "add",
-                        product,
-                        context.products,
-                        context.setProducts
-                      );
-                    }}
-                  >
-                    <AddIcon />
-                  </Button>
-                  <Button
-                    sx={{ margin: "4px" }}
-                    aria-label="add to cart"
-                    onClick={() => {
-                      context.ProductUtils.updateCart("change", product, context.cart,context.setCart);
-                    }}
-                    variant="contained"
-                    startIcon={<AddShoppingCartIcon />}
-                  >
-                    Add to cart
-                  </Button>
-                 {context.ProductUtils.productInCart(product,context.cart).length> 0 ? (<Button
-            color="error"
-            aria-label="Remove from cart"
-            onClick={() => {
-              context.ProductUtils.updateCart("remove", product, context.cart,context.setCart);
-            }}
-            variant="outlined"
-          
-            startIcon={<RemoveShoppingCartIcon color="error" />}
-          >
-            Remove from  cart
-          </Button>) :(null)}
-                  <IconButton aria-label="share">
-                    <Snackbar
-                      open={open}
-                      autoHideDuration={2000}
-                      onClose={handleClose}
-                      message="Product added to cart!"
-                      action={action}
-                    />
-                    <ShareIcon />
-                  </IconButton>
-                </CardContent>
-              </Card>
+              </div>
             </>
           )}
         </>

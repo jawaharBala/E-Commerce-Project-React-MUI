@@ -27,8 +27,7 @@ const ProductCard = ({
     <>
       <Card
         sx={{
-          maxWidth: 650,
-          paddingTop: "2vh",
+          maxWidth: 560,
           borderWidth: "2px",
           borderStyle: "solid",
           margin: "1vh",
@@ -42,14 +41,14 @@ const ProductCard = ({
         ></CardHeader>
         <div style={{ display: "flex", flexwrap: "wrap" }}>
           <CardMedia
-            sx={{ width: 280 }}
+            sx={{ width: 220 }}
             component="img"
-            alt="Picture"
+            alt={`${prod.title}`}
             height="auto"
             image={prod.image}
           />
           <CardContent>
-            <Typography width="300px" variant="body1" color="text.secondary">
+            <Typography width="290px" variant="body1" color="text.secondary">
               {prod.description}
             </Typography>
             <CardActions>
@@ -65,7 +64,7 @@ const ProductCard = ({
             </CardActions>
           </CardContent>
         </div>
-        <CardContent>
+        <CardActions disableSpacing>
           <Button
             onClick={() => {
               updateCount("minus", prod, products, setProducts);
@@ -104,7 +103,7 @@ const ProductCard = ({
           >
             Remove from  cart
           </Button>) :(null)}
-        </CardContent>
+        </CardActions>
       </Card>
     </>
   );

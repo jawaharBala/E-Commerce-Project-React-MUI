@@ -16,19 +16,25 @@ const InputField = () => {
     getTodos();
   }, []);
 
+  // useEffect(() => {
+  //   postTodos(todos);
+  // }, [todos && todosPresent]);
+
   useEffect(() => {
     setInputString("");
-     postTodos(todos);
   }, [todos]);
 
-  const postTodos = async (todo) => {
+  const postTodos = async (todo, setTodos) => {
     try {
       await axios
         .put(
           "https://reacttodo-team-default-rtdb.firebaseio.com/todo.json",
           JSON.stringify(todo)
         )
-        .then((response) => console.log("put", response.data,'todos',todo));
+        .then((response) => {
+          setTodos([...todo])
+          console.log("put", response.data, "todos", todo);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -37,9 +43,7 @@ const InputField = () => {
   const getTodos = async () => {
     try {
       await axios
-        .get(
-          "https://reacttodo-team-default-rtdb.firebaseio.com/todo.json"
-        )
+        .get("https://reacttodo-team-default-rtdb.firebaseio.com/todo.json")
         .then((response) => {
           console.log("get", response.data);
           setTodos(response.data);
@@ -61,19 +65,18 @@ const InputField = () => {
   const handleClick = () => {
     setTodosPresent(true);
     if (todos?.length > 0) {
-      let newTodos = [...todos, { todo: inputString, done: false }]
+      let newTodos = [...todos, { todo: inputString, done: false }];
       setTodos(newTodos);
       postTodos(newTodos);
     } else {
       setTodos([{ todo: inputString, done: false }]);
       postTodos([{ todo: inputString, done: false }]);
     }
-   
-  
   };
 
   const clearTodos = () => {
-    setTodos([]);
+    // setTodos([]);
+    postTodos([],setTodos);
   };
 
   useEffect(() => {
@@ -87,7 +90,9 @@ const InputField = () => {
 
   return (
     <>
-      <TodoStore.Provider value={{ todos: todos, setTodos: setTodos }}>
+      <TodoStore.Provider
+        value={{ todos: todos, setTodos: setTodos, postTodos }}
+      >
         <div className="input-container">
           <TextField
             placeholder=""
@@ -96,7 +101,6 @@ const InputField = () => {
             onChange={handleChange}
             type="text"
             value={inputString}
-           
             className="input"
           />
           <br></br>
