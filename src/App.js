@@ -9,6 +9,7 @@ import ViewProduct from "./components/products/ViewProduct";
 import ShoppingCart from "./components/products/shoppingCart";
 import { ProductsStore } from "./components/products/ProductsContext";
 import axios from "axios";
+import ProductUtils from "./components/products/productUtils";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -19,11 +20,13 @@ function App() {
 
   useEffect(() => {
     getProducts();
+    getCart();
     console.log("api");
   }, []);
 
   useEffect(() => {
-    cartCount();
+    ProductUtils.cartCount(cart,setCount);
+    postCart(cart);
   }, [cart]);
 
   const getProducts = async () => {
@@ -43,63 +46,31 @@ function App() {
     }
   };
 
-  const updateCart = (action, product) => {
-    let productInCart = cart.filter((prod) => {
-      return prod.id === product.id;
-    });
-    if (productInCart.length > 0) {
-      if (action === "change") {
-        let newCart = cart.map((prod) => {
-          if (prod.id === product.id) {
-            return (prod = { ...prod, cart: prod.cart + product.cart });
-          } else return prod;
-        });
-        setCart([...newCart]);
-      } else if (action === "remove") {
-        let newCart = cart.filter((prod) => {
-          return prod.id !== product.id;
-        });
-        setCart([...newCart]);
-      }
-    } else if (cart.length > 0 && action === 'change') {
-      setCart([...cart, product]);
-    } else if(action === 'change') {
-      setCart([product]);
+  const postCart = async (cart) => {
+    try {
+      await axios
+        .put(
+          "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json",
+          JSON.stringify(cart)
+        )
+        .then((response) => console.log("put", response.data,'cart',cart));
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const cartCount = () => {
-    let cartCounter = [];
-    if (cart && cart.length > 0) {
-      cartCounter = cart
-        .map((item) => {
-          return item.cart;
-        })
-        .reduce((accumlator, currentValue) => {
-          return accumlator + currentValue;
+  const getCart= async () => {
+    try {
+      await axios
+        .get(
+          "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json"
+        )
+        .then((response) => {
+          console.log("getcart", response.data);
+          setCart(response.data);
         });
-      setCount(cartCounter);
-    } else return setCount(0);
-  };
-  const updateCount = (action, product, productContext, settermethod) => {
-    if (action === "add" && productContext.length > 0) {
-      let newProdArray = productContext?.map((prod) => {
-        if (prod.id === product.id) {
-          prod = { ...prod, cart: prod.cart + 1 };
-          return prod;
-        } else return prod;
-      });
-
-      settermethod([...newProdArray]);
-    } else if (action === "minus") {
-      let newProdArray = productContext.map((prod) => {
-        if (prod.id === product.id && prod.cart > 1) {
-          prod = { ...prod, cart: prod.cart - 1 };
-          console.log("minus", prod.cart);
-          return prod;
-        } else return prod;
-      });
-      settermethod([...newProdArray]);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -119,10 +90,11 @@ function App() {
               value={{
                 products,
                 setProducts,
-                updateCount,
+                ProductUtils,
                 loading: loading,
                 error,
-                updateCart,
+                cart,
+                setCart
               }}
             >
               <Products />
@@ -136,10 +108,9 @@ function App() {
               value={{
                 products,
                 setProducts,
-                updateCount,
                 cart,
                 setCart,
-                updateCart,
+                ProductUtils
               }}
             >
               <ViewProduct />
@@ -149,7 +120,7 @@ function App() {
         <Route
           path="/cart"
           element={
-            <ProductsStore.Provider value={{ cart, updateCount, setCart,updateCart }}>
+            <ProductsStore.Provider value={{ cart, ProductUtils, setCart }}>
               <ShoppingCart />
             </ProductsStore.Provider>
           }

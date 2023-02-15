@@ -5,22 +5,19 @@ import {
   CardMedia,
   Typography,
   CardContent,
-  Box,
-  CircularProgress,
-  Link as LinkMui,
   Button,
   Snackbar,
+  Link as LinkMui,
 } from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShareIcon from "@mui/icons-material/Share";
-import { useParams, Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/material/IconButton";
 import { ProductsStore } from "./ProductsContext";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
   const context = useContext(ProductsStore);
@@ -89,7 +86,7 @@ const ShoppingCart = () => {
                 <CardContent>
                   <Button
                     onClick={() => {
-                      context.updateCount(
+                      context.ProductUtils.updateCount(
                         "minus",
                         product,
                         context.cart,
@@ -102,7 +99,7 @@ const ShoppingCart = () => {
                   {product.cart}
                   <Button
                     onClick={() => {
-                      context.updateCount(
+                      context.ProductUtils.updateCount(
                         "add",
                         product,
                         context.cart,
@@ -116,7 +113,12 @@ const ShoppingCart = () => {
                     color="error"
                     aria-label="Remove from cart"
                     onClick={() => {
-                      context.updateCart("remove", product);
+                      context.ProductUtils.updateCart(
+                        "remove",
+                        product,
+                        context.cart,
+                        context.setCart
+                      );
                     }}
                     variant="outlined"
                     startIcon={<RemoveShoppingCartIcon color="error" />}
@@ -139,7 +141,33 @@ const ShoppingCart = () => {
           );
         })
       ) : (
-        <h2>Cart is empty!!</h2>
+        <div style={{ marginTop: "20%", marginLeft: "25%" }}>
+          <Card
+            sx={{
+              maxWidth: 650,
+              paddingTop: "2vh",
+              borderWidth: "2px",
+              borderStyle: "solid",
+              margin: "2vh",
+              borderRadius: "3vh",
+              borderColor: "white",
+            }}
+          >
+            <CardHeader
+              sx={{ justifyContent: "center", alignContent: "center" }}
+              title="Cart is empty!!"
+              subheader="Add items to cart?"
+            ></CardHeader>
+            <LinkMui
+              sx={{ textDecoration: "none", marginLeft: "15px" }}
+              component={Link}
+              size="large"
+              to="/products"
+            >
+              <Button variant="contained"> Go to Products</Button>
+            </LinkMui>
+          </Card>
+        </div>
       )}
     </>
   );

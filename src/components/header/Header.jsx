@@ -10,6 +10,7 @@ import { FormControlLabel, Link as LinkMUI, Switch } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { memo } from "react";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -34,7 +35,7 @@ let inactiveStyle = {
   padding:'9px',
   borderRadius:'3px'
 }
-export default function SearchAppBar({count}) {
+ function SearchAppBar({count}) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar color="transparent" position="static">
@@ -128,4 +129,5 @@ export default function SearchAppBar({count}) {
       </AppBar>
     </Box>
   );
-}
+};
+export default memo(SearchAppBar);

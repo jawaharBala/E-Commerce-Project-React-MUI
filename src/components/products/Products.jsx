@@ -6,7 +6,7 @@ import { Box, CircularProgress } from "@mui/material";
 import { ProductsStore } from "./ProductsContext";
 
 const Products = () => {
-  const { products, loading, updateCount, error, updateCart,setProducts } =
+  const { products, loading, error,setProducts,ProductUtils,cart,setCart} =
     useContext(ProductsStore);
 
   return (
@@ -29,10 +29,13 @@ const Products = () => {
                   <ProductCard
                     key={index}
                     prod={prod}
-                    updateCount={updateCount}
+                    updateCount={ProductUtils.updateCount}
                     products={products}
-                    updateCart={updateCart}
+                    updateCart={ProductUtils.updateCart}
                     setProducts={setProducts}
+                    productInCart={ProductUtils.productInCart}
+                    cart={cart}
+                    setCart={setCart}
                   />
                 );
               })

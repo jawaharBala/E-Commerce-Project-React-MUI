@@ -12,7 +12,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShareIcon from "@mui/icons-material/Share";
@@ -29,10 +29,10 @@ const ViewProduct = () => {
   const [error, setError] = useState();
   const { id } = useParams();
   const context = useContext(ProductsStore);
- 
+
   useEffect(() => {
     getProduct();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.products]);
 
   const getProduct = async () => {
@@ -69,7 +69,6 @@ const ViewProduct = () => {
 
     setOpen(false);
   };
-
 
   const action = (
     <>
@@ -135,7 +134,12 @@ const ViewProduct = () => {
                 <CardContent>
                   <Button
                     onClick={() => {
-                      context.updateCount('minus', product,context.products,context.setProducts);
+                      context.ProductUtils.updateCount(
+                        "minus",
+                        product,
+                        context.products,
+                        context.setProducts
+                      );
                     }}
                   >
                     <RemoveIcon />
@@ -143,37 +147,43 @@ const ViewProduct = () => {
                   {product.cart}
                   <Button
                     onClick={() => {
-                      context.updateCount('add', product,context.products,context.setProducts) ;
+                      context.ProductUtils.updateCount(
+                        "add",
+                        product,
+                        context.products,
+                        context.setProducts
+                      );
                     }}
                   >
                     <AddIcon />
                   </Button>
                   <Button
-            sx={{ margin: "4px" }}
-            aria-label="add to cart"
-            onClick={() => {
-              context.updateCart("change", product);
-            }}
-            variant="contained"
-            startIcon={<AddShoppingCartIcon />}
-          >
-            Add to cart
-          </Button>
-          <Button
+                    sx={{ margin: "4px" }}
+                    aria-label="add to cart"
+                    onClick={() => {
+                      context.ProductUtils.updateCart("change", product, context.cart,context.setCart);
+                    }}
+                    variant="contained"
+                    startIcon={<AddShoppingCartIcon />}
+                  >
+                    Add to cart
+                  </Button>
+                 {context.ProductUtils.productInCart(product,context.cart).length> 0 ? (<Button
             color="error"
             aria-label="Remove from cart"
             onClick={() => {
-              context.updateCart("remove", product);
+              context.ProductUtils.updateCart("remove", product, context.cart,context.setCart);
             }}
             variant="outlined"
+          
             startIcon={<RemoveShoppingCartIcon color="error" />}
           >
             Remove from  cart
-          </Button>
+          </Button>) :(null)}
                   <IconButton aria-label="share">
                     <Snackbar
                       open={open}
-                      autoHideDuration={3000}
+                      autoHideDuration={2000}
                       onClose={handleClose}
                       message="Product added to cart!"
                       action={action}

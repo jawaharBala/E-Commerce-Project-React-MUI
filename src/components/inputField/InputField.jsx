@@ -2,9 +2,9 @@ import React from "react";
 import "./InputField.css";
 import { useState, useEffect } from "react";
 import CardPrimary from "../cards/CardPrimary";
-import { ButtonGroup, TextField , Button} from "@mui/material";
+import { ButtonGroup, TextField, Button } from "@mui/material";
 import { TodoStore } from "../../components/contexts/ContextStore";
-
+import axios from "axios";
 
 const InputField = () => {
   const [inputString, setInputString] = useState({ todo: "", done: false });
@@ -13,15 +13,42 @@ const InputField = () => {
   const [enableAddButton, setEnableButton] = useState(false);
 
   useEffect(() => {
-    setTodos(JSON.parse(window.localStorage.getItem("todos")) || []);
-    
+    getTodos();
   }, []);
 
   useEffect(() => {
     setInputString("");
-    window.localStorage.setItem("todos", JSON.stringify(todos));
+     postTodos(todos);
   }, [todos]);
-  
+
+  const postTodos = async (todo) => {
+    try {
+      await axios
+        .put(
+          "https://reacttodo-team-default-rtdb.firebaseio.com/todo.json",
+          JSON.stringify(todo)
+        )
+        .then((response) => console.log("put", response.data,'todos',todo));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTodos = async () => {
+    try {
+      await axios
+        .get(
+          "https://reacttodo-team-default-rtdb.firebaseio.com/todo.json"
+        )
+        .then((response) => {
+          console.log("get", response.data);
+          setTodos(response.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChange = (e) => {
     setInputString(e.target.value);
     if (inputString.length > 0) {
@@ -33,27 +60,30 @@ const InputField = () => {
 
   const handleClick = () => {
     setTodosPresent(true);
-    if (todos.length > 0) {
-      setTodos([...todos, { todo: inputString, done: false }]);
+    if (todos?.length > 0) {
+      let newTodos = [...todos, { todo: inputString, done: false }]
+      setTodos(newTodos);
+      postTodos(newTodos);
     } else {
       setTodos([{ todo: inputString, done: false }]);
+      postTodos([{ todo: inputString, done: false }]);
     }
+   
+  
   };
 
   const clearTodos = () => {
     setTodos([]);
   };
 
-
   useEffect(() => {
-    if (todos.length >= 1) {
+    if (todos?.length >= 1) {
       setTodosPresent(true);
     } else {
       setEnableButton(false);
       setTodosPresent(false);
     }
   }, [todos, todosPresent]);
-
 
   return (
     <>
@@ -66,18 +96,27 @@ const InputField = () => {
             onChange={handleChange}
             type="text"
             value={inputString}
-            onPressEnter={handleClick}
+           
             className="input"
           />
           <br></br>
           <ButtonGroup>
             {enableAddButton ? (
-              <Button sx={{backgroundColor:'black', margin:'2vh', color:'white'}} onClick={handleClick} type="primary">
+              <Button
+                sx={{ backgroundColor: "black", margin: "2vh", color: "white" }}
+                onClick={handleClick}
+                type="primary"
+              >
                 Add
               </Button>
             ) : null}
             {todosPresent ? (
-              <Button sx={{backgroundColor:'red', margin:'2vh', color:'white'}} onClick={clearTodos}>Clear all</Button>
+              <Button
+                sx={{ backgroundColor: "red", margin: "2vh", color: "white" }}
+                onClick={clearTodos}
+              >
+                Clear all
+              </Button>
             ) : null}
           </ButtonGroup>
           {todosPresent ? (

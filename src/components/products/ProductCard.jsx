@@ -11,8 +11,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import ShareIcon from "@mui/icons-material/Share";
-import IconButton from "@mui/material/IconButton";
+
 
 const ProductCard = ({
   prod,
@@ -20,6 +19,9 @@ const ProductCard = ({
   products,
   updateCart,
   setProducts,
+  productInCart,
+  cart,
+  setCart
 }) => {
   return (
     <>
@@ -29,8 +31,9 @@ const ProductCard = ({
           paddingTop: "2vh",
           borderWidth: "2px",
           borderStyle: "solid",
-          margin: "2vh",
+          margin: "1vh",
           borderRadius: "3vh",
+          borderColor:'gold'
         }}
       >
         <CardHeader
@@ -39,7 +42,7 @@ const ProductCard = ({
         ></CardHeader>
         <div style={{ display: "flex", flexwrap: "wrap" }}>
           <CardMedia
-            sx={{ width: 300 }}
+            sx={{ width: 280 }}
             component="img"
             alt="Picture"
             height="auto"
@@ -82,13 +85,25 @@ const ProductCard = ({
             sx={{ margin: "4px" }}
             aria-label="add to cart"
             onClick={() => {
-              updateCart("change", prod);
+              updateCart("change", prod,cart,setCart);
             }}
             variant="contained"
             startIcon={<AddShoppingCartIcon />}
           >
             Add to cart
           </Button>
+          {productInCart(prod,cart)?.length> 0 ? (<Button
+            color="error"
+            aria-label="Remove from cart"
+            onClick={() => {
+              updateCart("remove", prod,cart,setCart);
+            }}
+            variant="outlined"
+          
+            startIcon={<RemoveShoppingCartIcon color="error" />}
+          >
+            Remove from  cart
+          </Button>) :(null)}
         </CardContent>
       </Card>
     </>
