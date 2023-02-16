@@ -84,7 +84,7 @@ const ProductCard = ({
             sx={{ margin: "4px" }}
             aria-label="add to cart"
             onClick={() => {
-              updateCart("change", prod,cart,setCart);
+              updateCart("add", prod,cart,setCart);
             }}
             variant="contained"
             startIcon={<AddShoppingCartIcon />}

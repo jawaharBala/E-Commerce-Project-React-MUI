@@ -24,9 +24,9 @@ function App() {
     console.log("api");
   }, []);
 
-  useEffect(() => {
-    postCart(cart);
-  }, [cart && count]);
+  // useEffect(() => {
+  //   postCart(cart);
+  // }, [cart && count]);
 
   useEffect(() => {
     ProductUtils.cartCount(cart, setCount);
@@ -49,20 +49,7 @@ function App() {
     }
   };
 
-  const postCart = async (cart) => {
-    try {
-      await axios
-        .put(
-          "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json",
-          JSON.stringify(cart)
-        )
-        .then((response) => {
-          console.log("put", response.data, "cart", cart);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   const getCart = async () => {
     try {

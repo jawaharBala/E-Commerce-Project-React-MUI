@@ -86,7 +86,7 @@ const ShoppingCart = () => {
                 <CardContent>
                   <Button
                     onClick={() => {
-                      context.ProductUtils.updateCount(
+                      context.ProductUtils.updateCart(
                         "minus",
                         product,
                         context.cart,
@@ -99,7 +99,7 @@ const ShoppingCart = () => {
                   {product.cart}
                   <Button
                     onClick={() => {
-                      context.ProductUtils.updateCount(
+                      context.ProductUtils.updateCart(
                         "add",
                         product,
                         context.cart,

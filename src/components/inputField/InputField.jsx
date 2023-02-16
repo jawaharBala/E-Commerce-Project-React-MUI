@@ -16,9 +16,6 @@ const InputField = () => {
     getTodos();
   }, []);
 
-  // useEffect(() => {
-  //   postTodos(todos);
-  // }, [todos && todosPresent]);
 
   useEffect(() => {
     setInputString("");
@@ -75,7 +72,6 @@ const InputField = () => {
   };
 
   const clearTodos = () => {
-    // setTodos([]);
     postTodos([],setTodos);
   };
 

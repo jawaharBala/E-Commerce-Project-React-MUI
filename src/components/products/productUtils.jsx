@@ -1,26 +1,25 @@
-import axios  from 'axios';
-
-
+import axios from "axios";
 
 const productInCart = (product, cart) =>
   cart?.filter((prod) => {
     return prod.id === product.id;
   });
 
-  const postCart = async (cart) => {
-    try {
-      await axios
-        .put(
-          "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json",
-          JSON.stringify(cart)
-        )
-        .then((response) => {
-          console.log("put", response.data, "cart", cart);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const postCart = async (cart, setCart) => {
+  try {
+    await axios
+      .put(
+        "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json",
+        JSON.stringify(cart)
+      )
+      .then((response) => {
+        console.log("put", response.data, "cart", cart);
+        setCart([...cart]);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const updateCart = (action, product, cart, setCart) => {
   if (productInCart(product, cart)?.length > 0) {
@@ -30,21 +29,32 @@ const updateCart = (action, product, cart, setCart) => {
           return (prod = { ...prod, cart: prod.cart + product.cart });
         } else return prod;
       });
-      setCart([...newCart]);
+      postCart([...newCart], setCart);
     } else if (action === "remove") {
       let newCart = cart.filter((prod) => {
         return prod.id !== product.id;
       });
-      setCart([...newCart]);
+      postCart([...newCart], setCart);
+    } else if (action === "minus") {
+      let newCart = cart.map((prod) => {
+        if (prod.id === product.id) {
+          return (prod = { ...prod, cart: prod.cart - 1 });
+        } else return prod;
+      });
+      postCart([...newCart], setCart);
+    } else if (action === "add") {
+      let newCart = cart.map((prod) => {
+        if (prod.id === product.id) {
+          return (prod = { ...prod, cart: prod.cart + 1 });
+        } else return prod;
+      });
+      postCart([...newCart], setCart);
     }
-  } else if (cart?.length > 0 && action === "change") {
-    setCart([...cart, product]);
-  } else if (action === "change") {
-    setCart([product]);
+  } else if (cart?.length > 0 && action === "add") {
+    postCart([...cart, product], setCart);
+  } else if (action === "add") {
+    postCart([product], setCart);
   }
-
-  // postCart(cart);
-  // console.log('postCart', cart)
 };
 
 const cartCount = (cart, setCount) => {
@@ -82,10 +92,12 @@ const updateCount = (action, product, productContext, settermethod) => {
     settermethod([...newProdArray]);
   }
 };
+const updateCartCount = () => {};
 const ProductUtils = {
   productInCart,
   updateCart,
   updateCount,
   cartCount,
+  postCart,
 };
 export default ProductUtils;

@@ -16,7 +16,6 @@ function CardPrimary() {
     let filteredArray = todosContext.todos.filter((elem, index) => {
       return index !== id;
     });
-    // todosContext.setTodos([...filteredArray]);
     todosContext.postTodos(filteredArray,todosContext.setTodos);
   };
 
@@ -36,7 +35,6 @@ function CardPrimary() {
     } else {
       let editedArray = todosContext.todos;
       editedArray[index] = { todo: editedTodo, done: elem.done };
-      // todosContext.setTodos([...editedArray]);
       todosContext.postTodos(editedArray,todosContext.setTodos);
       setEditMode(false);
     }
@@ -44,7 +42,6 @@ function CardPrimary() {
   const markDone = (elem, index) => {
     let changedArray = todosContext.todos;
     changedArray[index].done = !changedArray[index].done;
-    // todosContext.setTodos([...changedArray]);
     todosContext.postTodos(changedArray,todosContext.setTodos);
 
   };
