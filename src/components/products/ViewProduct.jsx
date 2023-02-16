@@ -24,7 +24,7 @@ import { ProductsStore } from "./ProductsContext";
 
 const ViewProduct = () => {
   const [product, setProduct] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState();
   const { id } = useParams();
@@ -107,8 +107,7 @@ const ViewProduct = () => {
                   style={{
                     maxWidth: 800,
                     paddingTop: "3vh",
-                    marginLeft: "auto",
-                    marginRight: "auto",
+                   position:'static'
                   }}
                 >
                   <CardHeader
@@ -125,16 +124,16 @@ const ViewProduct = () => {
                   </div>
                 </Card>
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                  <CardContent>
+                  <CardContent sx={{}}>
                     <Typography
-                      width="350px"
+                      width="370px"
                       variant="body1"
                       color="text.secondary"
                     >
                       {product.description}
                     </Typography>
                   </CardContent>
-                  <div style={{ textAlign:'center'}}>
+                  <div style={{ textAlign:'center',}}>
                     <CardContent>
                       <Button
                         onClick={() => {

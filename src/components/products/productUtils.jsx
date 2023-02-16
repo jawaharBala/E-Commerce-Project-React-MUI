@@ -7,15 +7,12 @@ const productInCart = (product, cart) =>
 
 const postCart = async (cart, setCart) => {
   try {
-    await axios
+   let response = await axios
       .put(
         "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json",
         JSON.stringify(cart)
-      )
-      .then((response) => {
-        console.log("put", response.data, "cart", cart);
+      );
         setCart([...cart]);
-      });
   } catch (error) {
     console.log(error);
   }
@@ -50,9 +47,9 @@ const updateCart = (action, product, cart, setCart) => {
       });
       postCart([...newCart], setCart);
     }
-  } else if (cart?.length > 0 && action === "add") {
+  } else if (cart?.length > 0 && action === "change") {
     postCart([...cart, product], setCart);
-  } else if (action === "add") {
+  } else if (action === "change") {
     postCart([product], setCart);
   }
 };
@@ -92,7 +89,7 @@ const updateCount = (action, product, productContext, settermethod) => {
     settermethod([...newProdArray]);
   }
 };
-const updateCartCount = () => {};
+
 const ProductUtils = {
   productInCart,
   updateCart,

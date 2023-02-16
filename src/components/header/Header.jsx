@@ -36,8 +36,8 @@ let inactiveStyle = {
 };
 function SearchAppBar({ count }) {
   return (
-    <Box sx={{flexGrow:1, backgroundColor: "black" }}>
-      <AppBar color="transparent" position="static" >
+    <Box sx={{ flexGrow: 1, backgroundColor: "black" }}>
+      <AppBar color="transparent" position="static">
         <Toolbar>
           {/* <IconButton
             size="large"
@@ -91,11 +91,8 @@ function SearchAppBar({ count }) {
             </NavLink>
           </Typography>
           <Typography
-            variant="h6"
-            noWrap
-            component="div"
             sx={{
-              flexGrow: 0,
+              marginLeft: "auto",
               display: { xs: "none", sm: "block" },
               marginTop: "3px",
             }}
@@ -112,32 +109,14 @@ function SearchAppBar({ count }) {
                 </Badge>
               </IconButton>
             </NavLink>
-          </Typography>
-
-          {/* <Typography
-            sx={{ flexGrow: 0.05, display: { xs: "none", sm: "block" } }}
-          >
-            <FormControlLabel control={<Switch />} label="Dark Mode" />
-          </Typography> */}
-       
-            <Typography
-              sx={{
-               marginLeft:'auto',
-                display: { xs: "none", sm: "block" },
-                marginTop: "3px",
-              }}
+            <NavLink
+              className="nav-link"
+              to="/login"
+              style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
             >
-              <NavLink
-                className="nav-link"
-                to="/cart"
-                style={({ isActive }) =>
-                  isActive ? activeStyle : inactiveStyle
-                }
-              >
-                Login
-              </NavLink>
-            </Typography>
- 
+              Login
+            </NavLink>
+          </Typography>
         </Toolbar>
       </AppBar>
     </Box>

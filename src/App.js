@@ -10,10 +10,13 @@ import ShoppingCart from "./components/products/shoppingCart";
 import { ProductsStore } from "./components/products/ProductsContext";
 import axios from "axios";
 import ProductUtils from "./components/products/productUtils";
+import SignUpPage from "./components/Login-Signup/SignUpPage";
+import LoginPage from './components/Login-Signup/LoginPage';
 
 function App() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadingCart, setLoadingCart] = useState(true);
   const [error, setError] = useState();
   const [cart, setCart] = useState([]);
   const [count, setCount] = useState(0);
@@ -21,12 +24,8 @@ function App() {
   useEffect(() => {
     getProducts();
     getCart();
-    console.log("api");
   }, []);
 
-  // useEffect(() => {
-  //   postCart(cart);
-  // }, [cart && count]);
 
   useEffect(() => {
     ProductUtils.cartCount(cart, setCount);
@@ -52,15 +51,18 @@ function App() {
 
 
   const getCart = async () => {
+    setLoadingCart(true);
     try {
       await axios
         .get("https://reacttodo-team-default-rtdb.firebaseio.com/cart.json")
         .then((response) => {
-          console.log("getcart", response.data);
+          console.log("getcart", response);
           setCart(response.data);
+          setLoadingCart(false);
         });
     } catch (error) {
       console.log(error);
+      setLoadingCart(false);
     }
   };
 
@@ -110,11 +112,13 @@ function App() {
         <Route
           path="/cart"
           element={
-            <ProductsStore.Provider value={{ cart, ProductUtils, setCart }}>
+            <ProductsStore.Provider value={{ cart, ProductUtils, setCart,loadingCart }}>
               <ShoppingCart />
             </ProductsStore.Provider>
           }
         />
+        <Route path="/signup" element={<SignUpPage/>}></Route>
+        <Route path="/login" element={<LoginPage/>}></Route>
         <Route path="*" element={<h2>404 Not Found</h2>}></Route>
       </Routes>
     </>

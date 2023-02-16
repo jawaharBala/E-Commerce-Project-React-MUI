@@ -16,7 +16,6 @@ const InputField = () => {
     getTodos();
   }, []);
 
-
   useEffect(() => {
     setInputString("");
   }, [todos]);
