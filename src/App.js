@@ -12,6 +12,9 @@ import axios from "axios";
 import ProductUtils from "./components/products/productUtils";
 import SignUpPage from "./components/Login-Signup/SignUpPage";
 import LoginPage from './components/Login-Signup/LoginPage';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import db from "./firebase";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -24,6 +27,7 @@ function App() {
   useEffect(() => {
     getProducts();
     getCart();
+    console.log(collection(db,'cart'))
   }, []);
 
 
