@@ -119,7 +119,7 @@ function App() {
               <ProductsStore.Provider
                 value={{ cart, ProductUtils, setCart, loadingCart }}
               >
-                <ShoppingCart />
+                <PrivateRoute><ShoppingCart /></PrivateRoute>
               </ProductsStore.Provider>
             }
           />
