@@ -1,28 +1,35 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as LinkMui} from '@mui/material';
-import { Link } from 'react-router-dom';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link as LinkMui } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -30,14 +37,27 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LoginPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const {userSignin} = useAuth();
+
+
+  const handleChange = (event)=>{
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+     setEmail(data.get("email"));
+    setPassword(data.get("password"));
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+   try{
+   await userSignin(email,password);
+   }catch(error){
+    console.log(error)
+   }
+  };
+
+ 
 
   return (
     <ThemeProvider theme={theme}>
@@ -46,18 +66,24 @@ export default function LoginPage() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            onChange={handleChange}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -67,6 +93,7 @@ export default function LoginPage() {
               name="email"
               autoComplete="email"
               autoFocus
+              
             />
             <TextField
               margin="normal"
@@ -97,7 +124,7 @@ export default function LoginPage() {
                 </Link>
               </Grid>
               <Grid item>
-                <LinkMui to='/signup' component={Link} variant="body2">
+                <LinkMui to="/signup" component={Link} variant="body2">
                   {"Don't have an account? Sign Up"}
                 </LinkMui>
               </Grid>

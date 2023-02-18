@@ -11,10 +11,12 @@ import { ProductsStore } from "./components/products/ProductsContext";
 import axios from "axios";
 import ProductUtils from "./components/products/productUtils";
 import SignUpPage from "./components/Login-Signup/SignUpPage";
-import LoginPage from './components/Login-Signup/LoginPage';
+import LoginPage from "./components/Login-Signup/LoginPage";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 import db from "./firebase";
+import { AuthProvider } from "./components/contexts/AuthContext";
+import PrivateRoute from './components/Routes/PrivateRoute';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -27,9 +29,8 @@ function App() {
   useEffect(() => {
     getProducts();
     getCart();
-    console.log(collection(db,'cart'))
+    console.log(collection(db, "cart"));
   }, []);
-
 
   useEffect(() => {
     ProductUtils.cartCount(cart, setCount);
@@ -52,8 +53,6 @@ function App() {
     }
   };
 
-
-
   const getCart = async () => {
     setLoadingCart(true);
     try {
@@ -72,59 +71,63 @@ function App() {
 
   return (
     <>
-      <div className="App">
-        <SearchAppBar count={count} />
-      </div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/todos/" element={<InputField />} />
-        <Route path="/home" element={<Home />} />
-        <Route
-          path="/products"
-          element={
-            <ProductsStore.Provider
-              value={{
-                products,
-                setProducts,
-                ProductUtils,
-                loading,
-                error,
-                cart,
-                setCart,
-              }}
-            >
-              <Products />
-            </ProductsStore.Provider>
-          }
-        />
-        <Route
-          path="/products/:id"
-          element={
-            <ProductsStore.Provider
-              value={{
-                products,
-                setProducts,
-                cart,
-                setCart,
-                ProductUtils,
-              }}
-            >
-              <ViewProduct />
-            </ProductsStore.Provider>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <ProductsStore.Provider value={{ cart, ProductUtils, setCart,loadingCart }}>
-              <ShoppingCart />
-            </ProductsStore.Provider>
-          }
-        />
-        <Route path="/signup" element={<SignUpPage/>}></Route>
-        <Route path="/login" element={<LoginPage/>}></Route>
-        <Route path="*" element={<h2>404 Not Found</h2>}></Route>
-      </Routes>
+      <AuthProvider>
+        <div className="App">
+          <SearchAppBar count={count} />
+        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/todos/" element={<PrivateRoute><InputField /></PrivateRoute>} />
+          <Route path="/home" element={<Home />} />
+          <Route
+            path="/products"
+            element={
+              <ProductsStore.Provider
+                value={{
+                  products,
+                  setProducts,
+                  ProductUtils,
+                  loading,
+                  error,
+                  cart,
+                  setCart,
+                }}
+              >
+                <Products />
+              </ProductsStore.Provider>
+            }
+          />
+          <Route
+            path="/products/:id"
+            element={
+              <ProductsStore.Provider
+                value={{
+                  products,
+                  setProducts,
+                  cart,
+                  setCart,
+                  ProductUtils,
+                }}
+              >
+                <ViewProduct />
+              </ProductsStore.Provider>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <ProductsStore.Provider
+                value={{ cart, ProductUtils, setCart, loadingCart }}
+              >
+                <ShoppingCart />
+              </ProductsStore.Provider>
+            }
+          />
+          <Route path="/signup" element={<SignUpPage />}></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="*" element={<h2>404 Not Found</h2>}></Route>
+        </Routes>
+      </AuthProvider>
     </>
   );
 }

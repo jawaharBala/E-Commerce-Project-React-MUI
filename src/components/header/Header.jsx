@@ -11,6 +11,7 @@ import { Link, NavLink } from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { memo } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -26,6 +27,7 @@ let activeStyle = {
   color: "blue",
   padding: "9px",
   borderRadius: "3px",
+  margin: "1vh",
 };
 let inactiveStyle = {
   textDecoration: "none",
@@ -33,13 +35,23 @@ let inactiveStyle = {
   color: "white",
   padding: "9px",
   borderRadius: "3px",
+  margin: "1vh",
 };
 function SearchAppBar({ count }) {
+  const { user, logout } = useAuth();
+  const userLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "black" }}>
-      <AppBar color="transparent" position="static">
-        <Toolbar>
-          {/* <IconButton
+      {/* <AppBar color="transparent" position="static"> */}
+      <Toolbar>
+        {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -48,67 +60,81 @@ function SearchAppBar({ count }) {
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
+        >
+          <NavLink
+            className="nav-link"
+            to="/home"
+            style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
           >
-            <NavLink
-              className="nav-link"
-              to="/home"
-              style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
-            >
-              HOME
-            </NavLink>
-          </Typography>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
+            HOME
+          </NavLink>
+        </Typography>
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
+        >
+          <NavLink
+            className="nav-link"
+            to="/todos"
+            style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
           >
-            <NavLink
-              className="nav-link"
-              to="/todos"
-              style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
-            >
-              TODOS
-            </NavLink>
-          </Typography>
+            TODOS
+          </NavLink>
+        </Typography>
 
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ flexGrow: 0, display: { xs: "none", sm: "block" } }}
+        >
+          <NavLink
+            className="nav-link"
+            to="/products"
+            style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
           >
-            <NavLink
-              className="nav-link"
-              to="/products"
-              style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
-            >
-              PRODUCTS
-            </NavLink>
-          </Typography>
-          <Typography
-            sx={{
-              marginLeft: "auto",
-              display: { xs: "none", sm: "block" },
-              marginTop: "3px",
-            }}
+            PRODUCTS
+          </NavLink>
+        </Typography>
+        <Typography
+          sx={{
+            marginLeft: "auto",
+            display: { xs: "none", sm: "block" },
+            marginTop: "3px",
+          }}
+        >
+          <NavLink
+            className="nav-link"
+            to="/cart"
+            style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
           >
-            <NavLink
-              className="nav-link"
-              to="/cart"
-              style={({ isActive }) => (isActive ? activeStyle : inactiveStyle)}
-            >
-              CART
-              <IconButton aria-label="cart" sx={{ marginTop: "3px" }}>
-                <Badge badgeContent={count} color="primary">
-                  <ShoppingCartIcon color="primary" />
-                </Badge>
-              </IconButton>
-            </NavLink>
+            CART
+            <IconButton aria-label="cart" sx={{ marginTop: "3px" }}>
+              <Badge badgeContent={count} color="primary">
+                <ShoppingCartIcon color="primary" />
+              </Badge>
+            </IconButton>
+          </NavLink>
+        </Typography>
+        <Typography sx={{ margin: "2vh" }}>
+          {user ? (
+            <>
+              <Typography sx={{ color: "white" }}>{user.email}</Typography>
+              <Button
+                onClick={() => {
+                  userLogout();
+                }}
+              >
+                Logout?
+              </Button>
+            </>
+          ) : (
             <NavLink
               className="nav-link"
               to="/login"
@@ -116,9 +142,10 @@ function SearchAppBar({ count }) {
             >
               Login
             </NavLink>
-          </Typography>
-        </Toolbar>
-      </AppBar>
+          )}
+        </Typography>
+      </Toolbar>
+      {/* </AppBar> */}
     </Box>
   );
 }

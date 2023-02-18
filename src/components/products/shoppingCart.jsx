@@ -151,7 +151,7 @@ const ShoppingCart = () => {
               );
             })
           ) : (
-            <div style={{ marginTop: "20%", marginLeft: "25%" }}>
+            <div style={{ marginTop: "20%", marginLeft: "25%" }} key={1}>
               <Card
                 sx={{
                   maxWidth: 650,
