@@ -32,7 +32,6 @@ const ViewProduct = () => {
 
   useEffect(() => {
     getProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.products]);
 
   const getProduct = async () => {
@@ -126,7 +125,7 @@ const ViewProduct = () => {
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <CardContent sx={{}}>
                     <Typography
-                      width="370px"
+                      width="auto"
                       variant="body1"
                       color="text.secondary"
                     >

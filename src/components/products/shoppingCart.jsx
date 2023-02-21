@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -19,11 +19,31 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/material/IconButton";
 import { ProductsStore } from "./ProductsContext";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
+  const [loadingCart, setLoadingCart] = useState(true);
   const context = useContext(ProductsStore);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    getCurrentCart();
+  }, [user]);
+
+  const getCurrentCart = async () => {
+    try {
+      let response =await context.ProductUtils.getCart(user?.uid);
+      context.setCart(response.data)
+      setLoadingCart(false);
+    } catch (error) {
+      context.setCart([]);
+      console.log(error);
+      setLoadingCart(false);
+    }
+  };
+ 
   const addToCart = () => {
     setOpen(true);
   };
@@ -51,7 +71,7 @@ const ShoppingCart = () => {
   );
   return (
     <>
-      {context.loadingCart ? (
+      {loadingCart ? (
         <div className="spinner">
           <Box sx={{ justifyContent: "center", alignItems: "center" }}>
             <CircularProgress />
@@ -76,7 +96,9 @@ const ShoppingCart = () => {
                       title={product.title}
                       subheader={`Price:$ ${product.price}`}
                     ></CardHeader>
-                    <div style={{ display: "flex", flexwrap: "wrap" }}>
+                    <div 
+                    // style={{ display: "flex", flexwrap: "wrap" }}
+                    >
                       <CardMedia
                         component="img"
                         sx={{ width: "250px" }}
@@ -84,13 +106,15 @@ const ShoppingCart = () => {
                         image={product.image}
                       />
                       <CardContent>
-                        <Typography
-                          width="350px"
-                          variant="body1"
+                        <CardHeader
+                        subheader={product.description}
+                        fontSize={10}
+                          width="auto"
+                          variant="subtitle2"
                           color="text.secondary"
                         >
-                          {product.description}
-                        </Typography>
+                          
+                        </CardHeader>
                       </CardContent>
                     </div>
                     <CardContent>
@@ -100,7 +124,8 @@ const ShoppingCart = () => {
                             "minus",
                             product,
                             context.cart,
-                            context.setCart
+                            context.setCart,
+                            user.uid
                           );
                         }}
                       >
@@ -113,7 +138,8 @@ const ShoppingCart = () => {
                             "add",
                             product,
                             context.cart,
-                            context.setCart
+                            context.setCart,
+                            user.uid
                           );
                         }}
                       >
@@ -127,7 +153,8 @@ const ShoppingCart = () => {
                             "remove",
                             product,
                             context.cart,
-                            context.setCart
+                            context.setCart,
+                            user.uid
                           );
                         }}
                         variant="outlined"

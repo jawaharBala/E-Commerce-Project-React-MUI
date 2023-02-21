@@ -5,12 +5,14 @@ import CardPrimary from "../cards/CardPrimary";
 import { ButtonGroup, TextField, Button } from "@mui/material";
 import { TodoStore } from "../../components/contexts/ContextStore";
 import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 
 const InputField = () => {
   const [inputString, setInputString] = useState({ todo: "", done: false });
   const [todos, setTodos] = useState([]);
   const [todosPresent, setTodosPresent] = useState(false);
   const [enableAddButton, setEnableButton] = useState(false);
+  const {user} = useAuth();
 
   useEffect(() => {
     getTodos();
@@ -24,12 +26,11 @@ const InputField = () => {
     try {
       await axios
         .put(
-          "https://reacttodo-team-default-rtdb.firebaseio.com/todo.json",
+          "https://reacttodo-team-default-rtdb.firebaseio.com/"+user.uid+"-todos.json",
           JSON.stringify(todo)
         )
         .then((response) => {
           setTodos([...todo])
-          console.log("put", response.data, "todos", todo);
         });
     } catch (error) {
       console.log(error);
@@ -39,9 +40,8 @@ const InputField = () => {
   const getTodos = async () => {
     try {
       await axios
-        .get("https://reacttodo-team-default-rtdb.firebaseio.com/todo.json")
+        .get("https://reacttodo-team-default-rtdb.firebaseio.com/"+user.uid+"-todos.json")
         .then((response) => {
-          console.log("get", response.data);
           setTodos(response.data);
         });
     } catch (error) {

@@ -12,24 +12,27 @@ import axios from "axios";
 import ProductUtils from "./components/products/productUtils";
 import SignUpPage from "./components/Login-Signup/SignUpPage";
 import LoginPage from "./components/Login-Signup/LoginPage";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 import db from "./firebase";
-import { AuthProvider } from "./components/contexts/AuthContext";
-import PrivateRoute from './components/Routes/PrivateRoute';
-
+import { AuthProvider, useAuth } from "./components/contexts/AuthContext";
+import PrivateRoute from "./components/Routes/PrivateRoute";
+import { useSelector } from "react-redux";
 function App() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [loadingCart, setLoadingCart] = useState(true);
   const [error, setError] = useState();
   const [cart, setCart] = useState([]);
   const [count, setCount] = useState(0);
-
+  const { user } = useAuth();
+  const storedata = useSelector((store) => {
+    return store.custom.count;
+  });
   useEffect(() => {
     getProducts();
-    getCart();
-    console.log(collection(db, "cart"));
+    if (user) {
+      getCart();
+    }
+    console.log('store data', storedata);
   }, []);
 
   useEffect(() => {
@@ -54,18 +57,19 @@ function App() {
   };
 
   const getCart = async () => {
-    setLoadingCart(true);
+    // setLoadingCart(true);
     try {
-      await axios
-        .get("https://reacttodo-team-default-rtdb.firebaseio.com/cart.json")
-        .then((response) => {
-          console.log("getcart", response);
-          setCart(response.data);
-          setLoadingCart(false);
-        });
+      let response = await axios.get(
+        "https://reacttodo-team-default-rtdb.firebaseio.com/" +
+          user.uid +
+          "-cart.json"
+      );
+      console.log("getcart", response);
+      setCart(response.data);
+      // setLoadingCart(false);
     } catch (error) {
       console.log(error);
-      setLoadingCart(false);
+      // setLoadingCart(false);
     }
   };
 
@@ -77,7 +81,14 @@ function App() {
         </div>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/todos/" element={<PrivateRoute><InputField /></PrivateRoute>} />
+          <Route
+            path="/todos/"
+            element={
+              <PrivateRoute>
+                <InputField />
+              </PrivateRoute>
+            }
+          />
           <Route path="/home" element={<Home />} />
           <Route
             path="/products"
@@ -116,10 +127,10 @@ function App() {
           <Route
             path="/cart"
             element={
-              <ProductsStore.Provider
-                value={{ cart, ProductUtils, setCart, loadingCart }}
-              >
-                <PrivateRoute><ShoppingCart /></PrivateRoute>
+              <ProductsStore.Provider value={{ cart, ProductUtils, setCart }}>
+                <PrivateRoute>
+                  <ShoppingCart />
+                </PrivateRoute>
               </ProductsStore.Provider>
             }
           />

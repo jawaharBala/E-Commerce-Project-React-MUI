@@ -4,10 +4,12 @@ import ProductCard from "./ProductCard";
 import "./Products.css";
 import { Box, CircularProgress } from "@mui/material";
 import { ProductsStore } from "./ProductsContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const Products = () => {
   const { products, loading, error,setProducts,ProductUtils,cart,setCart} =
     useContext(ProductsStore);
+
 
   return (
     <>

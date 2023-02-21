@@ -6,17 +6,20 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../../firebase";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const AuthContext = createContext(null);
+
+const AuthContext = createContext({ });
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
         return setUser(user);
     });
-    return () => unsubscribe();
+    return () => logout();
   }, []);
 
   const userSignin = async (email, password) => {
@@ -27,7 +30,8 @@ export const AuthProvider = ({ children }) => {
     return await createUserWithEmailAndPassword(auth, email, password);
   };
   const logout = async () => {
-    console.log('logout')
+    console.log('logout');
+    navigate('/login');
     return await signOut(auth);
   };
   const value = {

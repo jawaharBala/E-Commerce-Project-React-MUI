@@ -11,6 +11,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useAuth } from "../contexts/AuthContext";
 
 
 const ProductCard = ({
@@ -21,8 +22,9 @@ const ProductCard = ({
   setProducts,
   productInCart,
   cart,
-  setCart
+  setCart,
 }) => {
+  const {user} = useAuth();
   return (
     <>
       <Card
@@ -84,7 +86,7 @@ const ProductCard = ({
             sx={{ margin: "4px" }}
             aria-label="add to cart"
             onClick={() => {
-              updateCart("change", prod,cart,setCart);
+              updateCart("change", prod,cart,setCart,user?.uid);
             }}
             variant="contained"
             startIcon={<AddShoppingCartIcon />}
@@ -95,7 +97,7 @@ const ProductCard = ({
             color="error"
             aria-label="Remove from cart"
             onClick={() => {
-              updateCart("remove", prod,cart,setCart);
+              updateCart("remove", prod,cart,setCart,user?.uid);
             }}
             variant="outlined"
           
