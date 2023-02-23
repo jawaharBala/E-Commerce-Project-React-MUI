@@ -5,20 +5,25 @@ const productInCart = (product, cart) =>
     return prod.id === product.id;
   });
 
-const postCart = async (cart, setCart) => {
+const postCart = async (uid,cart, updateCartItems) => {
   try {
+    
    let response = await axios
       .put(
-        "https://reacttodo-team-default-rtdb.firebaseio.com/cart.json",
+        "https://reacttodo-team-default-rtdb.firebaseio.com/"+uid+"-cart.json",
         JSON.stringify(cart)
       );
-        setCart([...cart]);
+      updateCartItems([...cart]);
   } catch (error) {
     console.log(error);
   }
 };
 
-const updateCart = (action, product, cart, setCart) => {
+const getCart = async(uid)=>{
+  return await axios.get("https://reacttodo-team-default-rtdb.firebaseio.com/"+uid+"-cart.json");
+}
+
+const updateCart =async (action, product, cart, setCart,uid) => {
   if (productInCart(product, cart)?.length > 0) {
     if (action === "change") {
       let newCart = cart.map((prod) => {
@@ -26,31 +31,31 @@ const updateCart = (action, product, cart, setCart) => {
           return (prod = { ...prod, cart: prod.cart + product.cart });
         } else return prod;
       });
-      postCart([...newCart], setCart);
+    await  postCart(uid,[...newCart], setCart);
     } else if (action === "remove") {
       let newCart = cart.filter((prod) => {
         return prod.id !== product.id;
       });
-      postCart([...newCart], setCart);
+    await  postCart(uid,[...newCart], setCart);
     } else if (action === "minus") {
       let newCart = cart.map((prod) => {
         if (prod.id === product.id) {
           return (prod = { ...prod, cart: prod.cart - 1 });
         } else return prod;
       });
-      postCart([...newCart], setCart);
+      await postCart(uid,[...newCart], setCart);
     } else if (action === "add") {
       let newCart = cart.map((prod) => {
         if (prod.id === product.id) {
           return (prod = { ...prod, cart: prod.cart + 1 });
         } else return prod;
       });
-      postCart([...newCart], setCart);
+      await  postCart(uid,[...newCart], setCart);
     }
   } else if (cart?.length > 0 && action === "change") {
-    postCart([...cart, product], setCart);
+    await postCart(uid,[...cart, product], setCart);
   } else if (action === "change") {
-    postCart([product], setCart);
+    await postCart(uid,[product], setCart);
   }
 };
 
@@ -96,5 +101,6 @@ const ProductUtils = {
   updateCount,
   cartCount,
   postCart,
+  getCart
 };
 export default ProductUtils;

@@ -5,105 +5,81 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { CardHeader, Link as LinkMui } from "@mui/material";
-import { Link } from "react-router-dom";
+import {
+  ButtonGroup,
+  CardHeader,
+  Link as LinkMui,
+  useMediaQuery,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-
+import { useAuth } from "../contexts/AuthContext";
+import Chip from "@mui/material/Chip";
 
 const ProductCard = ({
   prod,
   updateCount,
   products,
   updateCart,
-  setProducts,
+  updateProducts,
   productInCart,
   cart,
-  setCart
+  updateCartItems,
 }) => {
+  const { user } = useAuth();
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const navigate = useNavigate();
   return (
     <>
       <Card
         sx={{
-          maxWidth: 560,
+          width: isMobile ? ('40vh'): ('50vh'),
           borderWidth: "2px",
           borderStyle: "solid",
           margin: "1vh",
           borderRadius: "3vh",
-          borderColor:'gold'
+          borderColor: "white",
+          ":hover": { backgroundColor: "rgb(244, 240, 193)" },
         }}
       >
         <CardHeader
           title={prod.title}
-          subheader={`Price:$ ${prod.price}`}
+          onClick={() => {
+            navigate(`${prod.id}`);
+          }}
+          sx={{ ":hover": { cursor: "pointer" }, fontStyle: "Helvatica" }}
         ></CardHeader>
-        <div style={{ display: "flex", flexwrap: "wrap" }}>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
           <CardMedia
-            sx={{ width: 220 }}
+            sx={{ width: "25vh" }}
             component="img"
             alt={`${prod.title}`}
             height="auto"
             image={prod.image}
           />
           <CardContent>
-            <Typography width="290px" variant="body1" color="text.secondary">
-              {prod.description}
-            </Typography>
-            <CardActions>
-              <Button size="small">Share</Button>
-              <LinkMui
-                sx={{ textDecoration: "none" }}
-                component={Link}
-                to={`${prod.id}`}
-                size="large"
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Button
+                sx={{ marginTop: "2px" }}
+                aria-label="add to cart"
+                onClick={() => {
+                  updateCart("change", prod, cart, updateCartItems, user?.uid);
+                }}
+                variant="contained"
+                startIcon={<AddShoppingCartIcon />}
               >
-                <Button>View product</Button>
-              </LinkMui>
-            </CardActions>
+                Add to cart
+              </Button>
+              <Chip
+                sx={{ backgroundColor: "yellow", fontSize: 20 , marginTop:'4px'}}
+                label={`$ ${prod.price}`}
+              />
+            </div>
           </CardContent>
         </div>
-        <CardActions disableSpacing>
-          <Button
-            onClick={() => {
-              updateCount("minus", prod, products, setProducts);
-            }}
-          >
-            <RemoveIcon />
-          </Button>
-          {prod.cart}
-          <Button
-            onClick={() => {
-              updateCount("add", prod, products, setProducts);
-            }}
-          >
-            <AddIcon />
-          </Button>
-          <Button
-            sx={{ margin: "4px" }}
-            aria-label="add to cart"
-            onClick={() => {
-              updateCart("change", prod,cart,setCart);
-            }}
-            variant="contained"
-            startIcon={<AddShoppingCartIcon />}
-          >
-            Add to cart
-          </Button>
-          {productInCart(prod,cart)?.length> 0 ? (<Button
-            color="error"
-            aria-label="Remove from cart"
-            onClick={() => {
-              updateCart("remove", prod,cart,setCart);
-            }}
-            variant="outlined"
-          
-            startIcon={<RemoveShoppingCartIcon color="error" />}
-          >
-            Remove from  cart
-          </Button>) :(null)}
-        </CardActions>
       </Card>
     </>
   );
