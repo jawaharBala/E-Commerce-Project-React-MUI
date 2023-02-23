@@ -6,14 +6,14 @@ import { ButtonGroup, TextField, Button } from "@mui/material";
 import { TodoStore } from "../../components/contexts/ContextStore";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
-
+import { useDispatch } from "react-redux";
 const InputField = () => {
   const [inputString, setInputString] = useState({ todo: "", done: false });
   const [todos, setTodos] = useState([]);
   const [todosPresent, setTodosPresent] = useState(false);
   const [enableAddButton, setEnableButton] = useState(false);
   const {user} = useAuth();
-
+  const dispatch = useDispatch();
   useEffect(() => {
     getTodos();
   }, []);
@@ -60,6 +60,11 @@ const InputField = () => {
 
   const handleClick = () => {
     setTodosPresent(true);
+    // const newValue = 99;
+    // dispatch({
+    //   type:"updateCount",
+    //   payload:newValue
+    // })
     if (todos?.length > 0) {
       let newTodos = [...todos, { todo: inputString, done: false }];
       setTodos(newTodos);

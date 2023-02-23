@@ -1,20 +1,19 @@
 import axios from "axios";
 
-
-
 const productInCart = (product, cart) =>
   cart?.filter((prod) => {
     return prod.id === product.id;
   });
 
-const postCart = async (uid,cart, setCart) => {
+const postCart = async (uid,cart, updateCartItems) => {
   try {
+    
    let response = await axios
       .put(
         "https://reacttodo-team-default-rtdb.firebaseio.com/"+uid+"-cart.json",
         JSON.stringify(cart)
       );
-        setCart([...cart]);
+      updateCartItems([...cart]);
   } catch (error) {
     console.log(error);
   }

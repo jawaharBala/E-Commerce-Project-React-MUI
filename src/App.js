@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/home/Home";
-import InputField from "./components/inputField/InputField";
+// import InputField from "./components/inputField/InputField";
 import SearchAppBar from "./components/header/Header";
 import Products from "./components/products/Products";
 import ViewProduct from "./components/products/ViewProduct";
@@ -16,12 +16,22 @@ import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 import db from "./firebase";
 import { AuthProvider, useAuth } from "./components/contexts/AuthContext";
 import PrivateRoute from "./components/Routes/PrivateRoute";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Box } from "@mui/system";
+import { CircularProgress } from "@mui/material";
+import Spinner from "./components/UI/Spinner";
+const InputFieldLazy = lazy(() => import("./components/inputField/InputField"));
+
 function App() {
-  const [products, setProducts] = useState([]);
+  const products = useSelector((store) => {
+    return store.custom.products;
+  });
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [cart, setCart] = useState([]);
+  const cart= useSelector((store) => {
+    return store.custom.cart;
+  });;
   const [count, setCount] = useState(0);
   const { user } = useAuth();
   const storedata = useSelector((store) => {
@@ -32,22 +42,33 @@ function App() {
     if (user) {
       getCart();
     }
-    console.log('store data', storedata);
+    console.log("store data", storedata);
   }, []);
 
-  useEffect(() => {
-    ProductUtils.cartCount(cart, setCount);
-  }, [cart]);
+ 
+
+const updateProducts= (payload)=>{
+  dispatch({
+    type:'updateProducts',
+    payload:payload
+  })
+};
+
+const updateCartItems= (payload)=>{
+  dispatch({
+    type:'updateCart',
+    payload:payload
+  });
+};
 
   const getProducts = async () => {
     setLoading(true);
     try {
       const response = await axios.get("https://fakestoreapi.com/products");
-      setProducts(
-        response.data.map((elem) => {
-          return { ...elem, cart: 1 };
-        })
-      );
+      let array = response.data.map((elem) => {
+        return { ...elem, cart: 1 };
+      });
+      updateProducts( array);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -65,7 +86,7 @@ function App() {
           "-cart.json"
       );
       console.log("getcart", response);
-      setCart(response.data);
+      updateCartItems(response.data);
       // setLoadingCart(false);
     } catch (error) {
       console.log(error);
@@ -77,7 +98,7 @@ function App() {
     <>
       <AuthProvider>
         <div className="App">
-          <SearchAppBar count={count} />
+          <SearchAppBar cartCount={ProductUtils.cartCount}  />
         </div>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -85,7 +106,9 @@ function App() {
             path="/todos/"
             element={
               <PrivateRoute>
-                <InputField />
+                <Suspense fallback={<Spinner />}>
+                  <InputFieldLazy />
+                </Suspense>
               </PrivateRoute>
             }
           />
@@ -96,12 +119,12 @@ function App() {
               <ProductsStore.Provider
                 value={{
                   products,
-                  setProducts,
+                  updateProducts,
                   ProductUtils,
                   loading,
                   error,
                   cart,
-                  setCart,
+                  updateCartItems,
                 }}
               >
                 <Products />
@@ -114,9 +137,9 @@ function App() {
               <ProductsStore.Provider
                 value={{
                   products,
-                  setProducts,
+                  updateProducts,
                   cart,
-                  setCart,
+                  updateCartItems,
                   ProductUtils,
                 }}
               >
@@ -127,7 +150,7 @@ function App() {
           <Route
             path="/cart"
             element={
-              <ProductsStore.Provider value={{ cart, ProductUtils, setCart }}>
+              <ProductsStore.Provider value={{ cart, ProductUtils, updateCartItems }}>
                 <PrivateRoute>
                   <ShoppingCart />
                 </PrivateRoute>

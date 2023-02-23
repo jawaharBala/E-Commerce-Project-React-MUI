@@ -25,6 +25,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { memo } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+import { useDispatch, useSelector } from 'react-redux';
+import { initializeUseSelector } from "react-redux/es/hooks/useSelector";
+import { useEffect } from "react";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -38,29 +41,53 @@ let activeStyle = {
   textDecoration: "none",
   backgroundColor: "white",
   color: "blue",
-  padding: "9px",
-  borderRadius: "3px",
+  padding: "3px",
+  borderRadius: "25%",
   margin: "1vh",
+  borderStyle:'solid',
+  borderColor:'yellow'
 };
 let inactiveStyle = {
   textDecoration: "none",
   backgroundColor: "black",
   color: "white",
   padding: "9px",
-  borderRadius: "3px",
+  borderRadius: "15%",
   margin: "1vh",
 };
-function SearchAppBar({ count }) {
+function SearchAppBar({cartCount }) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const { user, logout } = useAuth();
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery("(max-width:650px)");
+  const dispatch = useDispatch();
   const drawerMenu = [
     { button: "Todos", icon: "PlaylistAddCheckIcon", link: "/todos" },
     { button: "Cart", icon: "ShoppingCartIcon", link: "/cart" },
   ];
+
+  const count = useSelector((store)=>{
+    return store.custom.cartCount
+  });
+
+  const cart = useSelector((store)=>{
+    return store.custom.cart
+  });
+
+  useEffect(() => {
+    cartCount(cart, updateCartCounts);
+  }, [cart, user]);
+  
+  const updateCartCounts = (cartCount)=>{
+    dispatch({
+      type:'updateCartCount',
+      payload:cartCount
+    })
+  };
+
   const userLogout = async () => {
     try {
       await logout();
+      updateCartCounts([]);
     } catch (error) {
       console.log(error);
     }
@@ -164,7 +191,7 @@ function SearchAppBar({ count }) {
                   isActive ? activeStyle : inactiveStyle
                 }
               >
-                HOME
+                Home
               </NavLink>
               <NavLink
                 className="nav-link"
@@ -173,7 +200,7 @@ function SearchAppBar({ count }) {
                   isActive ? activeStyle : inactiveStyle
                 }
               >
-                PRODUCTS
+                Products
               </NavLink>
               <Typography sx={{ marginLeft: "auto" }}>
                 <Link to="/cart">
@@ -188,7 +215,7 @@ function SearchAppBar({ count }) {
       ) : (
         <Box sx={{ backgroundColor: "black" }}>
           {/* <AppBar color="transparent" position="static"> */}
-          <Toolbar>
+          <Toolbar sx={{height:'7vh'}}>
             {/* <IconButton
           size="large"
           edge="start"
@@ -206,10 +233,10 @@ function SearchAppBar({ count }) {
                   isActive ? activeStyle : inactiveStyle
                 }
               >
-                HOME
+                Home
               </NavLink>
             </Typography>
-            <Typography fontSize={15} noWrap component="div">
+            <Typography fontSize={15}  component="div">
               <NavLink
                 className="nav-link"
                 to="/todos"
@@ -217,11 +244,11 @@ function SearchAppBar({ count }) {
                   isActive ? activeStyle : inactiveStyle
                 }
               >
-                TODOS
+                Todos
               </NavLink>
             </Typography>
 
-            <Typography fontSize={15} noWrap component="div">
+            <Typography fontSize={15}  component="div">
               <NavLink
                 className="nav-link"
                 to="/products"
@@ -229,7 +256,7 @@ function SearchAppBar({ count }) {
                   isActive ? activeStyle : inactiveStyle
                 }
               >
-                PRODUCTS
+                Products
               </NavLink>
             </Typography>
             <Typography

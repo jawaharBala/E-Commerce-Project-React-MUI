@@ -4,10 +4,10 @@ import ProductCard from "./ProductCard";
 import "./Products.css";
 import { Box, CircularProgress } from "@mui/material";
 import { ProductsStore } from "./ProductsContext";
-import { useAuth } from "../contexts/AuthContext";
+
 
 const Products = () => {
-  const { products, loading, error,setProducts,ProductUtils,cart,setCart} =
+  const { products, loading, error,updateProducts,ProductUtils,cart,updateCartItems} =
     useContext(ProductsStore);
 
 
@@ -34,10 +34,11 @@ const Products = () => {
                     updateCount={ProductUtils.updateCount}
                     products={products}
                     updateCart={ProductUtils.updateCart}
-                    setProducts={setProducts}
+                    updateProducts={updateProducts}
                     productInCart={ProductUtils.productInCart}
                     cart={cart}
-                    setCart={setCart}
+                    updateCartItems={updateCartItems}
+                    
                   />
                 );
               })

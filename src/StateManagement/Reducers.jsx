@@ -1,15 +1,26 @@
 import { createReducer } from "@reduxjs/toolkit";
 
-const initialState = { 
-    count: 100,
-     isAuthenticated: false 
-    };
+const initialState = {
+  products: [],
+  cart: [],
+  isAuthenticated: false,
+  cartCount:0
+};
 export const customReducer = createReducer(initialState, {
-  updateCount: (state, action) => {
-    state.count = action.payload;
+  updateProducts: (state, action) => {
+    state.products = action.payload;
   },
 
-  updateAuth:(state,action)=>{
+  updateAuth: (state, action) => {
     state.isAuthenticated = action.payload;
-  }
+  },
+  updateCart: (state, action) =>{
+    state.cart = action.payload;
+  },
+
+  updateCartCount: (state, action) =>{
+    state.cartCount = action.payload;
+  },
+
 });
+

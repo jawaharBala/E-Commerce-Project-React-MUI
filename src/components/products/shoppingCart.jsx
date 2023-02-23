@@ -10,6 +10,9 @@ import {
   Link as LinkMui,
   CircularProgress,
   Box,
+  useMediaQuery,
+  Chip,
+  CssBaseline
 } from "@mui/material";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
@@ -27,6 +30,7 @@ const ShoppingCart = () => {
   const context = useContext(ProductsStore);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:650px)");
 
   useEffect(() => {
     getCurrentCart();
@@ -34,16 +38,16 @@ const ShoppingCart = () => {
 
   const getCurrentCart = async () => {
     try {
-      let response =await context.ProductUtils.getCart(user?.uid);
-      context.setCart(response.data)
+      let response = await context.ProductUtils.getCart(user?.uid);
+      context.updateCartItems(response.data);
       setLoadingCart(false);
     } catch (error) {
-      context.setCart([]);
+      context.updateCart([]);
       console.log(error);
       setLoadingCart(false);
     }
   };
- 
+
   const addToCart = () => {
     setOpen(true);
   };
@@ -85,8 +89,8 @@ const ShoppingCart = () => {
                 <>
                   <Card
                     key={product.id}
-                    style={{
-                      maxWidth: 800,
+                    sx={{
+                     width: isMobile ? ('40vh') : ('100vh'),
                       paddingTop: "3vh",
                       marginLeft: "auto",
                       marginRight: "auto",
@@ -94,27 +98,28 @@ const ShoppingCart = () => {
                   >
                     <CardHeader
                       title={product.title}
-                      subheader={`Price:$ ${product.price}`}
+                      subheader={ <Chip
+                        sx={{ backgroundColor: "yellow", fontSize: 20 }}
+                        label={`$ ${product.price}`}
+                      />}
                     ></CardHeader>
-                    <div 
-                    // style={{ display: "flex", flexwrap: "wrap" }}
+                    <div
+                    style={{ display: "flex", flexwrap: "wrap" }}
                     >
                       <CardMedia
                         component="img"
-                        sx={{ width: "250px" }}
+                        sx={{ width: "25vh" }}
                         height="auto"
                         image={product.image}
                       />
                       <CardContent>
                         <CardHeader
-                        subheader={product.description}
-                        fontSize={10}
+                          subheader={product.description}
+                          fontSize={10}
                           width="auto"
                           variant="subtitle2"
                           color="text.secondary"
-                        >
-                          
-                        </CardHeader>
+                        ></CardHeader>
                       </CardContent>
                     </div>
                     <CardContent>
@@ -124,7 +129,7 @@ const ShoppingCart = () => {
                             "minus",
                             product,
                             context.cart,
-                            context.setCart,
+                            context.updateCartItems,
                             user.uid
                           );
                         }}
@@ -138,7 +143,7 @@ const ShoppingCart = () => {
                             "add",
                             product,
                             context.cart,
-                            context.setCart,
+                            context.updateCartItems,
                             user.uid
                           );
                         }}
@@ -153,7 +158,7 @@ const ShoppingCart = () => {
                             "remove",
                             product,
                             context.cart,
-                            context.setCart,
+                            context.updateCartItems,
                             user.uid
                           );
                         }}
@@ -174,6 +179,7 @@ const ShoppingCart = () => {
                       </IconButton>
                     </CardContent>
                   </Card>
+                  <CssBaseline/>
                 </>
               );
             })
