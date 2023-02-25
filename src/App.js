@@ -2,7 +2,6 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/home/Home";
-// import InputField from "./components/inputField/InputField";
 import SearchAppBar from "./components/header/Header";
 import Products from "./components/products/Products";
 import ViewProduct from "./components/products/ViewProduct";
@@ -20,6 +19,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
 import Spinner from "./components/UI/Spinner";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 const InputFieldLazy = lazy(() => import("./components/inputField/InputField"));
 
 function App() {
@@ -29,37 +30,33 @@ function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const cart= useSelector((store) => {
+  const cart = useSelector((store) => {
     return store.custom.cart;
-  });;
-  const [count, setCount] = useState(0);
-  const { user } = useAuth();
-  const storedata = useSelector((store) => {
-    return store.custom.count;
   });
+  const { user } = useAuth();
+
   useEffect(() => {
     getProducts();
-    if (user) {
-      getCart();
-    }
-    console.log("store data", storedata);
-  }, []);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      ProductUtils.getCart(user.uid, updateCartItems);
+    });
 
- 
+    console.log("app.js-useEffect", cart, "user", user);
+  }, [user?.uid]);
 
-const updateProducts= (payload)=>{
-  dispatch({
-    type:'updateProducts',
-    payload:payload
-  })
-};
+  const updateProducts = (payload) => {
+    dispatch({
+      type: "updateProducts",
+      payload: payload,
+    });
+  };
 
-const updateCartItems= (payload)=>{
-  dispatch({
-    type:'updateCart',
-    payload:payload
-  });
-};
+  const updateCartItems = (payload) => {
+    dispatch({
+      type: "updateCart",
+      payload: payload,
+    });
+  };
 
   const getProducts = async () => {
     setLoading(true);
@@ -68,7 +65,7 @@ const updateCartItems= (payload)=>{
       let array = response.data.map((elem) => {
         return { ...elem, cart: 1 };
       });
-      updateProducts( array);
+      updateProducts(array);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -77,28 +74,11 @@ const updateCartItems= (payload)=>{
     }
   };
 
-  const getCart = async () => {
-    // setLoadingCart(true);
-    try {
-      let response = await axios.get(
-        "https://reacttodo-team-default-rtdb.firebaseio.com/" +
-          user.uid +
-          "-cart.json"
-      );
-      console.log("getcart", response);
-      updateCartItems(response.data);
-      // setLoadingCart(false);
-    } catch (error) {
-      console.log(error);
-      // setLoadingCart(false);
-    }
-  };
-
   return (
     <>
       <AuthProvider>
         <div className="App">
-          <SearchAppBar cartCount={ProductUtils.cartCount}  />
+          <SearchAppBar />
         </div>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -150,7 +130,9 @@ const updateCartItems= (payload)=>{
           <Route
             path="/cart"
             element={
-              <ProductsStore.Provider value={{ cart, ProductUtils, updateCartItems }}>
+              <ProductsStore.Provider
+                value={{ cart, ProductUtils, updateCartItems }}
+              >
                 <PrivateRoute>
                   <ShoppingCart />
                 </PrivateRoute>

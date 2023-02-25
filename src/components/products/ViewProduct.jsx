@@ -11,7 +11,8 @@ import {
   Button,
   Snackbar,
   Chip,
-  useMediaQuery
+  useMediaQuery,
+  Alert
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
@@ -177,10 +178,12 @@ const ViewProduct = () => {
                       }}
                       variant="contained"
                       startIcon={<AddShoppingCartIcon />}
+                      disabled={!user}
                     >
                       Add to cart
                     </Button>
                     <br />
+                    {!user ? (<Alert severity="info">{"Login to add products to cart"}</Alert>): null}
                     {context.ProductUtils.productInCart(product, context.cart)
                       ?.length > 0 ? (
                       <Button

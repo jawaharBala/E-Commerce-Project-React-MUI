@@ -28,6 +28,7 @@ import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import { useDispatch, useSelector } from 'react-redux';
 import { initializeUseSelector } from "react-redux/es/hooks/useSelector";
 import { useEffect } from "react";
+import { useState } from "react";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -55,7 +56,7 @@ let inactiveStyle = {
   borderRadius: "15%",
   margin: "1vh",
 };
-function SearchAppBar({cartCount }) {
+function SearchAppBar() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const { user, logout } = useAuth();
   const isMobile = useMediaQuery("(max-width:650px)");
@@ -65,29 +66,46 @@ function SearchAppBar({cartCount }) {
     { button: "Cart", icon: "ShoppingCartIcon", link: "/cart" },
   ];
 
-  const count = useSelector((store)=>{
-    return store.custom.cartCount
+  const cart = useSelector((store)=>{
+    return store.custom.cart;
   });
 
-  const cart = useSelector((store)=>{
-    return store.custom.cart
-  });
+  const setCart = (load) =>{
+   dispatch( {
+    type:'updateCart',
+    payload:load,
+
+  })};
+
+
+  const [count,setCount] = useState(0); 
 
   useEffect(() => {
-    cartCount(cart, updateCartCounts);
-  }, [cart, user]);
+    cartCount(cart, setCount);
+    console.log('count',count, 'cart', cart)
+  }, [cart,user]);
   
-  const updateCartCounts = (cartCount)=>{
-    dispatch({
-      type:'updateCartCount',
-      payload:cartCount
-    })
+
+
+  const cartCount = (cart, setCount) => {
+    let cartCounter = [];
+    if (cart && cart?.length > 0) {
+      cartCounter = cart?.map((item) => {
+          return item.cart;
+        })
+        .reduce((accumlator, currentValue) => {
+          return accumlator + currentValue;
+        });
+      setCount(cartCounter);
+    } else return setCount(0);
   };
 
   const userLogout = async () => {
     try {
       await logout();
-      updateCartCounts([]);
+      setCart([]);
+      cartCount([], setCount);
+
     } catch (error) {
       console.log(error);
     }
