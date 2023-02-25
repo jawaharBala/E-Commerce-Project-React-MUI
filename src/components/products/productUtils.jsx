@@ -1,29 +1,33 @@
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 const productInCart = (product, cart) =>
   cart?.filter((prod) => {
     return prod.id === product.id;
   });
 
-const postCart = async (uid,cart, updateCartItems) => {
+const postCart = async (uid, cart, updateCartItems) => {
   try {
-    
-   let response = await axios
-      .put(
-        "https://reacttodo-team-default-rtdb.firebaseio.com/"+uid+"-cart.json",
-        JSON.stringify(cart)
-      );
-      updateCartItems([...cart]);
+    await axios.put(
+      "https://reacttodo-team-default-rtdb.firebaseio.com/" +
+        uid +
+        "-cart.json",
+      JSON.stringify(cart)
+    );
+    getCart(uid, updateCartItems);
   } catch (error) {
     console.log(error);
   }
 };
 
-const getCart = async(uid)=>{
-  return await axios.get("https://reacttodo-team-default-rtdb.firebaseio.com/"+uid+"-cart.json");
-}
+const getCart = async (uid, updateCartItems) => {
+  let response = await axios.get(
+    "https://reacttodo-team-default-rtdb.firebaseio.com/" + uid + "-cart.json"
+  );
+  updateCartItems(response.data);
+};
 
-const updateCart =async (action, product, cart, setCart,uid) => {
+const updateCart = async (action, product, cart, setCart, uid) => {
   if (productInCart(product, cart)?.length > 0) {
     if (action === "change") {
       let newCart = cart.map((prod) => {
@@ -31,31 +35,31 @@ const updateCart =async (action, product, cart, setCart,uid) => {
           return (prod = { ...prod, cart: prod.cart + product.cart });
         } else return prod;
       });
-    await  postCart(uid,[...newCart], setCart);
+      await postCart(uid, [...newCart], setCart);
     } else if (action === "remove") {
       let newCart = cart.filter((prod) => {
         return prod.id !== product.id;
       });
-    await  postCart(uid,[...newCart], setCart);
-    } else if (action === "minus") {
+      await postCart(uid, [...newCart], setCart);
+    } else if (action === "minus" ) {
       let newCart = cart.map((prod) => {
-        if (prod.id === product.id) {
+        if (prod.id === product.id&& prod.cart>1 ) {
           return (prod = { ...prod, cart: prod.cart - 1 });
         } else return prod;
       });
-      await postCart(uid,[...newCart], setCart);
+      await postCart(uid, [...newCart], setCart);
     } else if (action === "add") {
       let newCart = cart.map((prod) => {
         if (prod.id === product.id) {
           return (prod = { ...prod, cart: prod.cart + 1 });
         } else return prod;
       });
-      await  postCart(uid,[...newCart], setCart);
+      await postCart(uid, [...newCart], setCart);
     }
   } else if (cart?.length > 0 && action === "change") {
-    await postCart(uid,[...cart, product], setCart);
+    await postCart(uid, [...cart, product], setCart);
   } else if (action === "change") {
-    await postCart(uid,[product], setCart);
+    await postCart(uid, [product], setCart);
   }
 };
 
@@ -101,6 +105,6 @@ const ProductUtils = {
   updateCount,
   cartCount,
   postCart,
-  getCart
+  getCart,
 };
 export default ProductUtils;

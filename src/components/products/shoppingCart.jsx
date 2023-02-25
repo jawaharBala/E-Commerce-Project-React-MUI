@@ -38,11 +38,10 @@ const ShoppingCart = () => {
 
   const getCurrentCart = async () => {
     try {
-      let response = await context.ProductUtils.getCart(user?.uid);
-      context.updateCartItems(response.data);
+      await context.ProductUtils.getCart(user?.uid,context.updateCartItems);
       setLoadingCart(false);
     } catch (error) {
-      context.updateCart([]);
+     
       console.log(error);
       setLoadingCart(false);
     }
