@@ -6,7 +6,7 @@ import {
   Divider,
   Checkbox,
   Button
-} from "@mui/joy";
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Edit } from "@mui/icons-material";
 import CardContent from '@mui/material/CardContent';
@@ -77,8 +77,8 @@ export const CardTemplate = ({
               id="delete"
             ></DeleteIcon>
             <Checkbox
-              variant="outlined"
-              size="lg"
+             
+              size="medium"
               color="danger"
               onChange={() => {
                 markDone(elem, index);

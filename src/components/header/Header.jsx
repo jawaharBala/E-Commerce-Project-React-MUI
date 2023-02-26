@@ -25,7 +25,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { memo } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { initializeUseSelector } from "react-redux/es/hooks/useSelector";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -45,8 +45,8 @@ let activeStyle = {
   padding: "3px",
   borderRadius: "25%",
   margin: "1vh",
-  borderStyle:'solid',
-  borderColor:'yellow'
+  borderStyle: "solid",
+  borderColor: "yellow",
 };
 let inactiveStyle = {
   textDecoration: "none",
@@ -61,36 +61,41 @@ function SearchAppBar() {
   const { user, logout } = useAuth();
   const isMobile = useMediaQuery("(max-width:650px)");
   const dispatch = useDispatch();
+  const catagoriesMain = [
+    { id: 1, name: "Clothes" },
+    { id: 2, name: "Electronics" },
+    { id: 3, name: "Furniture" },
+    { id: 4, name: "Shoes" },
+  ];
   const drawerMenu = [
-    { button: "Todos", icon: "PlaylistAddCheckIcon", link: "/todos" },
-    { button: "Cart", icon: "ShoppingCartIcon", link: "/cart" },
+    { id: 2, name: "Electronics" },
+    { id: 3, name: "Furniture" },
+    { id: 4, name: "Shoes" },
   ];
 
-  const cart = useSelector((store)=>{
+  const cart = useSelector((store) => {
     return store.custom.cart;
   });
 
-  const setCart = (load) =>{
-   dispatch( {
-    type:'updateCart',
-    payload:load,
+  const setCart = (load) => {
+    dispatch({
+      type: "updateCart",
+      payload: load,
+    });
+  };
 
-  })};
-
-
-  const [count,setCount] = useState(0); 
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     cartCount(cart, setCount);
-    console.log('count',count, 'cart', cart)
-  }, [cart,user]);
-  
-
+    console.log("count", count, "cart", cart);
+  }, [cart, user]);
 
   const cartCount = (cart, setCount) => {
     let cartCounter = [];
     if (cart && cart?.length > 0) {
-      cartCounter = cart?.map((item) => {
+      cartCounter = cart
+        ?.map((item) => {
           return item.cart;
         })
         .reduce((accumlator, currentValue) => {
@@ -105,7 +110,6 @@ function SearchAppBar() {
       await logout();
       setCart([]);
       cartCount([], setCount);
-
     } catch (error) {
       console.log(error);
     }
@@ -146,20 +150,22 @@ function SearchAppBar() {
                   }}
                   sx={{ backgroundColor: "black", color: "white" }}
                 >
-                  {drawerMenu.map((elem, index) => {
+                  {drawerMenu.map((tab, index) => {
                     return (
                       <>
                         <ListItem disablePadding>
                           <ListItemButton>
-                            <NavLink
-                              className="nav-link"
-                              to={elem.link}
-                              style={({ isActive }) =>
-                                isActive ? activeStyle : inactiveStyle
-                              }
-                            >
-                              {elem.button}
-                            </NavLink>
+                            <Typography fontSize={15} component="div">
+                              <NavLink
+                                className="nav-link"
+                                to={`catagories/${tab.id}`}
+                                style={({ isActive }) =>
+                                  isActive ? activeStyle : inactiveStyle
+                                }
+                              >
+                                {tab.name}
+                              </NavLink>
+                            </Typography>
                             <ListItemIcon children={<ShoppingCartIcon />}>
                               {/* {React.createElement(elem.icon)} */}
                               <ShoppingCartIcon />
@@ -213,12 +219,12 @@ function SearchAppBar() {
               </NavLink>
               <NavLink
                 className="nav-link"
-                to="/products"
+                to={`catagories/1`}
                 style={({ isActive }) =>
                   isActive ? activeStyle : inactiveStyle
                 }
               >
-                Products
+                Clothes
               </NavLink>
               <Typography sx={{ marginLeft: "auto" }}>
                 <Link to="/cart">
@@ -233,7 +239,7 @@ function SearchAppBar() {
       ) : (
         <Box sx={{ backgroundColor: "black" }}>
           {/* <AppBar color="transparent" position="static"> */}
-          <Toolbar sx={{height:'7vh'}}>
+          <Toolbar sx={{ height: "7vh" }}>
             {/* <IconButton
           size="large"
           edge="start"
@@ -254,29 +260,21 @@ function SearchAppBar() {
                 Home
               </NavLink>
             </Typography>
-            <Typography fontSize={15}  component="div">
-              <NavLink
-                className="nav-link"
-                to="/todos"
-                style={({ isActive }) =>
-                  isActive ? activeStyle : inactiveStyle
-                }
-              >
-                Todos
-              </NavLink>
-            </Typography>
-
-            <Typography fontSize={15}  component="div">
-              <NavLink
-                className="nav-link"
-                to="/products"
-                style={({ isActive }) =>
-                  isActive ? activeStyle : inactiveStyle
-                }
-              >
-                Products
-              </NavLink>
-            </Typography>
+            {catagoriesMain.map((tab) => {
+              return (
+                <Typography fontSize={15} component="div">
+                  <NavLink
+                    className="nav-link"
+                    to={`catagories/${tab.id}`}
+                    style={({ isActive }) =>
+                      isActive ? activeStyle : inactiveStyle
+                    }
+                  >
+                    {tab.name}
+                  </NavLink>
+                </Typography>
+              );
+            })}
             <Typography
               fontSize={15}
               sx={{

@@ -36,10 +36,10 @@ const ProductCard = ({
     <>
       <Card
         sx={{
-          width: isMobile ? "40vh" : "40vh",
+          width: isMobile ? "40vh" : "30vh",
           borderWidth: "2px",
           borderStyle: "solid",
-          margin: "1vh",
+          margin: "5px",
           borderRadius: "3vh",
           borderColor: "white",
           ":hover": { backgroundColor: "rgb(244, 240, 193)" },
@@ -48,15 +48,14 @@ const ProductCard = ({
       >
         <CardHeader
           title={
-            <Typography
-              sx={{ ":hover": { cursor: "pointer" } }}
-              component="div"
-            >
-              {prod.title}
-            </Typography>
+            <Chip
+            clickable
+              sx={{ ":hover": { cursor: "pointer" } , fontSize:18, fontWeight:'bold',}}
+             label={prod.title}
+            />
           }
           onClick={() => {
-            navigate(`${prod.id}`);
+            navigate(`/product/${prod.id}`);
           }}
         ></CardHeader>
         <div
@@ -68,27 +67,36 @@ const ProductCard = ({
           }}
         >
           <CardMedia
-            sx={{ width: "25vh", marginRight: "auto", marginLeft: "auto" }}
+            sx={{ width: "full", marginRight: "auto", marginLeft: "auto" }}
             component="img"
             alt={`${prod.title}`}
             height="250px"
-            image={prod.image}
+            image={prod.images[0]}
           />
           <CardContent>
             <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                marginRight: "auto",
-                marginLeft: "auto",
-              }}
+              // style={{
+              //   display: "flex",
+              //   flexDirection: "row",
+                
+              // }}
             >
+              <Chip
+            sx={{
+              backgroundColor: "yellow",
+              fontSize: 20,
+              marginLeft:'none',
+              marginTop: "4px",
+              
+            }}
+            label={`$ ${Number(prod.price).toFixed(2)}`}
+          />
               <Button
                 size="small"
                 sx={{
                   marginTop: "2px",
-                  marginRight: "auto",
-                  marginLeft: "auto",
+                  marginLeft:'2px'
+               
                 }}
                 aria-label="add to cart"
                 onClick={() => {
@@ -99,17 +107,7 @@ const ProductCard = ({
                 disabled={!user}
               >
                 Add to cart
-              </Button>
-              <Chip
-                sx={{
-                  backgroundColor: "yellow",
-                  fontSize: 20,
-                  marginTop: "4px",
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                }}
-                label={`$ ${prod.price}`}
-              />
+              </Button>         
             </div>
           </CardContent>
         </div>

@@ -105,12 +105,17 @@ const ShoppingCart = () => {
                     <div
                     style={{ display: "flex", flexwrap: "wrap" }}
                     >
-                      <CardMedia
-                        component="img"
-                        sx={{ width: "25vh" }}
-                        height="auto"
-                        image={product.image}
-                      />
+                      {product.images.map((image)=>{
+                        return(
+                          <CardMedia
+                          component="img"
+                          sx={{ width: "25vh" }}
+                          height="auto"
+                          image={image}
+                        />
+                        )
+                      })
+                      }
                       <CardContent>
                         <CardHeader
                           subheader={product.description}

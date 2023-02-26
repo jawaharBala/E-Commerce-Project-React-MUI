@@ -12,7 +12,7 @@ import {
   Snackbar,
   Chip,
   useMediaQuery,
-  Alert
+  Alert,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
@@ -34,7 +34,7 @@ const ViewProduct = () => {
   const { id } = useParams();
   const context = useContext(ProductsStore);
   const isMobile = useMediaQuery("(max-width:600px)");
-  const {user} = useAuth();
+  const { user } = useAuth();
   useEffect(() => {
     getProduct();
   }, [context.products]);
@@ -51,12 +51,12 @@ const ViewProduct = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "https://fakestoreapi.com/products/" + id
+          "https://api.escuelajs.co/api/v1/products/" + id
         );
         setLoading(false);
         setProduct({ ...response.data, cart: 1 });
       } catch (error) {
-        // console.log(error);
+        console.log(error);
         setLoading(false);
         setError(error);
       }
@@ -108,7 +108,7 @@ const ViewProduct = () => {
             <>
               <Card
                 sx={{
-                  width: isMobile ? ('40vh') : ('100vh'),
+                  width: isMobile ? "40vh" : "100vh",
                   paddingTop: "3vh",
                   position: "static",
                   marginLeft: "auto",
@@ -125,11 +125,17 @@ const ViewProduct = () => {
                   }
                   sx={{ fontSize: 35, padding: "3px" }}
                 ></CardHeader>
-                <CardMedia
-                  component="img"
-                  sx={{ width: "25vh", height: "auto" }}
-                  image={product.image}
-                />
+                 <div style={{display:'flex', flexWrap:'wrap'}}>
+                {product.images.map((image) => {
+                  return (
+                    <CardMedia
+                      component="img"
+                      sx={{ width: "25vh", height: "auto" }}
+                      image={image}
+                    />
+                  );
+                })}
+                </div>
 
                 {/* <div style={{ display: "flex" }}> */}
                 <CardContent sx={{}}>
@@ -183,7 +189,11 @@ const ViewProduct = () => {
                       Add to cart
                     </Button>
                     <br />
-                    {!user ? (<Alert severity="info">{"Login to add products to cart"}</Alert>): null}
+                    {!user ? (
+                      <Alert severity="info">
+                        {"Login to add products to cart"}
+                      </Alert>
+                    ) : null}
                     {context.ProductUtils.productInCart(product, context.cart)
                       ?.length > 0 ? (
                       <Button

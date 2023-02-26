@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     getProducts();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      ProductUtils.getCart(user.uid, updateCartItems);
+      ProductUtils.getCart(user?.uid, updateCartItems);
     });
 
     console.log("app.js-useEffect", cart, "user", user);
@@ -61,7 +61,7 @@ function App() {
   const getProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("https://fakestoreapi.com/products");
+      const response = await axios.get("https://api.escuelajs.co/api/v1/products");
       let array = response.data.map((elem) => {
         return { ...elem, cart: 1 };
       });
@@ -94,7 +94,7 @@ function App() {
           />
           <Route path="/home" element={<Home />} />
           <Route
-            path="/products"
+            path="/catagories/:id"
             element={
               <ProductsStore.Provider
                 value={{
@@ -112,7 +112,7 @@ function App() {
             }
           />
           <Route
-            path="/products/:id"
+            path="/product/:id"
             element={
               <ProductsStore.Provider
                 value={{
