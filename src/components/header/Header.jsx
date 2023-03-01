@@ -46,7 +46,6 @@ let activeStyle = {
   borderRadius: "25%",
   margin: "1vh",
   borderStyle: "solid",
-  height:'8px'
  
 };
 let inactiveStyle = {

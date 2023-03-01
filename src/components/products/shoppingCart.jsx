@@ -83,7 +83,7 @@ const ShoppingCart = () => {
       ) : (
         <>
           {context.cart && context.cart.length > 0 ? (
-            context.cart.map((product) => {
+            context.cart?.map((product) => {
               return (
                 <>
                   <Card
@@ -105,7 +105,7 @@ const ShoppingCart = () => {
                     <div
                     style={{ display: "flex", flexwrap: "wrap" }}
                     >
-                      {product.images.map((image)=>{
+                      {product?.images?.map((image)=>{
                         return(
                           <CardMedia
                           component="img"
