@@ -18,6 +18,8 @@ import {
   Divider,
   Icon,
   SvgIcon,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import Badge from "@mui/material/Badge";
@@ -29,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { initializeUseSelector } from "react-redux/es/hooks/useSelector";
 import { useEffect } from "react";
 import { useState } from "react";
+import { AccountCircle } from "@mui/icons-material";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -46,7 +49,6 @@ let activeStyle = {
   borderRadius: "25%",
   margin: "1vh",
   borderStyle: "solid",
- 
 };
 let inactiveStyle = {
   textDecoration: "none",
@@ -59,8 +61,16 @@ let inactiveStyle = {
 function SearchAppBar() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const { user, logout } = useAuth();
-  const isMobile = useMediaQuery("(max-width:650px)");
+  const isMobile = useMediaQuery("(max-width:750px)");
   const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = React.useState(false);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const catagoriesMain = [
     { id: 1, name: "Clothes" },
     { id: 2, name: "Electronics" },
@@ -233,6 +243,43 @@ function SearchAppBar() {
                   </Badge>
                 </Link>
               </Typography>
+              {user ? (
+                <>
+                  <IconButton
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                    size="large"
+                    sx={{padding:'2vh', marginRight:'0'}}
+                  >
+                    <AccountCircle color="secondary" />
+                  </IconButton>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <MenuItem onClick={handleClose}>{user.email}</MenuItem>
+                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={() => userLogout()}>Logout</MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <NavLink
+                  className="nav-link"
+                  to="/login"
+                  style={({ isActive }) =>
+                    isActive ? activeStyle : inactiveStyle
+                  }
+                >
+                  Login
+                </NavLink>
+              )}
             </Toolbar>
           </AppBar>
         </Box>
@@ -300,7 +347,7 @@ function SearchAppBar() {
             <Typography sx={{ margin: "2vh" }}>
               {user ? (
                 <>
-                  <Typography sx={{ color: "white" }}>
+                  {/* <Typography sx={{ color: "white" }}>
                     {user.email}
                     <br />
                     <Button
@@ -310,7 +357,30 @@ function SearchAppBar() {
                     >
                       Logout?
                     </Button>
-                  </Typography>
+                  </Typography> */}
+                  <IconButton
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                    size="large"
+                  >
+                    <AccountCircle color="secondary" />
+                  </IconButton>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    
+                    <MenuItem onClick={handleClose}>{user.email}</MenuItem>
+                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={() => userLogout()}>Logout</MenuItem>
+                  </Menu>
                 </>
               ) : (
                 <NavLink

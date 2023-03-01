@@ -89,10 +89,9 @@ const ShoppingCart = () => {
                   <Card
                     key={product.id}
                     sx={{
-                     width: isMobile ? ('40vh') : ('100vh'),
+                     width: 'auto',
                       paddingTop: "3vh",
-                      marginLeft: "auto",
-                      marginRight: "auto",
+                   
                     }}
                   >
                     <CardHeader
@@ -103,20 +102,22 @@ const ShoppingCart = () => {
                       />}
                     ></CardHeader>
                     <div
-                    style={{ display: "flex", flexwrap: "wrap" }}
+                    style={{ display: "flex", flexwrap: "wrap", margin:'0', textAlign:'center' }}
                     >
                       {product?.images?.map((image)=>{
                         return(
                           <CardMedia
                           component="img"
-                          sx={{ width: "25vh" }}
+                          sx={{ width: isMobile ? '15vh' : "25vh" }}
                           height="auto"
                           image={image}
                         />
                         )
                       })
                       }
-                      <CardContent>
+                    
+                    </div>
+                    <CardContent>
                         <CardHeader
                           subheader={product.description}
                           fontSize={10}
@@ -125,7 +126,6 @@ const ShoppingCart = () => {
                           color="text.secondary"
                         ></CardHeader>
                       </CardContent>
-                    </div>
                     <CardContent>
                       <Button
                         onClick={() => {
@@ -209,7 +209,7 @@ const ShoppingCart = () => {
                   sx={{ textDecoration: "none", marginLeft: "15px" }}
                   component={Link}
                   size="large"
-                  to="/products"
+                  to="/home"
                 >
                   <Button variant="contained"> Go to Products</Button>
                 </LinkMui>

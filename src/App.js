@@ -41,7 +41,7 @@ function App() {
       ProductUtils.getCart(user?.uid, updateCartItems);
     });
 
-    console.log("app.js-useEffect", cart, "user", user);
+    console.log("user", user);
   }, [user?.uid]);
 
   const updateProducts = (payload) => {

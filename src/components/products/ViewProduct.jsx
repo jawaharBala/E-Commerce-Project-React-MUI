@@ -107,7 +107,7 @@ const ViewProduct = () => {
             <>
               <Card
                 sx={{
-                  width: isMobile ? "40vh" : "100vh",
+                  width:  "auto",
                   paddingTop: "3vh",
                   position: "static",
                   marginLeft: "auto",
@@ -124,12 +124,12 @@ const ViewProduct = () => {
                   }
                   sx={{ fontSize: 35, padding: "3px" }}
                 ></CardHeader>
-                 <div style={{display:'flex', flexWrap:'wrap'}}>
+                 <div style={{display:'flex', flexWrap:'wrap',margin:'0'}}>
                 {product.images?.map((image) => {
                   return (
                     <CardMedia
                       component="img"
-                      sx={{ width: "25vh", height: "auto" }}
+                      sx={{ width:isMobile ? "45vh" : "55vh", height: "auto" }}
                       image={image}
                     />
                   );
