@@ -31,14 +31,25 @@ const Products = () => {
 
     try {
       setLoading(true);
-      const response = await axios.get(
-        "https://api.escuelajs.co/api/v1/products/?categoryId=" + id
-      );
-      let array = response.data.map((elem) => {
-        return { ...elem, cart: 1 };
-      });  
-      setLoading(false);
-      setItems(array);
+      if(id){
+        const response = await axios.get(
+          "https://api.escuelajs.co/api/v1/products/?categoryId=" + id
+        );
+        let array = response.data.map((elem) => {
+          return { ...elem, cart: 1 };
+        });  
+        setLoading(false);
+        setItems(array);
+      }else{
+        const response = await axios.get(
+          "https://api.escuelajs.co/api/v1/products/"
+        );
+        let array = response.data.map((elem) => {
+          return { ...elem, cart: 1 };
+        });
+        setLoading(false);
+        setItems(array);
+      } 
       console.log(items,'id',id)
     } catch (error) {
       console.log(error);
@@ -81,11 +92,7 @@ const Products = () => {
                         <ProductCard
                           key={index}
                           prod={prod}
-                          updateCount={ProductUtils.updateCount}
-                          products={products}
                           updateCart={ProductUtils.updateCart}
-                          updateProducts={updateProducts}
-                          productInCart={ProductUtils.productInCart}
                           cart={cart}
                           updateCartItems={updateCartItems}
                         />

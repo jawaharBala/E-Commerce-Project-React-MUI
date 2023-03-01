@@ -9,14 +9,14 @@ import ProductCard from "../products/ProductCard";
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [products, setproducts] = useState([]);
+  
 
   const [errorHandling, setErrorHandling] = useState(false);
-  const getProducts = async (category) => {
+  const getProducts = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://api.escuelajs.co/api/v1/products/?categoryId=" +
-          category
+        "https://api.escuelajs.co/api/v1/products/"
       );
       let array = response.data.map((elem) => {
         return { ...elem, cart: 1 };
@@ -32,7 +32,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getProducts("1");
+    getProducts();
   }, []);
   return (
     <div>

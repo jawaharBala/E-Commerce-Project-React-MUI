@@ -77,6 +77,17 @@ function App() {
   return (
     <>
       <AuthProvider>
+      <ProductsStore.Provider
+                value={{
+                  products,
+                  updateProducts,
+                  ProductUtils,
+                  loading,
+                  error,
+                  cart,
+                  updateCartItems,
+                }}
+              >
         <div className="App">
           <SearchAppBar />
         </div>
@@ -92,57 +103,32 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home"  element={<Home />} />
           <Route
             path="/catagories/:id"
-            element={
-              <ProductsStore.Provider
-                value={{
-                  products,
-                  updateProducts,
-                  ProductUtils,
-                  loading,
-                  error,
-                  cart,
-                  updateCartItems,
-                }}
-              >
-                <Products />
-              </ProductsStore.Provider>
+            element={            
+                <Products />            
             }
           />
           <Route
             path="/product/:id"
             element={
-              <ProductsStore.Provider
-                value={{
-                  products,
-                  updateProducts,
-                  cart,
-                  updateCartItems,
-                  ProductUtils,
-                }}
-              >
                 <ViewProduct />
-              </ProductsStore.Provider>
             }
           />
           <Route
             path="/cart"
             element={
-              <ProductsStore.Provider
-                value={{ cart, ProductUtils, updateCartItems }}
-              >
                 <PrivateRoute>
                   <ShoppingCart />
                 </PrivateRoute>
-              </ProductsStore.Provider>
             }
           />
           <Route path="/signup" element={<SignUpPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="*" element={<h2>404 Not Found</h2>}></Route>
         </Routes>
+        </ProductsStore.Provider>
       </AuthProvider>
     </>
   );

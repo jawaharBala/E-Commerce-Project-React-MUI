@@ -6,37 +6,33 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import {
-  ButtonGroup,
   CardHeader,
   Link as LinkMui,
   useMediaQuery,
   Chip,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import { useAuth } from "../contexts/AuthContext";
+import { useContext } from "react";
+import { ProductsStore } from "./ProductsContext";
 
 const ProductCard = ({
-  prod,
-  updateCount,
-  products,
-  updateCart,
-  updateProducts,
-  productInCart,
-  cart,
-  updateCartItems,
+  prod
 }) => {
   const { user } = useAuth();
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
-  return (
+  const {
+    ProductUtils,
+    cart,
+    updateCartItems,
+  } = useContext(ProductsStore);
+   return (
     <>
       <Card
         sx={{
-          width: isMobile ? "40vh" : "30vh",
+          width: isMobile ? "40vh" : "32vh",
           borderWidth: "2px",
           borderStyle: "solid",
           margin: "5px",
@@ -48,11 +44,13 @@ const ProductCard = ({
       >
         <CardHeader
           title={
+            <Typography>
             <Chip
             clickable
-              sx={{ ":hover": { cursor: "pointer" } , fontSize:18, fontWeight:'bold',}}
+              sx={{ ":hover": { cursor: "pointer" } , fontSize: isMobile ? 12 : 16, fontWeight:'bold',}}
              label={prod.title}
             />
+            </Typography>
           }
           onClick={() => {
             navigate(`/product/${prod.id}`);
@@ -100,7 +98,7 @@ const ProductCard = ({
                 }}
                 aria-label="add to cart"
                 onClick={() => {
-                  updateCart("change", prod, cart, updateCartItems, user?.uid);
+                 ProductUtils.updateCart("change", prod, cart, updateCartItems, user?.uid);
                 }}
                 variant="contained"
                 startIcon={<AddShoppingCartIcon />}

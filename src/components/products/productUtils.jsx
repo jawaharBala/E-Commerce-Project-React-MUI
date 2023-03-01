@@ -2,9 +2,12 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 const productInCart = (product, cart) =>
-  cart?.filter((prod) => {
-    return prod.id === product.id;
-  });
+ {
+  //  cart?.filter((prod) => {
+  //   return prod.id === product.id;
+  // })
+ return cart?.some(items => items.id === product.id)
+};
 
 const postCart = async (uid, cart, updateCartItems) => {
   try {
@@ -28,7 +31,7 @@ const getCart = async (uid, updateCartItems) => {
 };
 
 const updateCart = async (action, product, cart, setCart, uid) => {
-  if (productInCart(product, cart)?.length > 0) {
+  if (productInCart(product, cart)) {
     if (action === "change") {
       let newCart = cart.map((prod) => {
         if (prod.id === product.id) {

@@ -18,7 +18,6 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import ShareIcon from "@mui/icons-material/Share";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import IconButton from "@mui/material/IconButton";
@@ -95,7 +94,7 @@ const ViewProduct = () => {
         <h2>{error.message}. Please try again</h2>
       ) : (
         <>
-          <LinkMui to="/products" component={Link}>
+          <LinkMui to={-1} component={Link}>
             <Button>Go back</Button>
           </LinkMui>
           {loading ? (
@@ -116,7 +115,7 @@ const ViewProduct = () => {
                 }}
               >
                 <CardHeader
-                  title={product.title}
+                  title={product?.title}
                   subheader={
                     <Chip
                       sx={{ backgroundColor: "yellow", fontSize: 20 }}
@@ -126,7 +125,7 @@ const ViewProduct = () => {
                   sx={{ fontSize: 35, padding: "3px" }}
                 ></CardHeader>
                  <div style={{display:'flex', flexWrap:'wrap'}}>
-                {product.images.map((image) => {
+                {product.images?.map((image) => {
                   return (
                     <CardMedia
                       component="img"
@@ -140,7 +139,7 @@ const ViewProduct = () => {
                 {/* <div style={{ display: "flex" }}> */}
                 <CardContent sx={{}}>
                   <Typography variant="body1" color="text.secondary">
-                    {product.description}
+                    {product?.description}
                   </Typography>
                 </CardContent>
                 <div style={{ textAlign: "center" }}>
@@ -157,7 +156,7 @@ const ViewProduct = () => {
                     >
                       <RemoveIcon />
                     </Button>
-                    {product.cart}
+                    {product?.cart}
                     <Button
                       onClick={() => {
                         context.ProductUtils.updateCount(
