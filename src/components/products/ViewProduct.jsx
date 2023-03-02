@@ -61,8 +61,15 @@ const ViewProduct = () => {
       }
     }
   };
-  const addToCart = () => {
+  const addToCart = ( ) => {
     setOpen(true);
+    context.ProductUtils.updateCart(
+      "change",
+      product,
+      context.cart,
+      context.updateCartItems,
+      user?.uid
+    );
   };
 
   const handleClose = (event, reason) => {
@@ -94,7 +101,7 @@ const ViewProduct = () => {
         <h2>{error.message}. Please try again</h2>
       ) : (
         <>
-          <LinkMui to={-1} component={Link}>
+          <LinkMui to={0} component={Link}>
             <Button>Go back</Button>
           </LinkMui>
           {loading ? (
@@ -107,7 +114,7 @@ const ViewProduct = () => {
             <>
               <Card
                 sx={{
-                  width:  "auto",
+                  width: "auto",
                   paddingTop: "3vh",
                   position: "static",
                   marginLeft: "auto",
@@ -119,21 +126,24 @@ const ViewProduct = () => {
                   subheader={
                     <Chip
                       sx={{ backgroundColor: "yellow", fontSize: 20 }}
-                      label={`$ ${product.price}`}
+                      label={`$ ${product?.price}`}
                     />
                   }
                   sx={{ fontSize: 35, padding: "3px" }}
                 ></CardHeader>
-                 <div style={{display:'flex', flexWrap:'wrap',margin:'0'}}>
-                {product.images?.map((image) => {
-                  return (
-                    <CardMedia
-                      component="img"
-                      sx={{ width:isMobile ? "45vh" : "55vh", height: "auto" }}
-                      image={image}
-                    />
-                  );
-                })}
+                <div style={{ display: "flex", flexWrap: "wrap", margin: "0" }}>
+                  {product.images?.map((image) => {
+                    return (
+                      <CardMedia
+                        component="img"
+                        sx={{
+                          width: isMobile ? "45vh" : "55vh",
+                          height: "auto",
+                        }}
+                        image={image}
+                      />
+                    );
+                  })}
                 </div>
 
                 {/* <div style={{ display: "flex" }}> */}
@@ -173,13 +183,7 @@ const ViewProduct = () => {
                       sx={{ margin: "4px" }}
                       aria-label="add to cart"
                       onClick={() => {
-                        context.ProductUtils.updateCart(
-                          "change",
-                          product,
-                          context.cart,
-                          context.updateCartItems,
-                          user?.uid
-                        );
+                        addToCart();
                       }}
                       variant="contained"
                       startIcon={<AddShoppingCartIcon />}

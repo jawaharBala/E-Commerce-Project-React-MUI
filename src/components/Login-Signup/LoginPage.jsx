@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   const redirect = () => {
     if (window.history.state && window.history.state.idx > 0) {
-      navigate(-1);
+      navigate(0,{ replace:true});
     } else {
       navigate("/", { replace: true });
     }

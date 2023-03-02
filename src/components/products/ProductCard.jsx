@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -10,25 +10,56 @@ import {
   Link as LinkMui,
   useMediaQuery,
   Chip,
+  IconButton,
+  Snackbar,
 } from "@mui/material";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAuth } from "../contexts/AuthContext";
 import { useContext } from "react";
 import { ProductsStore } from "./ProductsContext";
+import CloseIcon from "@mui/material/IconButton";
 
-const ProductCard = ({
-  prod
-}) => {
+const ProductCard = ({ prod }) => {
+  const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate();
-  const {
-    ProductUtils,
-    cart,
-    updateCartItems,
-  } = useContext(ProductsStore);
-   return (
+  const { ProductUtils, cart, updateCartItems } = useContext(ProductsStore);
+  const addToCart = () => {
+    setOpen(true);
+    ProductUtils.updateCart(
+      "change",
+      prod,
+      cart,
+      updateCartItems,
+      user?.uid
+    );
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+  const action = (
+    <>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
+  return (
     <>
       <Card
         sx={{
@@ -45,11 +76,15 @@ const ProductCard = ({
         <CardHeader
           title={
             <Typography>
-            <Chip
-            clickable
-              sx={{ ":hover": { cursor: "pointer" } , fontSize: isMobile ? 12 : 16, fontWeight:'bold',}}
-             label={prod.title}
-            />
+              <Chip
+                clickable
+                sx={{
+                  ":hover": { cursor: "pointer" },
+                  fontSize: isMobile ? 12 : 16,
+                  fontWeight: "bold",
+                }}
+                label={prod.title}
+              />
             </Typography>
           }
           onClick={() => {
@@ -73,42 +108,47 @@ const ProductCard = ({
           />
           <CardContent>
             <div
-              // style={{
-              //   display: "flex",
-              //   flexDirection: "row",
-                
-              // }}
+            // style={{
+            //   display: "flex",
+            //   flexDirection: "row",
+
+            // }}
             >
               <Chip
-            sx={{
-              backgroundColor: "yellow",
-              fontSize: 20,
-              marginLeft:'none',
-              marginTop: "4px",
-              
-            }}
-            label={`$ ${Number(prod.price).toFixed(2)}`}
-          />
+                sx={{
+                  backgroundColor: "yellow",
+                  fontSize: 15,
+                  marginLeft: "none",
+                  marginTop: "4px",
+                }}
+                label={`$ ${Number(prod.price).toFixed(2)}`}
+              />
               <Button
                 size="small"
                 sx={{
                   marginTop: "2px",
-                  marginLeft:'2px'
-               
+                  marginLeft: "2px",
                 }}
                 aria-label="add to cart"
-                onClick={() => {
-                 ProductUtils.updateCart("change", prod, cart, updateCartItems, user?.uid);
-                }}
+                onClick={() =>{return addToCart()}}
                 variant="contained"
                 startIcon={<AddShoppingCartIcon />}
                 disabled={!user}
               >
                 Add to cart
-              </Button>         
+              </Button>
             </div>
           </CardContent>
         </div>
+        <IconButton aria-label="share">
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            onClose={handleClose}
+            message="Product added to cart!"
+            action={action}
+          />
+        </IconButton>
       </Card>
     </>
   );

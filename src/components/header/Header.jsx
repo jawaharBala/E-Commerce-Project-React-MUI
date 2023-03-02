@@ -20,6 +20,7 @@ import {
   SvgIcon,
   Menu,
   MenuItem,
+  Alert,
 } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import Badge from "@mui/material/Badge";
@@ -63,9 +64,10 @@ function SearchAppBar() {
   const { user, logout } = useAuth();
   const isMobile = useMediaQuery("(max-width:750px)");
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
+    console.log(event)
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -120,6 +122,7 @@ function SearchAppBar() {
       await logout();
       setCart([]);
       cartCount([], setCount);
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -258,7 +261,7 @@ function SearchAppBar() {
                   <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
-                    open={open}
+                    open={Boolean(anchorEl)}
                     onClose={handleClose}
                     MenuListProps={{
                       "aria-labelledby": "basic-button",
@@ -398,6 +401,11 @@ function SearchAppBar() {
           {/* </AppBar> */}
         </Box>
       )}
+       {!user ? (
+                      <Alert severity="info">
+                        {"Login to add products to cart"}
+                      </Alert>
+                    ) : null}
     </>
   );
 }
