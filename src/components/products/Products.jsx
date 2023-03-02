@@ -11,8 +11,6 @@ import axios from "axios";
 
 const Products = () => {
   const {
-    products,
-    updateProducts,
     ProductUtils,
     cart,
     updateCartItems,
@@ -50,7 +48,7 @@ const Products = () => {
         setLoading(false);
         setItems(array);
       } 
-      console.log(items,'id',id)
+  
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -66,23 +64,11 @@ const Products = () => {
         ) : (
           <>
             {loader ? (
-              <div className="spinner">
                 <Box sx={{ margin:'auto', textAlign:'center' }}>
                   <CircularProgress />
                 </Box>
-              </div>
             ) : (
               <>
-                {/* {!user ? (
-                  <>
-                    <Chip
-                      sx={{ marginLeft: "25%", marginBottom:'2vh' }}
-                      color="primary"
-                      label={"Login to add products to cart"}
-                    ></Chip>
-                    <br />
-                  </>
-                ) : null} */}
                 {
                 items.length > 0 &&
                   items?.map((prod, index) => {

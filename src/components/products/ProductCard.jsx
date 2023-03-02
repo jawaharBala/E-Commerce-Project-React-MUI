@@ -76,15 +76,17 @@ const ProductCard = ({ prod }) => {
         <CardHeader
           title={
             <Typography>
+              <p>
               <Chip
                 clickable
                 sx={{
                   ":hover": { cursor: "pointer" },
-                  fontSize: isMobile ? 12 : 16,
+                  fontSize: isMobile ? 14 : 18,
                   fontWeight: "bold",
                 }}
                 label={prod.title}
               />
+              </p>
             </Typography>
           }
           onClick={() => {

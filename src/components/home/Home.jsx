@@ -35,20 +35,18 @@ const Home = () => {
     getProducts();
   }, []);
   return (
-    <div>
+    <>
       {errorHandling ? (
         <h1>404 Error. Try refreshing the page.</h1>
       ) : (
         <>
           {loading ? (
-            <div className="spinner">
-              <Box sx={{ justifyContent: "center", alignItems: "center" }}>
+              <Box sx={{ justifyContent: "center", textAlign: "center" ,margin:'auto'}}>
                 <CircularProgress />
               </Box>
-            </div>
           ) : (
             <>
-             <div style={{display:'flex', flexWrap:'wrap'}}>
+             <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}>
               {products?.map((data, index) => {
                 return (
                    
@@ -61,7 +59,7 @@ const Home = () => {
           )}
         </>
       )}
-    </div>
+    </>
   );
 };
 

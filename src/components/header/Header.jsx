@@ -403,7 +403,7 @@ function SearchAppBar() {
       )}
        {!user ? (
                       <Alert severity="info">
-                        {"Login to add products to cart"}
+                        {"Login to add products to cart and/or to view cart!"}
                       </Alert>
                     ) : null}
     </>

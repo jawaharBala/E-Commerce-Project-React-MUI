@@ -93,16 +93,6 @@ function App() {
         </div>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/todos/"
-            element={
-              <PrivateRoute>
-                <Suspense fallback={<Spinner />}>
-                  <InputFieldLazy />
-                </Suspense>
-              </PrivateRoute>
-            }
-          />
           <Route path="/home"  element={<Home />} />
           <Route
             path="/catagories/:id"
