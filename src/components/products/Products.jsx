@@ -67,7 +67,7 @@ const Products = () => {
           <>
             {loader ? (
               <div className="spinner">
-                <Box sx={{ justifyContent: "center", alignItems: "center" }}>
+                <Box sx={{ margin:'auto', textAlign:'center' }}>
                   <CircularProgress />
                 </Box>
               </div>
