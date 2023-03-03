@@ -100,7 +100,6 @@ function SearchAppBar() {
 
   useEffect(() => {
     cartCount(cart, setCount);
-    console.log("count", count, "cart", cart);
   }, [cart, user]);
 
   const cartCount = (cart, setCount) => {

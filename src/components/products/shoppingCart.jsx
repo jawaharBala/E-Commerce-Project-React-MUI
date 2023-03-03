@@ -91,6 +91,7 @@ const ShoppingCart = () => {
                     sx={{
                      width: 'auto',
                       paddingTop: "3vh",
+                      margin:'2vh'
                    
                     }}
                   >

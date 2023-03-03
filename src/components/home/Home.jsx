@@ -5,10 +5,13 @@ import axios from "axios";
 import { uid } from "react-uid";
 import { Box, CircularProgress,Button,Card, Container } from "@mui/material";
 import ProductCard from "../products/ProductCard";
+import Spinner from "../UI/Spinner";
+import Pagination from "../UI/Pagination";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
   const [products, setproducts] = useState([]);
+  const [items, setPageItems] = useState([]);
   
 
   const [errorHandling, setErrorHandling] = useState(false);
@@ -41,13 +44,12 @@ const Home = () => {
       ) : (
         <>
           {loading ? (
-              <Box sx={{ justifyContent: "center", textAlign: "center" ,margin:'auto'}}>
-                <CircularProgress />
-              </Box>
+            <Spinner/>
           ) : (
             <>
+            <Pagination items={products} setPageItems={setPageItems}/>
              <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}>
-              {products?.map((data, index) => {
+              {items?.map((data, index) => {
                 return (
                    
                     <ProductCard prod={data} key={index}/>
