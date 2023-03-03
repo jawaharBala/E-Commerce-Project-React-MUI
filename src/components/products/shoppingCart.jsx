@@ -12,20 +12,18 @@ import {
   Box,
   useMediaQuery,
   Chip,
-  CssBaseline
+  CssBaseline,
+  AppBar,
+  Toolbar
 } from "@mui/material";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import ShareIcon from "@mui/icons-material/Share";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/material/IconButton";
 import { ProductsStore } from "./ProductsContext";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 const ShoppingCart = () => {
-  const [open, setOpen] = useState(false);
   const [loadingCart, setLoadingCart] = useState(true);
   const context = useContext(ProductsStore);
   const { user } = useAuth();
@@ -47,33 +45,16 @@ const ShoppingCart = () => {
     }
   };
 
-  const addToCart = () => {
-    setOpen(true);
-  };
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
 
-    setOpen(false);
-  };
-  const action = (
-    <>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </>
-  );
   return (
     <>
+    <Box sx={{ backgroundColor: "#1976d2" }}>
+      <AppBar color="transparent" position="static">
+        <Toolbar>
+        <Typography sx={{color:'white'}}>Total products in cart:{context.cartCount}</Typography>
+        </Toolbar>
+      </AppBar>
+    </Box>
       {loadingCart ? (
         <div className="spinner">
           <Box sx={{ justifyContent: "center", alignItems: "center" }}>
@@ -90,7 +71,6 @@ const ShoppingCart = () => {
                     key={product.id}
                     sx={{
                      width: 'auto',
-                      paddingTop: "3vh",
                       margin:'2vh'
                    
                     }}
@@ -112,11 +92,11 @@ const ShoppingCart = () => {
                           sx={{ width: isMobile ? '15vh' : "25vh" }}
                           height="auto"
                           image={image}
+                          alt={product?.title}
                         />
                         )
                       })
-                      }
-                    
+                      }               
                     </div>
                     <CardContent>
                         <CardHeader
@@ -172,16 +152,6 @@ const ShoppingCart = () => {
                       >
                         Remove from cart
                       </Button>
-                      <IconButton aria-label="share">
-                        <Snackbar
-                          open={open}
-                          autoHideDuration={3000}
-                          onClose={handleClose}
-                          message="Product added to cart!"
-                          action={action}
-                        />
-                        <ShareIcon />
-                      </IconButton>
                     </CardContent>
                   </Card>
                   <CssBaseline/>

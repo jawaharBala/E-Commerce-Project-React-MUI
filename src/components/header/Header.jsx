@@ -33,6 +33,8 @@ import { initializeUseSelector } from "react-redux/es/hooks/useSelector";
 import { useEffect } from "react";
 import { useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
+import ProductUtils from "../products/productUtils";
+import { ProductsStore } from "../products/ProductsContext";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -47,7 +49,6 @@ let activeStyle = {
   backgroundColor: "white",
   color: "blue",
   padding: "3px",
-  borderRadius: "25%",
   margin: "1vh",
   borderStyle: "solid",
 };
@@ -56,7 +57,6 @@ let inactiveStyle = {
   backgroundColor: "black",
   color: "white",
   padding: "9px",
-  borderRadius: "15%",
   margin: "1vh",
 };
 function SearchAppBar() {
@@ -66,8 +66,8 @@ function SearchAppBar() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const {  cart,cartCount, updateCartCount } = React.useContext(ProductsStore);
   const handleClick = (event) => {
-    console.log(event)
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -85,42 +85,17 @@ function SearchAppBar() {
     { id: 4, name: "Shoes" },
   ];
 
-  const cart = useSelector((store) => {
-    return store.custom.cart;
-  });
-
-  const setCart = (load) => {
-    dispatch({
-      type: "updateCart",
-      payload: load,
-    });
-  };
-
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    cartCount(cart, setCount);
+   ProductUtils.cartCount(cart, updateCartCount);
   }, [cart, user]);
 
-  const cartCount = (cart, setCount) => {
-    let cartCounter = [];
-    if (cart && cart?.length > 0) {
-      cartCounter = cart
-        ?.map((item) => {
-          return item.cart;
-        })
-        .reduce((accumlator, currentValue) => {
-          return accumlator + currentValue;
-        });
-      setCount(cartCounter);
-    } else return setCount(0);
-  };
 
   const userLogout = async () => {
     try {
       await logout();
-      setCart([]);
-      cartCount([], setCount);
+      updateCartCount([]);
+     ProductUtils.cartCount([], updateCartCount);
       handleClose();
     } catch (error) {
       console.log(error);
@@ -238,9 +213,9 @@ function SearchAppBar() {
               >
                 Clothes
               </NavLink>
-              <Typography sx={{ marginLeft: "auto" }}>
+              <Typography sx={{flexGrow:2}}>
                 <Link to="/cart">
-                  <Badge badgeContent={count} color="primary">
+                  <Badge badgeContent={cartCount} color="primary">
                     <ShoppingCartIcon color="primary" />
                   </Badge>
                 </Link>
@@ -340,7 +315,7 @@ function SearchAppBar() {
               >
                 CART
                 <IconButton aria-label="cart" sx={{ marginTop: "3px" }}>
-                  <Badge badgeContent={count} color="primary">
+                  <Badge badgeContent={cartCount} color="primary">
                     <ShoppingCartIcon color="primary" />
                   </Badge>
                 </IconButton>

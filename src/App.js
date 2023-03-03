@@ -33,6 +33,9 @@ function App() {
   const cart = useSelector((store) => {
     return store.custom.cart;
   });
+  const cartCount = useSelector((store) => {
+    return store.custom.cartCount;
+  });
   const { user } = useAuth();
 
   useEffect(() => {
@@ -54,6 +57,13 @@ function App() {
   const updateCartItems = (payload) => {
     dispatch({
       type: "updateCart",
+      payload: payload,
+    });
+  };
+
+  const updateCartCount = (payload) => {
+    dispatch({
+      type: "updateCartCount",
       payload: payload,
     });
   };
@@ -86,6 +96,8 @@ function App() {
                   error,
                   cart,
                   updateCartItems,
+                  cartCount,
+                  updateCartCount
                 }}
               >
         <div className="App">

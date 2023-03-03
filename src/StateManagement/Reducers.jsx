@@ -4,6 +4,7 @@ const initialState = {
   products: [],
   cart: [],
   isAuthenticated: false,
+  cartCount:0
 };
 export const customReducer = createReducer(initialState, {
   updateProducts: (state, action) => {
@@ -15,6 +16,9 @@ export const customReducer = createReducer(initialState, {
   },
   updateCart: (state, action) =>{
     state.cart = action.payload;
+  },
+  updateCartCount: (state, action) =>{
+    state.cartCount = action.payload;
   },
 
 });

@@ -18,7 +18,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/material/IconButton";
@@ -34,6 +34,7 @@ const ViewProduct = () => {
   const context = useContext(ProductsStore);
   const isMobile = useMediaQuery("(max-width:600px)");
   const { user } = useAuth();
+  const navigate = useNavigate();
   useEffect(() => {
     getProduct();
   }, [context.products]);
@@ -80,6 +81,14 @@ const ViewProduct = () => {
     setOpen(false);
   };
 
+  const redirect = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1,{ replace:true});
+    } else {
+      navigate("/", { replace: true });
+    }
+  };
+
   const action = (
     <>
       <Button color="secondary" size="small" onClick={handleClose}>
@@ -101,9 +110,7 @@ const ViewProduct = () => {
         <h2>{error.message}. Please try again</h2>
       ) : (
         <>
-          <LinkMui to={0} component={Link}>
-            <Button>Go back</Button>
-          </LinkMui>
+            <Button onClick={redirect}>Go back</Button>
           {loading ? (
             <div className="spinner">
               <Box sx={{ justifyContent: "center", alignItems: "center" }}>
@@ -197,8 +204,7 @@ const ViewProduct = () => {
                         {"Login to add products to cart"}
                       </Alert>
                     ) : null}
-                    {context.ProductUtils.productInCart(product, context.cart)
-                      ?.length > 0 ? (
+                    {context.ProductUtils.productInCart(product, context?.cart)? (
                       <Button
                         sx={{ margin: "2px" }}
                         color="error"

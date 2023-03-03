@@ -1,29 +1,23 @@
 import React, { useEffect } from "react";
-import { useContext } from "react";
 import ProductCard from "./ProductCard";
 import "./Products.css";
 import {
   Box,
   CircularProgress,
-  Chip,
   CssBaseline,
-  TablePagination,
 } from "@mui/material";
-import { ProductsStore } from "./ProductsContext";
-import { useAuth } from "../contexts/AuthContext";
-import { useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import Pagination from "../UI/Pagination";
+import { useParams } from "react-router-dom";
 
 const Products = () => {
-  const { ProductUtils, cart, updateCartItems } = useContext(ProductsStore);
   const [loader, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [pageItems, setPageItems] = useState([]);
-  const { user } = useAuth();
   const { id } = useParams();
   const [error, setError] = useState();
+
 
   useEffect(() => {
     getProductByCatagories();
@@ -60,6 +54,8 @@ const Products = () => {
 
 
 
+
+
   return (
     <>
      <Pagination items={items} setPageItems={setPageItems}/>
@@ -86,9 +82,6 @@ const Products = () => {
                         <ProductCard
                           key={index}
                           prod={prod}
-                          updateCart={ProductUtils.updateCart}
-                          cart={cart}
-                          updateCartItems={updateCartItems}
                         />
                       </>
                     );
