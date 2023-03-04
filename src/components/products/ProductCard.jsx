@@ -109,12 +109,8 @@ const ProductCard = ({ prod }) => {
             image={prod.images[0]}
           />
           <CardContent>
+            
             <div
-            // style={{
-            //   display: "flex",
-            //   flexDirection: "row",
-
-            // }}
             >
               <Chip
                 sx={{

@@ -23,16 +23,31 @@ import { ProductsStore } from "./ProductsContext";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
 const ShoppingCart = () => {
   const [loadingCart, setLoadingCart] = useState(true);
   const context = useContext(ProductsStore);
   const { user } = useAuth();
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width:650px)");
+  const totalPrice = useSelector((store)=> store.custom.totalPrice )
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getCurrentCart();
+    context.ProductUtils.priceCounter(context.cart, updateTotalPrice);
   }, [user]);
+
+ useEffect(() => {
+  context.ProductUtils.priceCounter(context.cart, updateTotalPrice);
+  }, [context.cart]);
+
+  const updateTotalPrice = (total)=>{
+    dispatch({
+      type:"updateTotalPrice",
+      payload:total
+    })
+  }
 
   const getCurrentCart = async () => {
     try {
@@ -51,7 +66,8 @@ const ShoppingCart = () => {
     <Box sx={{ backgroundColor: "#1976d2" }}>
       <AppBar color="transparent" position="static">
         <Toolbar>
-        <Typography sx={{color:'white'}}>Total products in cart:{context.cartCount}</Typography>
+        <Typography sx={{color:'white', margin:'2vh'}}>Total products in cart:{context.cartCount}</Typography>
+        <Typography sx={{color:'white'}}>Total price:${Number(totalPrice).toFixed(2)}</Typography>
         </Toolbar>
       </AppBar>
     </Box>
@@ -79,7 +95,7 @@ const ShoppingCart = () => {
                       title={product.title}
                       subheader={ <Chip
                         sx={{ backgroundColor: "yellow", fontSize: 20 }}
-                        label={`$ ${product.price}`}
+                        label={`$ ${Number(product.price).toFixed(2)}`}
                       />}
                     ></CardHeader>
                     <div
@@ -147,10 +163,10 @@ const ShoppingCart = () => {
                             user.uid
                           );
                         }}
-                        variant="outlined"
-                        startIcon={<RemoveShoppingCartIcon color="error" />}
+                        variant="contained"
+                        startIcon={<RemoveShoppingCartIcon color="action" />}
                       >
-                        Remove from cart
+                        Remove
                       </Button>
                     </CardContent>
                   </Card>

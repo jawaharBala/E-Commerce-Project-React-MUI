@@ -80,6 +80,20 @@ const cartCount = (cart, setCount) => {
   } else return setCount(0);
 };
 
+const priceCounter = (cart, setCount) => {
+  let priceCounter = [];
+  if (cart && cart?.length > 0) {
+    priceCounter = cart
+      .map((item) => {
+        return (item.price)*item.cart;
+      })
+      .reduce((accumlator, currentValue) => {
+        return accumlator + currentValue;
+      });
+    setCount(priceCounter);
+  } else return setCount(0);
+};
+
 const updateCount = (action, product, productContext, settermethod) => {
   if (action === "add" && productContext?.length > 0) {
     let newProdArray = productContext?.map((prod) => {
@@ -109,5 +123,6 @@ const ProductUtils = {
   cartCount,
   postCart,
   getCart,
+  priceCounter
 };
 export default ProductUtils;

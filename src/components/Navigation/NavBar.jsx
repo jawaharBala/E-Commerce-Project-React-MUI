@@ -59,7 +59,7 @@ let inactiveStyle = {
   padding: "9px",
   margin: "1vh",
 };
-function SearchAppBar() {
+function NavBar() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const { user, logout } = useAuth();
   const isMobile = useMediaQuery("(max-width:750px)");
@@ -383,4 +383,4 @@ function SearchAppBar() {
     </>
   );
 }
-export default memo(SearchAppBar);
+export default memo(NavBar);

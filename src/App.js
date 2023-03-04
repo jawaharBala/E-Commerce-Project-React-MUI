@@ -2,7 +2,6 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/home/Home";
-import SearchAppBar from "./components/header/Header";
 import Products from "./components/products/Products";
 import ViewProduct from "./components/products/ViewProduct";
 import ShoppingCart from "./components/products/shoppingCart";
@@ -21,6 +20,8 @@ import { CircularProgress } from "@mui/material";
 import Spinner from "./components/UI/Spinner";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
+import NavBar from "./components/Navigation/NavBar";
+import BottomNavBar from "./components/Navigation/BottomNavBar";
 const InputFieldLazy = lazy(() => import("./components/inputField/InputField"));
 
 function App() {
@@ -101,7 +102,8 @@ function App() {
                 }}
               >
         <div className="App">
-          <SearchAppBar />
+          <NavBar />
+          <BottomNavBar/>
         </div>
         <Routes>
           <Route path="/" element={<Home />} />
