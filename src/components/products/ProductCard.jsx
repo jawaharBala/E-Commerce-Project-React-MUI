@@ -76,7 +76,6 @@ const ProductCard = ({ prod }) => {
         <CardHeader
           title={
             <Typography>
-              <p>
               <Chip
                 clickable
                 sx={{
@@ -86,7 +85,6 @@ const ProductCard = ({ prod }) => {
                 }}
                 label={prod.title}
               />
-              </p>
             </Typography>
           }
           onClick={() => {

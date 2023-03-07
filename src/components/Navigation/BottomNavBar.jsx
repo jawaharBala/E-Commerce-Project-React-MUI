@@ -1,4 +1,4 @@
-import { BottomNavigation, BottomNavigationAction, Paper, Typography } from "@mui/material";
+import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import { useAuth } from "../contexts/AuthContext";
 import PersonIcon from '@mui/icons-material/Person';
 

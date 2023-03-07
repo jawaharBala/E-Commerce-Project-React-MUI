@@ -22,6 +22,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import NavBar from "./components/Navigation/NavBar";
 import BottomNavBar from "./components/Navigation/BottomNavBar";
+import LogRocket from 'logrocket';
+
 const InputFieldLazy = lazy(() => import("./components/inputField/InputField"));
 
 function App() {
@@ -39,13 +41,22 @@ function App() {
   });
   const { user } = useAuth();
 
+  
+
   useEffect(() => {
     getProducts();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       ProductUtils.getCart(user?.uid, updateCartItems);
     });
 
-    console.log("user", user);
+    LogRocket.init('46iseo/ecommerce-project');
+  LogRocket.identify('46iseo', {
+    name: user?.name,
+    email: user?.email,
+  
+    // Add your own custom user variables here, ie:
+    subscriptionType: 'pro'
+  });
   }, [user?.uid]);
 
   const updateProducts = (payload) => {

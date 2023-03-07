@@ -46,25 +46,27 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 let activeStyle = {
   textDecoration: "none",
-  backgroundColor: "white",
-  color: "blue",
+  backgroundColor: "black",
   padding: "3px",
   margin: "1vh",
-  borderStyle: "solid",
+  color:'white',
+  fontWeight:'bolder',
+  fontSize:20
+
 };
 let inactiveStyle = {
   textDecoration: "none",
   backgroundColor: "black",
   color: "white",
-  padding: "9px",
+  padding: "3px",
   margin: "1vh",
 };
 function NavBar() {
-  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const { user, logout } = useAuth();
   const isMobile = useMediaQuery("(max-width:750px)");
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const {  cart,cartCount, updateCartCount } = React.useContext(ProductsStore);
   const handleClick = (event) => {
@@ -314,7 +316,7 @@ function NavBar() {
                 }
               >
                 CART
-                <IconButton aria-label="cart" sx={{ marginTop: "3px" }}>
+                <IconButton aria-label="cart" sx={{marginTop: "3px" }}>
                   <Badge badgeContent={cartCount} color="primary">
                     <ShoppingCartIcon color="primary" />
                   </Badge>
