@@ -46,12 +46,12 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 let activeStyle = {
   textDecoration: "none",
-  backgroundColor: "black",
+  backgroundColor: "grey",
   padding: "3px",
   margin: "1vh",
-  color:'white',
-  fontWeight:'bolder',
-  fontSize:20
+  color:'black',
+  width:"3vh",
+  borderRadius:"25%"
 
 };
 let inactiveStyle = {

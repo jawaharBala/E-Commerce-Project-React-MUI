@@ -74,17 +74,15 @@ const ProductCard = ({ prod }) => {
         }}
       >
         <CardHeader
+          sx={{ height: "6vh", backgroundColor: "rgb(204, 207, 147)", color: "black" }}
           title={
-            <Typography>
-              <Chip
-                clickable
-                sx={{
-                  ":hover": { cursor: "pointer" },
-                  fontSize: isMobile ? 14 : 18,
-                  fontWeight: "bold",
-                }}
-                label={prod.title}
-              />
+            <Typography sx={{
+              ":hover": { cursor: "pointer" },
+              fontSize: isMobile ? 14 : 18,
+              fontFamily:"sans-serif"
+
+            }} variant="h5" >
+              {prod.title}
             </Typography>
           }
           onClick={() => {
@@ -107,13 +105,13 @@ const ProductCard = ({ prod }) => {
             image={prod.images[0]}
           />
           <CardContent>
-            
+
             <div
             >
               <Chip
                 sx={{
                   backgroundColor: "yellow",
-                  fontSize: 15,
+                  fontSize: 12,
                   marginLeft: "none",
                   marginTop: "4px",
                 }}
@@ -126,7 +124,7 @@ const ProductCard = ({ prod }) => {
                   marginLeft: "2px",
                 }}
                 aria-label="add to cart"
-                onClick={() =>{return addToCart()}}
+                onClick={() => { return addToCart() }}
                 variant="contained"
                 startIcon={<AddShoppingCartIcon />}
                 disabled={!user}
