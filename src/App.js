@@ -50,7 +50,7 @@ function App() {
     });
 
     LogRocket.init('46iseo/ecommerce-project');
-  LogRocket.identify('46iseo', {
+  LogRocket.identify(user?.email, {
     name: user?.name,
     email: user?.email,
   

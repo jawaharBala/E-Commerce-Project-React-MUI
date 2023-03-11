@@ -50,7 +50,6 @@ let activeStyle = {
   padding: "3px",
   margin: "1vh",
   color:'black',
-  width:"3vh",
   borderRadius:"25%"
 
 };

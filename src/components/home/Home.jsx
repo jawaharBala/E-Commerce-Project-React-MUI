@@ -7,6 +7,7 @@ import { Box, CircularProgress,Button,Card, Container } from "@mui/material";
 import ProductCard from "../products/ProductCard";
 import Spinner from "../UI/Spinner";
 import Pagination from "../UI/Pagination";
+import SortingProducts from "../UI/SortingProducts";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -47,7 +48,11 @@ const Home = () => {
             <Spinner/>
           ) : (
             <>
+            <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}>
+            <SortingProducts products={products} setProducts={setproducts}/>
             <Pagination items={products} setPageItems={setPageItems}/>
+            </div>
+           
              <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}>
               {items?.map((data, index) => {
                 return (

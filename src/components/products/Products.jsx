@@ -10,6 +10,7 @@ import { useState } from "react";
 import axios from "axios";
 import Pagination from "../UI/Pagination";
 import { useParams } from "react-router-dom";
+import SortingProducts from "../UI/SortingProducts";
 
 const Products = () => {
   const [loader, setLoading] = useState(false);
@@ -58,7 +59,10 @@ const Products = () => {
 
   return (
     <>
-     <Pagination items={items} setPageItems={setPageItems}/>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+      <SortingProducts products={items} setProducts={setItems}/>
+        <Pagination items={items} setPageItems={setPageItems} />
+      </div>
 
       <div className="product-container">
         {error ? (
@@ -73,7 +77,7 @@ const Products = () => {
               </div>
             ) : (
               <>
-     
+
                 {pageItems.length > 0 &&
                   pageItems?.map((prod, index) => {
                     return (

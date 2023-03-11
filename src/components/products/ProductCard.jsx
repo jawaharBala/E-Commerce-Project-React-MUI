@@ -107,6 +107,7 @@ const ProductCard = ({ prod }) => {
           <CardContent>
 
             <div
+            style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}
             >
               <Chip
                 sx={{
