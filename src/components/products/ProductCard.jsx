@@ -69,16 +69,16 @@ const ProductCard = ({ prod }) => {
           margin: "5px",
           borderRadius: "3vh",
           borderColor: "white",
-          ":hover": { backgroundColor: "rgb(244, 240, 193)" },
+          ":hover": { backgroundColor: "rgb(244, 240, 193)" }, marginBottom:"4vh"
           // height:'60vh'
         }}
       >
         <CardHeader
-          sx={{ height: "6vh", backgroundColor: "rgb(204, 207, 147)", color: "black" }}
+          sx={{  backgroundColor: "rgb(204, 207, 147)", color: "black", textAlign:"center" }}
           title={
             <Typography sx={{
               ":hover": { cursor: "pointer" },
-              fontSize: isMobile ? 14 : 18,
+              fontSize: isMobile ? 14 : 14,
               fontFamily:"sans-serif"
 
             }} variant="h5" >
@@ -104,25 +104,26 @@ const ProductCard = ({ prod }) => {
             height="250px"
             image={prod.images[0]}
           />
-          <CardContent>
+          <CardActions sx={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}>
 
             <div
-            style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}
+            style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly', textAlign:"center",justifyItems:"center"}}
             >
               <Chip
                 sx={{
                   backgroundColor: "yellow",
                   fontSize: 12,
-                  marginLeft: "none",
-                  marginTop: "4px",
+                  // marginLeft: "none",
+                  // marginTop: "4px",
                 }}
                 label={`$ ${Number(prod.price).toFixed(2)}`}
               />
               <Button
                 size="small"
                 sx={{
-                  marginTop: "2px",
-                  marginLeft: "2px",
+                  // marginTop: "2px",
+                  marginLeft: "1vh",
+                  fontSize:11
                 }}
                 aria-label="add to cart"
                 onClick={() => { return addToCart() }}
@@ -133,7 +134,7 @@ const ProductCard = ({ prod }) => {
                 Add to cart
               </Button>
             </div>
-          </CardContent>
+          </CardActions>
         </div>
         <IconButton aria-label="share">
           <Snackbar

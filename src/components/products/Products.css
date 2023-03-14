@@ -3,5 +3,6 @@
     flex-wrap: wrap;
     padding: 1vh;
     margin: 2vh;
+    margin-bottom: 3vh;
     justify-content: space-evenly;
 }
