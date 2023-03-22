@@ -6,7 +6,7 @@ const Carousel = ({ datas }) => {
   const [startSlide, setStartSlide] = useState(true);
   const slideshow = () => {
     if (startSlide) {
-      let timeout = setTimeout(() => {
+      setTimeout(() => {
         if (index < datas?.length - 1) {
           let newIndex = index;
           setIndex(newIndex + 1);
@@ -24,7 +24,7 @@ const Carousel = ({ datas }) => {
 
   useEffect(() => {
     slideshow();
-  }, []);
+  }, [index]);
   return (
     <>
       <div className="slideshow-container">
