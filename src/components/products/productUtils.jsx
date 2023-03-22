@@ -28,6 +28,7 @@ const getCart = async (uid, updateCartItems) => {
     "https://reacttodo-team-default-rtdb.firebaseio.com/" + uid + "-cart.json"
   );
   updateCartItems(response.data);
+  console.log(response.data)
 };
 
 const updateCart = async (action, product, cart, setCart, uid) => {

@@ -36,6 +36,7 @@ const ShoppingCart = () => {
   useEffect(() => {
     getCurrentCart();
     context.ProductUtils.priceCounter(context.cart, updateTotalPrice);
+  
   }, [user]);
 
  useEffect(() => {
