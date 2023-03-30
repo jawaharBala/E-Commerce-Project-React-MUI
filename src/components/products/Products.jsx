@@ -31,49 +31,30 @@ const Products = () => {
     } catch (error) {}
   };
   const getProductByCatagories = async () => {
-    console.log(id);
-
     if (id) {
       const url =
         "https://us-central1-ecommerce-database-jawa.cloudfunctions.net/app/";
-        if(id==5){
-          getData(url);
-          console.log(url)
-        }else{
-          try {
-            setLoading(true);
-            if (id && id < 5) {
-              const response = await axios.get(
-                "https://api.escuelajs.co/api/v1/products/?categoryId=" + id
-              );
-              let array = response.data.map((elem) => {
-                return { ...elem, cart: 1 };
-              });
-              setLoading(false);
-              setItems(array);
-            }
-          } catch (error) {
+      if (id == 5) {
+        getData(url);
+      } else {
+        try {
+          setLoading(true);
+          if (id && id < 5) {
+            const response = await axios.get(
+              "https://api.escuelajs.co/api/v1/products/?categoryId=" + id
+            );
+            let array = response.data.map((elem) => {
+              return { ...elem, cart: 1 };
+            });
             setLoading(false);
-            setError(error);
+            setItems(array);
           }
+        } catch (error) {
+          setLoading(false);
+          setError(error);
         }
-   
-    }  
-    // else {
-    //   try {
-    //     const response = await axios.get(
-    //       "https://api.escuelajs.co/api/v1/products/"
-    //     );
-    //     let array = response.data.map((elem) => {
-    //       return { ...elem, cart: 1 };
-    //     });
-    //     setLoading(false);
-    //     setItems(array);
-    //   } catch (error) {
-    //     setLoading(false);
-    //     setError(error);
-    //   }
-    // }
+      }
+    }
   };
 
   return (
