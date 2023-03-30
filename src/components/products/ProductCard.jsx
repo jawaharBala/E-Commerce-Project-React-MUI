@@ -93,8 +93,7 @@ const ProductCard = ({ prod }) => {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            marginRight: "auto",
-            marginLeft: "auto",
+            justifyContent:'space-evenly'
           }}
         >
           <CardMedia
@@ -104,11 +103,7 @@ const ProductCard = ({ prod }) => {
             height="250px"
             image={prod.images[0] }
           />
-          <CardActions sx={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}>
-
-            <div
-            style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly', textAlign:"center",justifyItems:"center"}}
-            >
+          <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly', padding:"4px"}} >
               <Chip
                 sx={{
                   backgroundColor: "yellow",
@@ -133,8 +128,8 @@ const ProductCard = ({ prod }) => {
               >
                 Add to cart
               </Button>
-            </div>
-          </CardActions>
+    
+          </div>
         </div>
         <IconButton aria-label="share">
           <Snackbar
