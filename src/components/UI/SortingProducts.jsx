@@ -1,8 +1,11 @@
 import { Button, Chip } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SortingProducts = ({ products, setProducts }) => {
   const [activeButton, setActiveButton] = useState(false);
+  useEffect(()=>{
+      setActiveButton(false)
+  },[products])
   return (
     <>
       <div style={{}}>

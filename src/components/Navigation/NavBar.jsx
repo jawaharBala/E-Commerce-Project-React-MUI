@@ -79,11 +79,13 @@ function NavBar() {
     { id: 2, name: "Electronics" },
     { id: 3, name: "Furniture" },
     { id: 4, name: "Shoes" },
+    {id: 5, name:"More products"}
   ];
   const drawerMenu = [
     { id: 2, name: "Electronics" },
     { id: 3, name: "Furniture" },
     { id: 4, name: "Shoes" },
+    {id: 5, name:"More products"}
   ];
 
 

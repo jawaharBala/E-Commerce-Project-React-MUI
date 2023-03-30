@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import ProductCard from "./ProductCard";
 import "./Products.css";
-import {
-  Box,
-  CircularProgress,
-  CssBaseline,
-} from "@mui/material";
+import { Box, CircularProgress, CssBaseline } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import Pagination from "../UI/Pagination";
@@ -19,55 +15,77 @@ const Products = () => {
   const { id } = useParams();
   const [error, setError] = useState();
 
-
   useEffect(() => {
     getProductByCatagories();
-    getData()
+    // getData()
   }, [id]);
-  const getData = async ()=>{
+  const getData = async (url) => {
+    setLoading(true);
     try {
-      const response = await axios.get(
-        "http://localhost:4000/products"
-      );
-      let array = response.data;
-      console.log(array)
-    } catch (error) {
-      
-    }
-  }
-  const getProductByCatagories = async () => {
-    try {
-      setLoading(true);
-      if (id) {
-        const response = await axios.get(
-          "https://api.escuelajs.co/api/v1/products/?categoryId=" + id
-        );
-        let array = response.data.map((elem) => {
-          return { ...elem, cart: 1 };
-        });
-        setLoading(false);
-        setItems(array);
-      } else {
-        const response = await axios.get(
-          "https://api.escuelajs.co/api/v1/products/"
-        );
-        let array = response.data.map((elem) => {
-          return { ...elem, cart: 1 };
-        });
-        setLoading(false);
-        setItems(array);
-      }
-    } catch (error) {
-      console.log(error);
+      const response = await axios.get(url);
+      let array = response.data.map((elem) => {
+        return { ...elem, cart: 1, images: [elem.image] };
+      });
       setLoading(false);
-      setError(error);
-    }
+      setItems(array);
+    } catch (error) {}
+  };
+  const getProductByCatagories = async () => {
+    console.log(id);
+
+    if (id) {
+      const url =
+        "https://us-central1-ecommerce-database-jawa.cloudfunctions.net/app/";
+        if(id==5){
+          getData(url);
+          console.log(url)
+        }else{
+          try {
+            setLoading(true);
+            if (id && id < 5) {
+              const response = await axios.get(
+                "https://api.escuelajs.co/api/v1/products/?categoryId=" + id
+              );
+              let array = response.data.map((elem) => {
+                return { ...elem, cart: 1 };
+              });
+              setLoading(false);
+              setItems(array);
+            }
+          } catch (error) {
+            setLoading(false);
+            setError(error);
+          }
+        }
+   
+    }  
+    // else {
+    //   try {
+    //     const response = await axios.get(
+    //       "https://api.escuelajs.co/api/v1/products/"
+    //     );
+    //     let array = response.data.map((elem) => {
+    //       return { ...elem, cart: 1 };
+    //     });
+    //     setLoading(false);
+    //     setItems(array);
+    //   } catch (error) {
+    //     setLoading(false);
+    //     setError(error);
+    //   }
+    // }
   };
 
   return (
     <>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-      <SortingProducts products={items} setProducts={setItems}/>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-evenly",
+        }}
+      >
+        <SortingProducts products={items} setProducts={setItems} />
         <Pagination items={items} setPageItems={setPageItems} />
       </div>
 
@@ -84,20 +102,15 @@ const Products = () => {
               </div>
             ) : (
               <>
-
                 {pageItems.length > 0 &&
                   pageItems?.map((prod, index) => {
                     return (
                       <>
                         <CssBaseline />
-                        <ProductCard
-                          key={index}
-                          prod={prod}
-                        />
+                        <ProductCard key={index} prod={prod} />
                       </>
                     );
                   })}
-
               </>
             )}
           </>

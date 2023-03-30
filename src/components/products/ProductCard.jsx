@@ -98,11 +98,11 @@ const ProductCard = ({ prod }) => {
           }}
         >
           <CardMedia
-            sx={{ width: "full", marginRight: "auto", marginLeft: "auto" }}
+            sx={{ width: "full", marginRight: "auto", marginLeft: "auto" ,objectFit:"contain"}}
             component="img"
             alt={`${prod.title}`}
             height="250px"
-            image={prod.images[0]}
+            image={prod.images[0] }
           />
           <CardActions sx={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly'}}>
 
