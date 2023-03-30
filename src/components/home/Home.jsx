@@ -74,7 +74,7 @@ const Home = () => {
                   products={products}
                   setProducts={setproducts}
                 />
-                <Pagination items={products} setPageItems={setPageItems} />
+                <Pagination items={products} setPageItems={setPageItems} pageItems={items}/>
               </div>
              {categories?.length>0 && <Carousel datas={categories} />}
               <div

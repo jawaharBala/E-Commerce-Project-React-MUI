@@ -7,19 +7,23 @@ const Pagination = ({ setPageItems, items }) => {
   const [count, setCount] = useState(10);
 
   useEffect(() => {
-    handleChangePage("event", page);
     setCount(Math.ceil(items.length));
     setPage(0)
-  }, [items, rowsPerPage]);
+    handleChangePage("event", 0);
+  }, [rowsPerPage]);
+
+  useEffect(()=>{
+    handleChangePage('e',page);
+    setCount(Math.ceil(items.length));
+  },[items])
 
   const handleChangePage = (event, newPage) => {
     setPage(+newPage);
     const begin = (newPage + 1) * rowsPerPage - rowsPerPage;
     const end =(newPage + 1) * rowsPerPage;
-
     const newItems = items;
     setPageItems(newItems.slice(begin, end));
-
+    // console.log("begin",begin,"end",end,"page",newPage,"newpageitems",newItems,"items",items)
   };
 
   const handleChangeRowsPerPage = (event) => {

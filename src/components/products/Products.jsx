@@ -22,8 +22,19 @@ const Products = () => {
 
   useEffect(() => {
     getProductByCatagories();
+    getData()
   }, [id]);
-
+  const getData = async ()=>{
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/products"
+      );
+      let array = response.data;
+      console.log(array)
+    } catch (error) {
+      
+    }
+  }
   const getProductByCatagories = async () => {
     try {
       setLoading(true);

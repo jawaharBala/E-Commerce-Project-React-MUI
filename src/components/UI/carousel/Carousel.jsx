@@ -38,6 +38,7 @@ const Carousel = ({ datas }) => {
           />
         </div>
         <div className="text">{datas[index]?.name}</div>
+        <br/>
         {index != 0 && (
           <a className="prev" onClick={() => currentSlide(index - 1)}>
             ❮

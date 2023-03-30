@@ -23,6 +23,7 @@ import { auth } from "./firebase";
 import NavBar from "./components/Navigation/NavBar";
 import BottomNavBar from "./components/Navigation/BottomNavBar";
 import LogRocket from 'logrocket';
+import ErrorBoundary from "./components/Error-handling/ErrorBoundary/Errorboundary";
 
 const InputFieldLazy = lazy(() => import("./components/inputField/InputField"));
 
@@ -98,6 +99,7 @@ function App() {
 
   return (
     <>
+    <ErrorBoundary>
       <AuthProvider>
       <ProductsStore.Provider
                 value={{
@@ -145,6 +147,7 @@ function App() {
         </Routes>
         </ProductsStore.Provider>
       </AuthProvider>
+      </ErrorBoundary>
     </>
   );
 }
