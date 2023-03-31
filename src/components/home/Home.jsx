@@ -9,6 +9,7 @@ import Spinner from "../UI/Spinner";
 import Pagination from "../UI/Pagination";
 import SortingProducts from "../UI/SortingProducts";
 import Carousel from "../UI/carousel/Carousel";
+import CategoriesSlide from "../UI/categories slide/CategoriesSlide";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -83,6 +84,7 @@ const Home = () => {
                   justifyContent: "space-evenly",
                 }}
               >
+                <CategoriesSlide categories={categories}/>
                 {items?.map((data, index) => {
                   return (
                     <>

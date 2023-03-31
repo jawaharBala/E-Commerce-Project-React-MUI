@@ -63,7 +63,7 @@ const ProductCard = ({ prod }) => {
     <>
       <Card
         sx={{
-          width: isMobile ? "40vh" : "32vh",
+          width: isMobile ? "42vh" : "32vh",
           borderWidth: "2px",
           borderStyle: "solid",
           margin: "5px",
@@ -103,7 +103,7 @@ const ProductCard = ({ prod }) => {
             height="250px"
             image={prod.images[0] }
           />
-          <div style={{display:'flex', flexWrap:'wrap', justifyContent:'space-evenly', padding:"4px"}} >
+          <CardActions sx={{display:'flex', justifyContent:'space-evenly', paddingTop:"4px"}} >
               <Chip
                 sx={{
                   backgroundColor: "yellow",
@@ -118,7 +118,7 @@ const ProductCard = ({ prod }) => {
                 sx={{
                   // marginTop: "2px",
                   marginLeft: "1vh",
-                  fontSize:11
+                  fontSize:8
                 }}
                 aria-label="add to cart"
                 onClick={() => { return addToCart() }}
@@ -129,7 +129,7 @@ const ProductCard = ({ prod }) => {
                 Add to cart
               </Button>
     
-          </div>
+          </CardActions>
         </div>
         <IconButton aria-label="share">
           <Snackbar
