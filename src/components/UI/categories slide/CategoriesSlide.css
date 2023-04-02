@@ -4,11 +4,30 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  background-color: white;
 }
 
 .category {
+    position: relative;
   border-radius: 50%;
-  height: 170px;
-  width: 170px;
+  height: 180px;
+  width: 180px;
   margin: 3px;
+  display: flex;
+  justify-content:center;
+}
+.image{
+    position: absolute;
+    height: 160px;
+    width:160px;
+    object-fit: cover;
+    border-radius: 50%;
+    top: 50%;
+   left: 50%;
+   margin: -80px 0px 0px -80px;
+ 
+}
+.name{
+    /* position: absolute; */
+    margin: 160px 0 0 180px ; 
 }

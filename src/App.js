@@ -1,31 +1,30 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Home from "./components/home/Home";
-import Products from "./components/products/Products";
-import ViewProduct from "./components/products/ViewProduct";
-import ShoppingCart from "./components/products/shoppingCart";
-import { ProductsStore } from "./components/products/ProductsContext";
+import Home from "../src/components/home/Home";
+import Products from "../src/components/products/Products";
+import ViewProduct from "../src/components/products/ViewProduct";
+import ShoppingCart from "../src/components/products/shoppingCart";
+import { ProductsStore } from "../src/components/products/ProductsContext";
 import axios from "axios";
-import ProductUtils from "./components/products/productUtils";
-import SignUpPage from "./components/Login-Signup/SignUpPage";
-import LoginPage from "./components/Login-Signup/LoginPage";
+import ProductUtils from "../src/components/products/productUtils";
+import SignUpPage from "../src/components/Login-Signup/SignUpPage";
+import LoginPage from "../src/components/Login-Signup/LoginPage";
 import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 import db from "./firebase";
-import { AuthProvider, useAuth } from "./components/contexts/AuthContext";
-import PrivateRoute from "./components/Routes/PrivateRoute";
+import { AuthProvider, useAuth } from "../src/components/contexts/AuthContext";
+import PrivateRoute from "../src/components/Routes/PrivateRoute";
 import { useSelector, useDispatch } from "react-redux";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
-import Spinner from "./components/UI/Spinner";
+import Spinner from "../src/components/UI/Spinner";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import NavBar from "./components/Navigation/NavBar";
-import BottomNavBar from "./components/Navigation/BottomNavBar";
+import BottomNavBar from "../src/components/Navigation/BottomNavBar";
 import LogRocket from 'logrocket';
-import ErrorBoundary from "./components/Error-handling/ErrorBoundary/Errorboundary";
-
-const InputFieldLazy = lazy(() => import("./components/inputField/InputField"));
+import ErrorBoundary from "../src/components/Error-handling/ErrorBoundary/Errorboundary";
+const InputFieldLazy = lazy(() => import("../src/components/inputField/InputField"));
 
 function App() {
   const products = useSelector((store) => {

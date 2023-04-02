@@ -8,7 +8,9 @@ const CategoriesSlide = ({ categories }) => {
           return (
             <>
               <div className="category" style={{backgroundColor:colors[i]}}>
-                <img className="category"  src={category.image}></img>
+                <img className="image"  src={category.image} alt={category.name}></img>
+                <br/>
+                <h4 className="name">{category.name}</h4>
               </div>
             </>
           );
