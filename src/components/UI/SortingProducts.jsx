@@ -8,7 +8,7 @@ const SortingProducts = ({ products, setProducts }) => {
   },[products])
   return (
     <>
-      <div style={{}}>
+      <div style={{marginTop:"16px"}}>
         <Chip
           variant="contained"
           label={"SORT BY PRICE:"}

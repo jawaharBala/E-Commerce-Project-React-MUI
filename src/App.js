@@ -11,7 +11,6 @@ import ProductUtils from "../src/components/products/productUtils";
 import SignUpPage from "../src/components/Login-Signup/SignUpPage";
 import LoginPage from "../src/components/Login-Signup/LoginPage";
 import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
-import db from "./firebase";
 import { AuthProvider, useAuth } from "../src/components/contexts/AuthContext";
 import PrivateRoute from "../src/components/Routes/PrivateRoute";
 import { useSelector, useDispatch } from "react-redux";
@@ -22,9 +21,11 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import NavBar from "./components/Navigation/NavBar";
 import BottomNavBar from "../src/components/Navigation/BottomNavBar";
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
 import ErrorBoundary from "../src/components/Error-handling/ErrorBoundary/Errorboundary";
-const InputFieldLazy = lazy(() => import("../src/components/inputField/InputField"));
+const InputFieldLazy = lazy(() =>
+  import("../src/components/inputField/InputField")
+);
 
 function App() {
   const products = useSelector((store) => {
@@ -41,22 +42,19 @@ function App() {
   });
   const { user } = useAuth();
 
-  
-
   useEffect(() => {
-    getProducts();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       ProductUtils.getCart(user?.uid, updateCartItems);
     });
 
-    LogRocket.init('46iseo/ecommerce-project');
-  LogRocket.identify(user?.email, {
-    name: user?.name,
-    email: user?.email,
-  
-    // Add your own custom user variables here, ie:
-    subscriptionType: 'pro'
-  });
+    LogRocket.init("46iseo/ecommerce-project");
+    LogRocket.identify(user?.email, {
+      name: user?.name,
+      email: user?.email,
+
+      // Add your own custom user variables here, ie:
+      subscriptionType: "pro",
+    });
   }, [user?.uid]);
 
   const updateProducts = (payload) => {
@@ -80,72 +78,64 @@ function App() {
     });
   };
 
-  const getProducts = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get("https://api.escuelajs.co/api/v1/products");
-      let array = response.data.map((elem) => {
-        return { ...elem, cart: 1 };
-      });
-      updateProducts(array);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      setError(error);
-    }
-  };
+  // const getProducts = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.get(
+  //       "https://api.escuelajs.co/api/v1/products"
+  //     );
+  //     let array = response.data.map((elem) => {
+  //       return { ...elem, cart: 1 };
+  //     });
+  //     updateProducts(array);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //     setError(error);
+  //   }
+  // };
 
   return (
     <>
-    <ErrorBoundary>
-      <AuthProvider>
-      <ProductsStore.Provider
-                value={{
-                  products,
-                  updateProducts,
-                  ProductUtils,
-                  loading,
-                  error,
-                  cart,
-                  updateCartItems,
-                  cartCount,
-                  updateCartCount
-                }}
-              >
-        <div className="App">
-          <NavBar />
-          <BottomNavBar/>
-        </div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home"  element={<Home />} />
-          <Route
-            path="/catagories/:id"
-            element={            
-                <Products />            
-            }
-          />
-          <Route
-            path="/product/:id"
-            element={
-                <ViewProduct />
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-                <PrivateRoute>
-                  <ShoppingCart />
-                </PrivateRoute>
-            }
-          />
-          <Route path="/signup" element={<SignUpPage />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
-          <Route path="*" element={<h2>404 Not Found</h2>}></Route>
-        </Routes>
-        </ProductsStore.Provider>
-      </AuthProvider>
+      <ErrorBoundary>
+        <AuthProvider>
+          <ProductsStore.Provider
+            value={{
+              products,
+              updateProducts,
+              ProductUtils,
+              loading,
+              error,
+              cart,
+              updateCartItems,
+              cartCount,
+              updateCartCount,
+            }}
+          >
+            <div className="App">
+              <NavBar />
+              <BottomNavBar />
+            </div>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/catagories/:id" element={<Products />} />
+              <Route path="/product/:id" element={<ViewProduct />} />
+              <Route
+                path="/cart"
+                element={
+                  <PrivateRoute>
+                    <ShoppingCart />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/signup" element={<SignUpPage />}></Route>
+              <Route path="/login" element={<LoginPage />}></Route>
+              <Route path="*" element={<h2>404 Not Found</h2>}></Route>
+            </Routes>
+          </ProductsStore.Provider>
+        </AuthProvider>
       </ErrorBoundary>
     </>
   );

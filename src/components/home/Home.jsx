@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import "./Home.css";
+import "../../../src/components/home/Home.css";
 import axios from "axios";
 import { uid } from "react-uid";
 import { Box, CircularProgress, Button, Card, Container } from "@mui/material";
@@ -42,7 +42,7 @@ const Home = () => {
       const response = await axios.get(
         "https://api.escuelajs.co/api/v1/categories?limit=5"
       );
-     
+
       setCategories(response.data);
     } catch (error) {
       console.log(error);
@@ -51,7 +51,7 @@ const Home = () => {
   useEffect(() => {
     getProducts();
     getCategories();
-    console.log(categories)
+    console.log(categories);
   }, []);
   return (
     <>
@@ -63,28 +63,33 @@ const Home = () => {
             <Spinner />
           ) : (
             <>
+              {categories?.length > 0 && <Carousel datas={categories} />}
+              <CategoriesSlide categories={categories} />
+              <span
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "space-evenly",
+                    position:"relative"
+                  }}
+                >
+                  <SortingProducts
+                    products={products}
+                    setProducts={setproducts}
+                  />
+                  <Pagination
+                    items={products}
+                    setPageItems={setPageItems}
+                    pageItems={items}
+                  />
+                </span>
               <div
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
                   justifyContent: "space-evenly",
                 }}
-              >
-                <SortingProducts
-                  products={products}
-                  setProducts={setproducts}
-                />
-                <Pagination items={products} setPageItems={setPageItems} pageItems={items}/>
-              </div>
-             {categories?.length>0 && <Carousel datas={categories} />}
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "space-evenly",
-                }}
-              >
-                <CategoriesSlide categories={categories}/>
+              >                
                 {items?.map((data, index) => {
                   return (
                     <>

@@ -17,7 +17,6 @@ const Products = () => {
 
   useEffect(() => {
     getProductByCatagories();
-    // getData()
   }, [id]);
   const getData = async (url) => {
     setLoading(true);
@@ -28,7 +27,10 @@ const Products = () => {
       });
       setLoading(false);
       setItems(array);
-    } catch (error) {}
+    } catch (error) {
+      setLoading(false);
+          setError(error);
+    }
   };
   const getProductByCatagories = async () => {
     if (id) {
@@ -39,7 +41,7 @@ const Products = () => {
       } else {
         try {
           setLoading(true);
-          if (id && id < 5) {
+          if (id && id != 5) {
             const response = await axios.get(
               "https://api.escuelajs.co/api/v1/products/?categoryId=" + id
             );
@@ -101,4 +103,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default React.memo(Products);

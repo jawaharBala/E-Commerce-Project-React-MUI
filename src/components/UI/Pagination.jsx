@@ -10,12 +10,9 @@ const Pagination = ({ setPageItems, items }) => {
     setCount(Math.ceil(items.length));
     setPage(0)
     handleChangePage("event", 0);
-  }, [rowsPerPage]);
+  }, [rowsPerPage,items]);
 
-  useEffect(()=>{
-    handleChangePage('e',page);
-    setCount(Math.ceil(items.length));
-  },[items])
+
 
   const handleChangePage = (event, newPage) => {
     setPage(+newPage);
@@ -33,6 +30,7 @@ const Pagination = ({ setPageItems, items }) => {
 
   return (
     <TablePagination
+    sx={{marginTop:"10px"}}
       labelRowsPerPage="Products per page"
       component="div"
       count={count}
