@@ -2,9 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 1vh;
-
-}
-.spinner{
-    margin-top: 20%;
-    margin-left: 50%;
+    margin: 2vh;
+    margin-bottom: 3vh;
+    justify-content: space-evenly;
 }

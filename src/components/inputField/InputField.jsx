@@ -2,26 +2,53 @@ import React from "react";
 import "./InputField.css";
 import { useState, useEffect } from "react";
 import CardPrimary from "../cards/CardPrimary";
-import { ButtonGroup, TextField , Button} from "@mui/material";
+import { ButtonGroup, TextField, Button } from "@mui/material";
 import { TodoStore } from "../../components/contexts/ContextStore";
-
-
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
+import { useDispatch } from "react-redux";
 const InputField = () => {
   const [inputString, setInputString] = useState({ todo: "", done: false });
   const [todos, setTodos] = useState([]);
   const [todosPresent, setTodosPresent] = useState(false);
   const [enableAddButton, setEnableButton] = useState(false);
-
+  const {user} = useAuth();
+  const dispatch = useDispatch();
   useEffect(() => {
-    setTodos(JSON.parse(window.localStorage.getItem("todos")) || []);
-    
+    getTodos();
   }, []);
 
   useEffect(() => {
     setInputString("");
-    window.localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
-  
+
+  const postTodos = async (todo, setTodos) => {
+    try {
+      await axios
+        .put(
+          "https://reacttodo-team-default-rtdb.firebaseio.com/"+user.uid+"-todos.json",
+          JSON.stringify(todo)
+        )
+        .then((response) => {
+          setTodos([...todo])
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTodos = async () => {
+    try {
+      await axios
+        .get("https://reacttodo-team-default-rtdb.firebaseio.com/"+user.uid+"-todos.json")
+        .then((response) => {
+          setTodos(response.data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChange = (e) => {
     setInputString(e.target.value);
     if (inputString.length > 0) {
@@ -33,20 +60,27 @@ const InputField = () => {
 
   const handleClick = () => {
     setTodosPresent(true);
-    if (todos.length > 0) {
-      setTodos([...todos, { todo: inputString, done: false }]);
+    // const newValue = 99;
+    // dispatch({
+    //   type:"updateCount",
+    //   payload:newValue
+    // })
+    if (todos?.length > 0) {
+      let newTodos = [...todos, { todo: inputString, done: false }];
+      setTodos(newTodos);
+      postTodos(newTodos);
     } else {
       setTodos([{ todo: inputString, done: false }]);
+      postTodos([{ todo: inputString, done: false }]);
     }
   };
 
   const clearTodos = () => {
-    setTodos([]);
+    postTodos([],setTodos);
   };
 
-
   useEffect(() => {
-    if (todos.length >= 1) {
+    if (todos?.length >= 1) {
       setTodosPresent(true);
     } else {
       setEnableButton(false);
@@ -54,10 +88,11 @@ const InputField = () => {
     }
   }, [todos, todosPresent]);
 
-
   return (
     <>
-      <TodoStore.Provider value={{ todos: todos, setTodos: setTodos }}>
+      <TodoStore.Provider
+        value={{ todos: todos, setTodos: setTodos, postTodos }}
+      >
         <div className="input-container">
           <TextField
             placeholder=""
@@ -66,18 +101,26 @@ const InputField = () => {
             onChange={handleChange}
             type="text"
             value={inputString}
-            onPressEnter={handleClick}
             className="input"
           />
           <br></br>
           <ButtonGroup>
             {enableAddButton ? (
-              <Button sx={{backgroundColor:'black', margin:'2vh', color:'white'}} onClick={handleClick} type="primary">
+              <Button
+                sx={{ backgroundColor: "black", margin: "2vh", color: "white" }}
+                onClick={handleClick}
+                type="primary"
+              >
                 Add
               </Button>
             ) : null}
             {todosPresent ? (
-              <Button sx={{backgroundColor:'red', margin:'2vh', color:'white'}} onClick={clearTodos}>Clear all</Button>
+              <Button
+                sx={{ backgroundColor: "red", margin: "2vh", color: "white" }}
+                onClick={clearTodos}
+              >
+                Clear all
+              </Button>
             ) : null}
           </ButtonGroup>
           {todosPresent ? (

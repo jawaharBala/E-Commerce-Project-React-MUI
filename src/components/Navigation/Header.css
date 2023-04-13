@@ -15,13 +15,13 @@
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 
 }
-.button1{
+/* .button1{
     margin: auto;
     margin:2px;
     background-color: black;
     color: white;
     
-}
+} */
 .container{
     display: flex;
     justify-content: center;
@@ -53,4 +53,9 @@
     text-align: center;
     margin-top: 1vh;
     font-weight: 300;
+}
+.nav-link{
+    display: inline;
+    background-color: aliceblue;
+    padding: 20px 20px;
 }
