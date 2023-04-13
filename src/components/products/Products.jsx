@@ -25,6 +25,8 @@ const Products = () => {
       let array = response.data.map((elem) => {
         return { ...elem, cart: 1, images: [elem.image] };
       });
+
+      console.log(array)
       setLoading(false);
       setItems(array);
     } catch (error) {
@@ -35,9 +37,24 @@ const Products = () => {
   const getProductByCatagories = async () => {
     if (id) {
       const url =
-        "https://us-central1-ecommerce-database-jawa.cloudfunctions.net/app/";
+        "https://us-central1-ecommerce-database-jawa.cloudfunctions.net/app/products/6421b57ef81ee452bb26d50f";
       if (id == 5) {
-        getData(url);
+        setLoading(true);
+        try {
+          const response = await axios.get(url);
+          let array = response.data;
+           array = array[0]?.products[0];
+           console.log(array)
+          array?.map((elem) => {
+            return { ...elem, cart: 1, images: [elem.image] };
+          });
+    
+          setLoading(false);
+          setItems(array);
+        } catch (error) {
+          setLoading(false);
+              setError(error);
+        }
       } else {
         try {
           setLoading(true);

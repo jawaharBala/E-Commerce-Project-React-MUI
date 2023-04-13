@@ -3,11 +3,11 @@ import React from 'react';
 import App from './App';
 
 describe('App tests', () => {
-    // it('should contains the heading 1', () => {
-    // render(<App />);
-    //     const heading = screen.getByText(/Hello world! I am using React/i);
-    // //     expect(heading).toBeInTheDocument()
-    // // });
+    it('should contains the heading 1', () => {
+    render(<App />);
+        const heading = screen.getByText(/Hello world! I am using React/i);
+        expect(heading).toBeInTheDocument()
+    });
     // it("renders without crashing", () => {
     //   shallow(<App />);
     // });
@@ -18,6 +18,6 @@ describe('App tests', () => {
     //   expect(wrapper.contains(welcome)).toEqual(true);
     // });
 
-    test()
+    
     
 });

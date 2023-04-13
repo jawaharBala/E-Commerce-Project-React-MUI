@@ -1,6 +1,7 @@
 {
   "name": "todoapp",
   "version": "0.1.0",
+  "type":"module",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -27,7 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "webdev": "webpack-dev-server",
     "webbuild": "webpack",
@@ -60,6 +61,7 @@
     "@babel/preset-react": "^7.18.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
+    "babel-jest": "^29.5.0",
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "eslint": "^8.37.0",
@@ -71,7 +73,6 @@
     "style-loader": "^3.3.2",
     "webpack": "^5.77.0",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.13.2",
-    "babel-jest": "^29.5.0"
+    "webpack-dev-server": "^4.13.2"
   }
 }

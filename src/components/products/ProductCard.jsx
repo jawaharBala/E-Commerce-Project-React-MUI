@@ -101,7 +101,7 @@ const ProductCard = ({ prod }) => {
             component="img"
             alt={`${prod.title}`}
             height="250px"
-            image={prod.images[0] }
+            image={prod?.images[0] }
           />
           <CardActions sx={{display:'flex', justifyContent:'space-evenly', paddingTop:"4px"}} >
               <Chip

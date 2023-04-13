@@ -52,6 +52,7 @@ img {
   color: #060606;
   font-size: 15px;
   padding: 8px 12px;
+  margin: -8px;
   /* position: absolute; */
   bottom: 8px;
   width: 100%;

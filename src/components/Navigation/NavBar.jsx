@@ -29,7 +29,6 @@ import { memo } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import { useDispatch, useSelector } from "react-redux";
-import { initializeUseSelector } from "react-redux/es/hooks/useSelector";
 import { useEffect } from "react";
 import { useState } from "react";
 import { AccountCircle } from "@mui/icons-material";
@@ -50,7 +49,7 @@ let activeStyle = {
   padding: "3px",
   margin: "1vh",
   color:'black',
-  borderRadius:"25%"
+  borderRadius:"100vmax"
 
 };
 let inactiveStyle = {

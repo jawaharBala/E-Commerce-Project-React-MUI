@@ -55,6 +55,7 @@
     font-weight: 300;
 }
 .nav-link{
+    display: inline;
     background-color: aliceblue;
-    border: 10px;
+    padding: 20px 20px;
 }

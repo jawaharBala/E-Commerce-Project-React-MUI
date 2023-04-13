@@ -10,7 +10,6 @@ import axios from "axios";
 import ProductUtils from "../src/components/products/productUtils";
 import SignUpPage from "../src/components/Login-Signup/SignUpPage";
 import LoginPage from "../src/components/Login-Signup/LoginPage";
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 import { AuthProvider, useAuth } from "../src/components/contexts/AuthContext";
 import PrivateRoute from "../src/components/Routes/PrivateRoute";
 import { useSelector, useDispatch } from "react-redux";

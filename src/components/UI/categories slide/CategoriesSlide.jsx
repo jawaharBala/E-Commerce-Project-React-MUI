@@ -29,8 +29,6 @@ const CategoriesSlide = ({ categories }) => {
                   src={category.image}
                   alt={category.name}
                 ></img>
-                <br />
-                <h4 className="name">{category.name}</h4>
               </div>
             </>
           );
