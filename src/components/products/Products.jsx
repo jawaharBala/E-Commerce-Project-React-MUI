@@ -17,6 +17,7 @@ const Products = () => {
 
   useEffect(() => {
     getProductByCatagories();
+    setError(null);
   }, [id]);
   const getData = async (url) => {
     setLoading(true);
@@ -42,13 +43,10 @@ const Products = () => {
         setLoading(true);
         try {
           const response = await axios.get(url);
-          let array = response.data;
-           array = array[0]?.products[0];
-           console.log(array)
-          array?.map((elem) => {
-            return { ...elem, cart: 1, images: [elem.image] };
-          });
-    
+        let array = JSON.parse(response.data[0].products[0]);
+        array = array.map((elem) => {
+          return { ...elem, cart: 1, images:[elem.image] };
+        });
           setLoading(false);
           setItems(array);
         } catch (error) {

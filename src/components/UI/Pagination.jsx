@@ -7,7 +7,7 @@ const Pagination = ({ setPageItems, items }) => {
   const [count, setCount] = useState(10);
 
   useEffect(() => {
-    setCount(Math.ceil(items.length));
+    setCount(Math.ceil(items.length) || 0);
     setPage(0)
     handleChangePage("event", 0);
   }, [rowsPerPage,items]);
