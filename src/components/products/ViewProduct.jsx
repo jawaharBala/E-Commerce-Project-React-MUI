@@ -41,6 +41,7 @@ const ViewProduct = () => {
 
   const getProduct = async () => {
     setLoading(true);
+    
     if (context.products.length > 0 && id) {
       let prod = context.products.filter((elem) => {
         return elem.id === +id;

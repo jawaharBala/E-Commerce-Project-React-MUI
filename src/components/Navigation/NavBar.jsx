@@ -49,7 +49,9 @@ let activeStyle = {
   padding: "3px",
   margin: "1vh",
   color:'black',
-  borderRadius:"100vmax"
+  borderRadius:"100vmax",
+  fontSize:"2vh",
+  fontWeight:"bolder"
 
 };
 let inactiveStyle = {
@@ -58,6 +60,8 @@ let inactiveStyle = {
   color: "white",
   padding: "3px",
   margin: "1vh",
+  fontSize:"2vh",
+  fontWeight:"bolder"
 };
 function NavBar() {
   const [openDrawer, setOpenDrawer] = useState(false);

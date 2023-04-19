@@ -24,7 +24,7 @@ const Products = () => {
     try {
       const response = await axios.get(url);
       let array = response.data.map((elem) => {
-        return { ...elem, cart: 1, images: [elem.image] };
+        return { ...elem, cart: 1 };
       });
 
       console.log(array)
@@ -54,23 +54,10 @@ const Products = () => {
               setError(error);
         }
       } else {
-        try {
-          setLoading(true);
-          if (id && id != 5) {
-            const response = await axios.get(
-              "https://api.escuelajs.co/api/v1/products/?categoryId=" + id
-            );
-            let array = response.data.map((elem) => {
-              return { ...elem, cart: 1 };
-            });
-            setLoading(false);
-            setItems(array);
+
+            let url =   "https://api.escuelajs.co/api/v1/products/?categoryId=" + id;
+            getData(url);
           }
-        } catch (error) {
-          setLoading(false);
-          setError(error);
-        }
-      }
     }
   };
 

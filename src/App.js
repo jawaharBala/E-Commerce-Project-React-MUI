@@ -131,7 +131,7 @@ function App() {
               />
               <Route path="/signup" element={<SignUpPage />}></Route>
               <Route path="/login" element={<LoginPage />}></Route>
-              <Route path="*" element={<h2>404 Not Found</h2>}></Route>
+              <Route path="*" element={<h2>404 Page Not Found</h2>}></Route>
             </Routes>
           </ProductsStore.Provider>
         </AuthProvider>

@@ -63,7 +63,8 @@ const ProductCard = ({ prod }) => {
     <>
       <Card
         sx={{
-          width: isMobile ? "42vh" : "32vh",
+          minWidth: isMobile ? "42vh" : "32vh",
+          // maxWidth: isMobile ? "50vh" : "32vh",
           borderWidth: "2px",
           borderStyle: "solid",
           margin: "5px",
