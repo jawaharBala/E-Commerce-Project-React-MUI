@@ -108,6 +108,7 @@ export default function LoginPage() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  title="email"
                   autoFocus
                 />
                 <TextField
@@ -118,6 +119,7 @@ export default function LoginPage() {
                   label="Password"
                   type="password"
                   id="password"
+                  title="password"
                   autoComplete="current-password"
                 />
                 <FormControlLabel
@@ -125,6 +127,9 @@ export default function LoginPage() {
                   label="Remember me"
                 />
                 <Button
+                  itemID="login"
+                  id="login"
+                  title="login"
                   disabled={loading}
                   type="submit"
                   fullWidth

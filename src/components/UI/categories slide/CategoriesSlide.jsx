@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./CategoriesSlide.css";
+import { Tooltip } from "@mui/material";
 const CategoriesSlide = ({ categories }) => {
   const navigate = useNavigate();
   const colors = [
@@ -24,11 +25,13 @@ const CategoriesSlide = ({ categories }) => {
                 onClick={() => handleNavigation(category.id)}
                 style={{ backgroundColor: colors[i] }}
               >
+                <Tooltip title={category.name} arrow>
                 <img
                   className="image"
                   src={category.image}
                   alt={category.name}
                 ></img>
+                </Tooltip>
               </div>
             </>
           );

@@ -46,7 +46,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 let activeStyle = {
   textDecoration: "none",
   backgroundColor: 'white',
-  padding: "3px",
+  padding: "1vh",
   margin: "1vh",
   color:'black',
   borderRadius:"100vmax",
@@ -58,7 +58,7 @@ let inactiveStyle = {
   textDecoration: "none",
   backgroundColor: "black",
   color: "white",
-  padding: "3px",
+  padding: "1vh",
   margin: "1vh",
   fontSize:"2vh",
   fontWeight:"bolder"
@@ -70,7 +70,7 @@ function NavBar() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const {  cart,cartCount, updateCartCount } = React.useContext(ProductsStore);
+  // const {  cart,cartCount, updateCartCount } = React.useContext(ProductsStore);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -90,7 +90,18 @@ function NavBar() {
     { id: 4, name: "Shoes" },
     {id: 5, name:"More products"}
   ];
-
+  const cart = useSelector((store) => {
+    return store.custom.cart;
+  });
+  const cartCount = useSelector((store) => {
+    return store.custom.cartCount;
+  });
+  const updateCartCount = (payload) => {
+    dispatch({
+      type: "updateCartCount",
+      payload: payload,
+    });
+  };
 
   useEffect(() => {
    ProductUtils.cartCount(cart, updateCartCount);
@@ -111,6 +122,7 @@ function NavBar() {
   const toggleDrawer = (val) => {
     setOpenDrawer(val);
   };
+
 
   return (
     <>
@@ -229,6 +241,8 @@ function NavBar() {
               {user ? (
                 <>
                   <IconButton
+                    id="profile"
+                  
                     aria-controls={open ? "basic-menu" : undefined}
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
