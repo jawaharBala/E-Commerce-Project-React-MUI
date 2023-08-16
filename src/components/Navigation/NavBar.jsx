@@ -51,7 +51,11 @@ let activeStyle = {
   color:'black',
   borderRadius:"100vmax",
   fontSize:"2vh",
-  fontWeight:"bolder"
+  fontWeight:"bolder",
+  ":hover": {
+    color: "magenta"
+  }
+  
 
 };
 let inactiveStyle = {
@@ -61,7 +65,10 @@ let inactiveStyle = {
   padding: "1vh",
   margin: "1vh",
   fontSize:"2vh",
-  fontWeight:"bolder"
+  fontWeight:"bolder",
+  ":hover": {
+    color: "magenta"
+  }
 };
 function NavBar() {
   const [openDrawer, setOpenDrawer] = useState(false);
