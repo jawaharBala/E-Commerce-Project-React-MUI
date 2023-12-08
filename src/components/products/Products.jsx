@@ -27,37 +27,36 @@ const Products = () => {
         return { ...elem, cart: 1 };
       });
 
-      console.log(array)
+      console.log(array);
       setLoading(false);
       setItems(array);
     } catch (error) {
       setLoading(false);
-          setError(error);
+      setError(error);
     }
   };
   const getProductByCatagories = async () => {
     if (id) {
       const url =
-        "https://us-central1-ecommerce-database-jawa.cloudfunctions.net/app/products/6421b57ef81ee452bb26d50f";
+        "https://us-central1-my-functions-bde01.cloudfunctions.net/app/products";
       if (id == 5) {
         setLoading(true);
         try {
           const response = await axios.get(url);
-        let array = JSON.parse(response.data[0].products[0]);
-        array = array.map((elem) => {
-          return { ...elem, cart: 1, images:[elem.image] };
-        });
+          let array = JSON.parse(response.data[0].products[0]);
+          array = array.map((elem) => {
+            return { ...elem, cart: 1, images: [elem.image] };
+          });
           setLoading(false);
           setItems(array);
         } catch (error) {
           setLoading(false);
-              setError(error);
+          setError(error);
         }
       } else {
-
-            let url =   "https://api.escuelajs.co/api/v1/products/?categoryId=" + id;
-            getData(url);
-          }
+        let url = "https://api.escuelajs.co/api/v1/products/?categoryId=" + id;
+        getData(url);
+      }
     }
   };
 

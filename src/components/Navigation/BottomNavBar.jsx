@@ -10,9 +10,9 @@ const BottomNavBar = () => {
         <Paper sx={{position:"fixed", overflow: "hidden",
         bottom: 0,
         width: "100%",
-        
+        zIndex:9999        
       }} >
-        <BottomNavigation showLabels>
+        <BottomNavigation  showLabels>
             <BottomNavigationAction icon={<PersonIcon/>} label={!user ? ("Not logged in!"):(`${user?.email}`)}>
             </BottomNavigationAction>
         </BottomNavigation>

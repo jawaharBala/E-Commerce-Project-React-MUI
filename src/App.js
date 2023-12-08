@@ -22,6 +22,7 @@ import NavBar from "./components/Navigation/NavBar";
 import BottomNavBar from "../src/components/Navigation/BottomNavBar";
 import LogRocket from "logrocket";
 import ErrorBoundary from "../src/components/Error-handling/ErrorBoundary/Errorboundary";
+
 const InputFieldLazy = lazy(() =>
   import("../src/components/inputField/InputField")
 );
